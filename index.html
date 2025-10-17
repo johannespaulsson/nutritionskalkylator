@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutritionskalkylator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Grundläggande stil för body */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 5px;
+            background-color: #f4f4f4;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Stil för huvudbehållaren som centrerar innehållet */
+        .container {
+            max-width: 1100px; /* Ökad bredd */
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Stil för rubriker */
+        h2, h3 {
+            color: #1a73e8;
+            border-bottom: 2px solid #1a73e8;
+            padding-bottom: 8px;
+            margin-top: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        h3 {
+            font-size: 1.3em;
+            border-bottom: 1px solid #ddd;
+        }
+        h4 {
+             color: #333;
+             margin-bottom: 10px;
+        }
+
+        /* Stil för länk till styrdokument */
+        .document-link-container {
+            text-align: center;
+            margin-bottom: 25px;
+            margin-top: -10px;
+        }
+        .link-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #e7f3ff;
+            color: #1a73e8;
+            border: 1px solid #a8c7fa;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        .link-button:hover {
+            background-color: #d0e4ff;
+        }
+        .document-reference-text {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: #666;
+            margin-top: 8px;
+        }
+
+
+        /* Rutnätslayout för patientinformationsfälten (3 kolumner) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        /* Stil för varje rutnätsartikel (enkel inmatningsgrupp) */
+        .grid-item {
+            margin-bottom: 8px;
+            background-color: #fcfcfc;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+        }
+
+        /* Stil för de yttre kolumnerna inom 2-kolumns rutnät */
+        .grid-column-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+       
+        /* Stil för etiketter (labels) */
+        .grid-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        /* Stil för alla inmatningsfält och select-menyer */
+        .grid-item input[type="date"],
+        .grid-item input[type="time"],
+        .grid-item input[type="text"], 
+        .grid-item input[type="number"],
+        .grid-item select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .grid-item input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .grid-item input:focus,
+        .grid-item select:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+            outline: none;
+        }
+
+        /* Stil för "viktigt input"-markering (ljusrosa bakgrund) */
+        .important-input {
+            background-color: #fff0f0;
+            border-color: #ffcccc;
+        }
+        /* Stil för "fyllt input"-markering (ljusgrön bakgrund) */
+        .filled-input {
+            background-color: #f0fff0;
+            border-color: #ccffcc;
+        }
+
+        /* Stil för enskild vätskerad */
+        .fluid-entry-row {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr 1fr 1fr auto; /* Justerade kolumnproportioner */
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .fluid-entry-row .grid-item {
+            margin-bottom: 0;
+            padding: 0;
+            background-color: transparent;
+            border: none;
+        }
+
+        .fluid-entry-row input,
+        .fluid-entry-row select {
+            width: 100%;
+            padding: 6px;
+            font-size: 0.85rem;
+        }
+
+        .remove-fluid-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+            height: fit-content;
+            align-self: center;
+        }
+        .remove-fluid-button:hover {
+            background-color: #c82333;
+        }
+
+        .add-button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .add-button:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+
+        /* Stil för tabellrubrikerna */
+        .fluid-table-header {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr 1fr 1fr auto; /* Justerade kolumnproportioner */
+            gap: 8px;
+            font-weight: bold;
+            padding: 6px 0;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        .fluid-table-header div:last-child {
+            width: 30px; /* Matchar papperskorgens bredd */
+        }
+        
+        /* Dygnsbehov sektion */
+        #dailyNeeds .grid-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .needs-slider-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .needs-slider-group input[type="range"] {
+            flex-grow: 1;
+        }
+        .needs-slider-group .slider-value {
+            font-weight: 600;
+            min-width: 80px;
+            text-align: right;
+        }
+        .needs-total {
+            font-weight: 600;
+            color: #0d47a1;
+            text-align: right;
+            margin-top: 5px;
+        }
+        .bmi-display, .ibw-notice, .adjustment-notice {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: #555;
+            text-align: right;
+            min-height: 1.1em;
+        }
+        .ibw-notice {
+            color: #d9534f;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
+        #selectedLevelDisplay {
+            font-size: 0.9rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #333;
+            margin-top: 4px;
+            min-height: 1.2em;
+        }
+        
+        /* Sammanfattning */
+        .summary-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f8ff;
+            border: 1px solid #d1e0ff;
+            border-radius: 6px;
+        }
+        .summary-section h3 {
+             margin-top: 0;
+             text-align: center;
+             color: #0d47a1;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-item label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #555;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .summary-item .value {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #1a73e8;
+        }
+        .summary-item .goal-progress {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+        }
+        .summary-item .unit {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Verktygsknappar */
+        .tool-buttons-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .tool-button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            color: #333;
+        }
+        .tool-button:hover {
+            background-color: #e0e0e0;
+        }
+        .tool-buttons-group .summary-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+        }
+        .tool-buttons-group .summary-btn:hover {
+            background-color: #0d47a1;
+        }
+        .tool-buttons-group .reset-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        .tool-buttons-group .reset-btn:hover {
+            background-color: #c82333;
+        }
+        
+        /* Tooltip Stilar */
+        .label-with-tooltip {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #1a73e8;
+            border: 1px solid #1a73e8;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            line-height: 16px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1001;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Modal Stilar */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-close-button:hover {
+            color: #333;
+        }
+        .level-option {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            display: flex;
+            align-items: flex-start;
+        }
+        .level-option:hover {
+            background-color: #f9f9f9;
+        }
+        .level-option input[type="radio"] {
+            margin-right: 15px;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        .level-option.selected {
+            background-color: #e9f2ff;
+            border-color: #1a73e8;
+        }
+        .level-option .option-text .title {
+            font-weight: bold;
+        }
+        .level-option .option-text .desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        
+        #fluidInfoTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        #fluidInfoTable th, #fluidInfoTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #fluidInfoTable th {
+            background-color: #f2f2f2;
+        }
+        #fluidInfoTable .category-header {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+
+        /* Mediafråga för mindre skärmar */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 10px;
+            }
+            .grid-container, #intakeSheet .grid-container, .tool-buttons-group {
+                grid-template-columns: 1fr;
+            }
+            .fluid-entry-row, .fluid-table-header {
+                grid-template-columns: 1fr;
+                gap: 5px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .fluid-table-header {
+                display: none; /* Dölj header på mobil, info finns i varje rad */
+            }
+            .remove-fluid-button {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Nutritionskalkylator</h2>
+
+        <div class="document-link-container">
+            <a href="https://mellanarkiv-offentlig.vgregion.se/alfresco/s/archive/stream/public/v1/source/available/sofia/skas9696-242963441-9/surrogate/Nutrition%20-%20intensivv%c3%a5rd.pdf" target="_blank" rel="noopener noreferrer" class="link-button">
+                Öppna Styrdokument
+            </a>
+            <p class="document-reference-text">Appen utgår från innehållet i styrdokument "Nutrition - Intensivvård".</p>
+        </div>
+
+        <!-- Patientinformation -->
+        <div id="patientInfo">
+            <h3>Patientinformation</h3>
+            <div class="grid-container">
+                <div class="grid-item">
+                     <div class="label-with-tooltip">
+                        <label for="weight">Dagens vikt (kg)</label>
+                        <div class="tooltip">i
+                            <span class="tooltiptext">Ange patientens aktuella vikt. Används för att beräkna dygnsbehov och kcal/kg/dygn.</span>
+                        </div>
+                    </div>
+                    <input type="number" id="weight" class="important-input" placeholder="t.ex. 75">
+                </div>
+                <div class="grid-item">
+                    <label for="length">Längd (cm)</label>
+                    <input type="number" id="length" class="important-input" placeholder="t.ex. 180">
+                    <span class="bmi-display" id="bmiDisplay"></span>
+                </div>
+                <div class="grid-item">
+                    <label for="gender">Kön</label>
+                    <select id="gender">
+                        <option value="male">Man</option>
+                        <option value="female">Kvinna</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Beräknat Dygnsbehov -->
+        <div id="dailyNeeds">
+            <h3>Beräknat Dygnsbehov</h3>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <label for="openNutritionLevelModalBtn">Nutritionsnivå</label>
+                    <button id="openNutritionLevelModalBtn" class="tool-button">Välj Nutritionsnivå...</button>
+                    <input type="hidden" id="selectedNutritionLevel" value="">
+                    <div id="selectedLevelDisplay"></div>
+                    <div class="needs-slider-group hidden" id="energyRangeGroup">
+                        <input type="range" id="energySlider" min="5" max="10" value="5" step="0.5">
+                        <span id="energySliderValue" class="slider-value">5 kcal/kg/dygn</span>
+                    </div>
+                    <div id="totalEnergyNeed" class="needs-total">Totalt: 0 kcal</div>
+                    <span class="adjustment-notice" id="energyAdjustmentNotice"></span>
+                </div>
+                <div class="grid-item">
+                    <label for="patientGroupSelect">Proteinbehov</label>
+                    <select id="patientGroupSelect">
+                        <option value="" disabled selected>Välj patientgrupp...</option>
+                    </select>
+                    <div class="needs-slider-group">
+                         <input type="range" id="proteinSlider" min="1.3" max="1.5" value="1.3" step="0.1">
+                         <span id="proteinSliderValue" class="slider-value">1.3 g/kg/dygn</span>
+                    </div>
+                    <div id="totalProteinNeed" class="needs-total">Totalt: 0 g</div>
+                    <span class="ibw-notice hidden" id="ibwNotice"></span>
+                </div>
+                <div class="grid-item">
+                    <label for="fluidSlider">Vätskebehov</label>
+                    <div class="needs-slider-group">
+                        <input type="range" id="fluidSlider" min="25" max="30" value="25" step="1">
+                        <span id="fluidSliderValue" class="slider-value">25 ml/kg/dygn</span>
+                    </div>
+                    <select id="dehydrationSelect" style="margin-top: 8px;">
+                        <option value="none">Dehydrering: Ingen</option>
+                        <option value="no_shock">Utan chock (+5% av kv)</option>
+                        <option value="shock">Med chock (+10% av kv)</option>
+                    </select>
+                    <select id="feverSelect_fluid" style="margin-top: 8px;">
+                        <option value="none">Feber: Ingen (&lt;38°C)</option>
+                        <option value="38">38°C (+200ml)</option>
+                        <option value="39">39°C (+400ml)</option>
+                        <option value="40">40°C (+600ml)</option>
+                    </select>
+                    <div id="totalFluidNeed" class="needs-total">Totalt: 0 ml</div>
+                     <span class="adjustment-notice" id="fluidAdjustmentNotice"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nutritionstillförsel -->
+        <div id="intakeSheet">
+            <h3>Nutritionstillförsel</h3>
+            <div class="grid-container">
+                <div class="grid-column-item">
+                    <h4>Vätskor/blodprodukter/läkemedel</h4>
+                    <div class="fluid-table-header">
+                        <div>Typ</div>
+                        <div>Volym (ml)</div>
+                        <div>Kcal</div>
+                        <div>Protein (g)</div>
+                        <div></div>
+                    </div>
+                    <div id="crystalloidsList"></div>
+                    <button class="add-button" onclick="addFluidRow('crystalloids')">+ Lägg till vätska</button>
+                </div>
+                <div class="grid-column-item">
+                    <h4>TPN/Sondmat/p.o intag</h4>
+                    <div class="fluid-table-header">
+                        <div>Typ</div>
+                        <div>Volym (ml)</div>
+                        <div>Kcal</div>
+                        <div>Protein (g)</div>
+                        <div></div>
+                    </div>
+                    <div id="tpnList"></div>
+                    <button class="add-button" onclick="addFluidRow('tpn')">+ Lägg till nutrition</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sammanfattning -->
+        <div class="summary-section">
+            <h3>Sammanfattning</h3>
+            <div class="summary-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                <div class="summary-item">
+                    <label>Total Vätsketillförsel</label>
+                    <span class="value" id="totalIntakeValue">0</span> <span class="unit">ml</span>
+                    <div class="goal-progress" id="fluidGoalProgress">(0% av basalbehov)</div>
+                </div>
+                 <div class="summary-item">
+                    <label>Energiintag</label>
+                    <span class="value" id="energyIntakeValue">0</span> <span class="unit">kcal</span>
+                     <div class="goal-progress" id="energyGoalProgress">(0% av mål)</div>
+                </div>
+                <div class="summary-item">
+                    <label>Proteintillförsel</label>
+                    <span class="value" id="totalProteinIntakeValue">0</span> <span class="unit">g</span>
+                    <div class="goal-progress" id="proteinGoalProgress">(0% av mål)</div>
+                </div>
+                <div class="summary-item">
+                    <label>Glukosintag</label>
+                    <span class="value" id="totalGlucoseIntakeValue">0</span> <span class="unit">g</span>
+                    <div class="goal-progress" id="glucosePerKgDisplay">(0.0 g/kg/dygn)</div>
+                    <div class="goal-progress" id="glucoseGoalProgress">(0% av mål)</div>
+                </div>
+                <div class="summary-item">
+                    <label>Energi per kg</label>
+                    <span class="value" id="energyPerKgValue">0</span>
+                    <span class="unit">kcal/kg/dygn</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verktyg -->
+        <div class="tool-buttons-group">
+            <button class="tool-button" id="importBtn">Importera Data</button>
+            <input type="file" id="importFile" class="hidden" accept=".json">
+            <button class="tool-button" id="showFluidListBtn">Visa Vätskelista</button>
+            <button class="tool-button reset-btn" id="resetBtn">Rensa allt</button>
+        </div>
+    </div>
+
+    <!-- Modal för val av nutritionsnivå -->
+    <div id="nutritionLevelModalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button">&times;</button>
+            <h3>Välj Nutritionsnivå</h3>
+            <div id="nutritionLevelOptionsContainer">
+                <!-- Alternativ genereras av JS -->
+            </div>
+            <button id="selectNutritionLevelBtn" class="add-button">Välj</button>
+        </div>
+    </div>
+
+    <!-- Modal för vätskelista -->
+    <div id="fluidInfoModalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button">&times;</button>
+            <h3>Information om Vätskor</h3>
+            <table id="fluidInfoTable">
+                <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Kcal/ml</th>
+                        <th>Protein g/ml</th>
+                        <th>Glukos g/ml</th>
+                    </tr>
+                </thead>
+                <tbody id="fluidInfoTableBody">
+                    <!-- Innehåll genereras av JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA OCH KONSTANTER ---
+        const fluidOptions = {
+            crystalloids: {
+                'Kristalloider/Kolloider': [
+                    { name: "Glukos 25 mg/ml", kcal_per_ml: 0.1, protein_g_per_ml: 0, glucose_g_per_ml: 0.025 },
+                    { name: "Glukos 50 mg/ml", kcal_per_ml: 0.2, protein_g_per_ml: 0, glucose_g_per_ml: 0.05 },
+                    { name: "Glukos 100 mg/ml", kcal_per_ml: 0.4, protein_g_per_ml: 0, glucose_g_per_ml: 0.1 },
+                    { name: "Glukos 200 mg/ml", kcal_per_ml: 0.8, protein_g_per_ml: 0, glucose_g_per_ml: 0.2 },
+                    { name: "Glukos 300 mg/ml", kcal_per_ml: 1.2, protein_g_per_ml: 0, glucose_g_per_ml: 0.3 },
+                    { name: "Albumin 20%", kcal_per_ml: 0.8, protein_g_per_ml: 0.2, glucose_g_per_ml: 0 },
+                    { name: "Albumin 5%", kcal_per_ml: 0, protein_g_per_ml: 0.05, glucose_g_per_ml: 0 },
+                    { name: "Glukos 100 mg/ml med el", kcal_per_ml: 0.4, protein_g_per_ml: 0, glucose_g_per_ml: 0.1 },
+                    { name: "Glukos 50 mg/ml med El", kcal_per_ml: 0.2, protein_g_per_ml: 0, glucose_g_per_ml: 0.05 },
+                    { name: "NaCl Picco-Kalibrering", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Natriumbikarbonat 50 mg/ml", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Natriumklorid 9 mg/ml", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Natriumklorid hyperton", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Plasmolyte", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Ringer-Acetat", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 }
+                ],
+                'Läkemedelsvätskor': [
+                    { name: "Dexdor", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Esketamin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Klonidin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Midazolam", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Propofol 10mg/ml", kcal_per_ml: 0.9, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Propofol 20mg/ml", kcal_per_ml: 0.9, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Remifentanil", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Pip/Taz 4g x 3", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Övrig Antibiotika", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Kaspofungin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Adrenalin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Argipressin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Dobutamin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Levosimendan", kcal_per_ml: 0.2, protein_g_per_ml: 0, glucose_g_per_ml: 0.05 },
+                    { name: "Milrinon", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Noradrenalin", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Amiodarone", kcal_per_ml: 0.2, protein_g_per_ml: 0, glucose_g_per_ml: 0.05 },
+                    { name: "EDA", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Kalium/Kaliumklorid", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Lispro", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Paracetamol", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 }
+                ],
+                'Blodprodukter': [
+                    { name: "Erytrocyter", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Trombocyter", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Plasma", kcal_per_ml: 0, protein_g_per_ml: 0.07, glucose_g_per_ml: 0 }
+                ]
+            },
+            tpn: {
+                'TPN': [
+                    { name: "Smof Kabiven 900 kcal extra nitrogen", kcal_per_ml: 0.9, protein_g_per_ml: 0.053, glucose_g_per_ml: 0.105 },
+                    { name: "Smof Kabiven 1100 kcal", kcal_per_ml: 1.12, protein_g_per_ml: 0.053, glucose_g_per_ml: 0.105 },
+                    { name: "Smof Kabiven PI 1300 kcal", kcal_per_ml: 0.68, protein_g_per_ml: 0.033, glucose_g_per_ml: 0.049 },
+                    { name: "Smof Kabiven 1350 kcal extra nitrogen", kcal_per_ml: 0.9, protein_g_per_ml: 0.053, glucose_g_per_ml: 0.105 },
+                    { name: "Smof Kabiven 1600 kcal", kcal_per_ml: 1.08, protein_g_per_ml: 0.053, glucose_g_per_ml: 0.12 },
+                    { name: "Smof Kabiven 1800 extra nitrogen", kcal_per_ml: 1.1, protein_g_per_ml: 0.053, glucose_g_per_ml: 0.12 },
+                    { name: "Smof Kabiven 2200 kcal", kcal_per_ml: 1.12, protein_g_per_ml: 0.053, glucose_g_per_ml: 0.13 }
+                ],
+                'Sondmat': [
+                    { name: "Sondmat Fresubin 2 kcal HP", kcal_per_ml: 2.0, protein_g_per_ml: 0.1, glucose_g_per_ml: 0.225 },
+                    { name: "Sondmat Fresubin Original", kcal_per_ml: 1, protein_g_per_ml: 0.038, glucose_g_per_ml: 0.124 },
+                    { name: "Sondmat Isosource standardfibre", kcal_per_ml: 1, protein_g_per_ml: 0.041, glucose_g_per_ml: 0.13 }
+                ],
+                'Näringsdrycker': [
+                    { name: "Fresubin PRO Drink 200ml", kcal_per_ml: 2.4, protein_g_per_ml: 0.14, glucose_g_per_ml: 0.124 },
+                    { name: "Fresubin Diben Drink 200ml", kcal_per_ml: 1.5, protein_g_per_ml: 0.075, glucose_g_per_ml: 0.068 },
+                    { name: "Fresubin Xtra 200ml", kcal_per_ml: 1.5, protein_g_per_ml: 0.04, glucose_g_per_ml: 0.186 },
+                    { name: "Fresubin Thickened II 200ml", kcal_per_ml: 1.5, protein_g_per_ml: 0.1, glucose_g_per_ml: 0.094 },
+                    { name: "Calogen Extra Shot 40ml", kcal_per_ml: 4.0, protein_g_per_ml: 0.05, glucose_g_per_ml: 0 }
+                ],
+                'Peroralt': [
+                    { name: "Peroralt intag", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 },
+                    { name: "Vatten i sond", kcal_per_ml: 0, protein_g_per_ml: 0, glucose_g_per_ml: 0 }
+                ]
+            }
+        };
+
+         const NUTRITION_LEVELS = {
+            '0': { text: 'Nivå 0: Resusciteringsfas (5-10 kcal/kg)', short_desc: 'Resusciteringsfas', desc: 'Svår respiratorisk och cirkulatorisk svikt, t.ex. överhängande intubationsrisk, svår SIRS, CO2-retention, massivt inotropt-, volyms- eller vasopressorbehov. Enbart kristalloid vätskeersättning och ev. 5-10% glukos.', kcal: [5, 10] },
+            '1': { text: 'Nivå 1: Akut instabil fas (15 kcal/kg)', short_desc: 'Akut instabil fas', desc: 'Fortsatt högt syrgasbehov och adrenergt stöd, men inget överhängande respiratoriskt eller cirkulatoriskt hot. Patient med djup sedation. Bör kunna startas dag 1-2 om ej extremt instabil.', kcal: 15 },
+            '2': { text: 'Nivå 2: Akut stabil fas (20 kcal/kg)', short_desc: 'Akut stabil fas', desc: 'Patienten fortsätter förbättras och där nutrition redan startats på nivå 1. Bör kunna nås dygnet efter nivå 1.', kcal: 20 },
+            '3': { text: 'Nivå 3: Tidig återuppbyggnadsfas (25 kcal/kg)', short_desc: 'Tidig återuppbyggnadsfas', desc: 'Tillståndet börjar vända. Stabilt syrgas- respektive inotropi-/vasopressorbehov.', kcal: 25 },
+            '4': { text: 'Nivå 4: Återhämtningsfas (30-35 kcal/kg)', short_desc: 'Återhämtningsfas', desc: 'Återhämtnings-/mobiliseringsfas. Ökande energibehov.', kcal: [30, 35] }
+        };
+
+        const PATIENT_GROUPS = {
+            'standard': { text: 'Standard IVA-patient', protein: [1.3, 1.5] },
+            'renal_liver_failure': { text: 'Akut njur-/leversvikt', protein: [1.3, 1.5] },
+            'crrt': { text: 'CRRT', protein: [1.3, 1.5] },
+            'burns_obesity': { text: 'Brännskador, obesitas, HD, Trauma', protein: [1.5, 2.0] },
+            'chronic_renal_no_dialysis': { text: 'Kronisk njursvikt (utan dialys)', protein: [0.6, 0.8] }
+        };
+
+        // --- INITIERING ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateSelects();
+            populateNutritionModal();
+            setupModalListeners();
+            setupImportListeners();
+            addFluidRow('crystalloids');
+            addFluidRow('tpn');
+            document.querySelector('.container').addEventListener('input', handleFormChange);
+            document.querySelector('.container').addEventListener('click', handleRemoveClick);
+            document.getElementById('resetBtn').addEventListener('click', resetCalculator);
+            updateProteinUI();
+            calculateAndUpdateSummary();
+        });
+        
+        function populateSelects() {
+            const groupSelect = document.getElementById('patientGroupSelect');
+            Object.keys(PATIENT_GROUPS).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = PATIENT_GROUPS[key].text;
+                groupSelect.appendChild(option);
+            });
+        }
+
+        function populateNutritionModal() {
+            const container = document.getElementById('nutritionLevelOptionsContainer');
+            container.innerHTML = '';
+            const currentLevel = document.getElementById('selectedNutritionLevel').value;
+            Object.keys(NUTRITION_LEVELS).forEach(key => {
+                const level = NUTRITION_LEVELS[key];
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'level-option';
+                if (key === currentLevel) optionDiv.classList.add('selected');
+                optionDiv.dataset.value = key;
+                optionDiv.innerHTML = `<input type="radio" name="nutritionLevel" value="${key}" id="level-${key}" ${key === currentLevel ? 'checked' : ''}><div class="option-text"><label for="level-${key}" class="title">${level.text}</label><div class="desc">${level.desc}</div></div>`;
+                container.appendChild(optionDiv);
+            });
+        }
+
+        function setupModalListeners() {
+            const fluidInfoModal = document.getElementById('fluidInfoModalOverlay');
+            const nutritionModal = document.getElementById('nutritionLevelModalOverlay');
+
+            document.getElementById('openNutritionLevelModalBtn').addEventListener('click', () => {
+                populateNutritionModal();
+                nutritionModal.classList.add('active');
+                document.body.classList.add('modal-open');
+            });
+
+            document.getElementById('showFluidListBtn').addEventListener('click', () => {
+                populateFluidInfoModal();
+                fluidInfoModal.classList.add('active');
+                document.body.classList.add('modal-open');
+            });
+
+            const closeModal = () => {
+                fluidInfoModal.classList.remove('active');
+                nutritionModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            };
+
+            document.querySelectorAll('.modal-close-button').forEach(btn => btn.addEventListener('click', closeModal));
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+            });
+            
+            // Nutrition level modal specific
+            const optionsContainer = document.getElementById('nutritionLevelOptionsContainer');
+             optionsContainer.addEventListener('click', (e) => {
+                const targetOption = e.target.closest('.level-option');
+                if (!targetOption) return;
+                optionsContainer.querySelectorAll('.level-option').forEach(opt => opt.classList.remove('selected'));
+                targetOption.classList.add('selected');
+                targetOption.querySelector('input[type="radio"]').checked = true;
+            });
+             document.getElementById('selectNutritionLevelBtn').addEventListener('click', () => {
+                const selectedRadio = optionsContainer.querySelector('input[name="nutritionLevel"]:checked');
+                if (selectedRadio) {
+                    document.getElementById('selectedNutritionLevel').value = selectedRadio.value;
+                    updateNutritionLevelUI();
+                    calculateAndUpdateSummary();
+                }
+                closeModal();
+            });
+        }
+
+        function setupImportListeners() {
+            const importBtn = document.getElementById('importBtn');
+            const fileInput = document.getElementById('importFile');
+            importBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileImport);
+        }
+
+        // --- HÄNDELSEHANTERARE ---
+        function handleFormChange(event) {
+            const target = event.target;
+            if (target.id === 'patientGroupSelect') {
+                updateProteinUI();
+            } else if (target.tagName === 'SELECT' && target.value === 'custom') {
+                showCustomInput(target);
+            } else if (target.classList.contains('fluid-select') || target.classList.contains('volume-input')) {
+                updateRowCalculations(target);
+            }
+            
+            if (target.id === 'weight' || target.id === 'length') {
+                target.classList.toggle('filled-input', target.value.trim() !== '');
+            }
+            if (target.type === 'range') {
+                updateSliderLabel(target);
+            }
+            calculateAndUpdateSummary();
+        }
+
+        function handleRemoveClick(event) {
+            if (event.target.classList.contains('remove-fluid-button')) {
+                event.target.closest('.fluid-entry-row').remove();
+                calculateAndUpdateSummary();
+            }
+        }
+        
+        // --- DOM-MANIPULATION ---
+        function addFluidRow(type, name = '', volume = '', kcal = '') {
+            const listId = type + 'List';
+            const list = document.getElementById(listId);
+            const row = document.createElement('div');
+            row.className = 'fluid-entry-row';
+
+            let allStandardOptions = [];
+            Object.values(fluidOptions.crystalloids).forEach(group => allStandardOptions.push(...group));
+            Object.values(fluidOptions.tpn).forEach(group => allStandardOptions.push(...group));
+            const isStandardOption = allStandardOptions.some(opt => opt.name === name);
+
+            let nameInputHtml;
+            if (name && !isStandardOption) {
+                nameInputHtml = `<input type="text" class="custom-fluid-name" value="${name}">`;
+            } else {
+                let optionsHtml = '<option value="" disabled ' + (name ? '' : 'selected') + '>Välj typ...</option>';
+                const optionGroups = fluidOptions[type];
+                for (const groupLabel in optionGroups) {
+                    optionsHtml += `<optgroup label="${groupLabel}">`;
+                    optionsHtml += optionGroups[groupLabel].map(opt => 
+                        `<option value="${opt.name}" data-kcal="${opt.kcal_per_ml || 0}" data-protein="${opt.protein_g_per_ml || 0}" data-glucose="${opt.glucose_g_per_ml || 0}" ${opt.name === name ? 'selected' : ''}>${opt.name}</option>`
+                    ).join('');
+                    optionsHtml += `</optgroup>`;
+                }
+                optionsHtml += `<option value="custom">Annan...</option>`;
+                nameInputHtml = `<select class="fluid-select">${optionsHtml}</select>`;
+            }
+
+            row.innerHTML = `
+                <div class="grid-item">${nameInputHtml}</div>
+                <div class="grid-item"><input type="number" class="volume-input" placeholder="ml" value="${volume}"></div>
+                <div class="grid-item"><input type="number" class="kcal-input" placeholder="kcal" readonly></div>
+                <div class="grid-item"><input type="number" class="protein-input" placeholder="g" readonly></div>
+                <button type="button" class="remove-fluid-button">X</button>
+            `;
+            list.appendChild(row);
+        }
+        
+        function showCustomInput(selectElement) {
+            const parent = selectElement.parentElement;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Ange egen typ...';
+            input.className = 'custom-fluid-name';
+            parent.innerHTML = '';
+            parent.appendChild(input);
+            input.focus();
+        }
+
+        function updateRowCalculations(element) {
+            const row = element.closest('.fluid-entry-row');
+            if (!row) return; 
+            const selectElement = row.querySelector('.fluid-select');
+            if (!selectElement) return; 
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const kcalPerMl = parseFloat(selectedOption.dataset.kcal);
+            const proteinPerMl = parseFloat(selectedOption.dataset.protein);
+            const volumeInput = row.querySelector('.volume-input');
+            const kcalInput = row.querySelector('.kcal-input');
+            const proteinInput = row.querySelector('.protein-input');
+            
+            if (volumeInput && kcalInput && proteinInput) {
+                const volume = parseFloat(volumeInput.value) || 0;
+                
+                if (!isNaN(kcalPerMl)) {
+                    kcalInput.value = Math.round(volume * kcalPerMl);
+                    kcalInput.classList.add('filled-input');
+                } else {
+                     kcalInput.classList.remove('filled-input');
+                }
+
+                if (!isNaN(proteinPerMl)) {
+                    proteinInput.value = (volume * proteinPerMl).toFixed(1);
+                    proteinInput.classList.add('filled-input');
+                } else {
+                     proteinInput.classList.remove('filled-input');
+                }
+            }
+        }
+        
+        function updateSliderLabel(slider) {
+            const label = document.getElementById(slider.id + 'Value');
+            if(label) {
+                const unit = slider.id.includes('energy') ? 'kcal/kg/dygn' : (slider.id.includes('protein') ? 'g/kg/dygn' : 'ml/kg/dygn');
+                label.textContent = `${slider.value} ${unit}`;
+            }
+        }
+
+        function updateNutritionLevelUI() {
+            const levelKey = document.getElementById('selectedNutritionLevel').value;
+            const openBtn = document.getElementById('openNutritionLevelModalBtn');
+            const levelDisplay = document.getElementById('selectedLevelDisplay');
+            const rangeGroup = document.getElementById('energyRangeGroup');
+            const slider = document.getElementById('energySlider');
+
+            if (levelKey && NUTRITION_LEVELS[levelKey]) {
+                const level = NUTRITION_LEVELS[levelKey];
+                const levelTitle = level.text.split(':')[0];
+                const kcalText = level.text.match(/\(([^)]+)\)/)[0];
+                openBtn.textContent = `${levelTitle} ${kcalText}`;
+                levelDisplay.textContent = level.short_desc;
+
+                if (Array.isArray(level.kcal)) {
+                    slider.min = level.kcal[0];
+                    slider.max = level.kcal[1];
+                    slider.value = slider.min; // Start at minimum
+                    updateSliderLabel(slider);
+                    rangeGroup.classList.remove('hidden');
+                } else {
+                    rangeGroup.classList.add('hidden');
+                }
+            } else {
+                openBtn.textContent = 'Välj Nutritionsnivå...';
+                levelDisplay.textContent = 'Inget energimål är satt.';
+                rangeGroup.classList.add('hidden');
+            }
+        }
+
+        function updateProteinUI() {
+            const groupKey = document.getElementById('patientGroupSelect').value;
+            const slider = document.getElementById('proteinSlider');
+            if (groupKey) {
+                const group = PATIENT_GROUPS[groupKey];
+                slider.min = group.protein[0];
+                slider.max = group.protein[1];
+                slider.value = slider.min; // Start at minimum
+                slider.disabled = false;
+            } else {
+                slider.disabled = true;
+            }
+            updateSliderLabel(slider);
+        }
+        
+        function populateFluidInfoModal() {
+            const tableBody = document.getElementById('fluidInfoTableBody');
+            tableBody.innerHTML = ''; 
+            const allFluids = {...fluidOptions.crystalloids, ...fluidOptions.tpn};
+            
+            for(const category in allFluids) {
+                const headerRow = tableBody.insertRow();
+                headerRow.className = 'category-header';
+                const headerCell = headerRow.insertCell();
+                headerCell.colSpan = 4;
+                headerCell.textContent = category;
+
+                allFluids[category].forEach(fluid => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = fluid.name;
+                    row.insertCell().textContent = (fluid.kcal_per_ml || 0).toFixed(2);
+                    row.insertCell().textContent = (fluid.protein_g_per_ml || 0).toFixed(3);
+                    row.insertCell().textContent = (fluid.glucose_g_per_ml || 0).toFixed(3);
+                });
+            }
+        }
+
+        // --- BERÄKNINGAR ---
+        function calculateAndUpdateSummary() {
+            const weight = parseFloat(document.getElementById('weight').value) || 0;
+            const height = parseFloat(document.getElementById('length').value) || 0;
+            const bodyMetrics = calculateBodyMetrics(weight, height);
+            document.getElementById('bmiDisplay').textContent = bodyMetrics.bmi > 0 ? `BMI: ${bodyMetrics.bmi.toFixed(1)}` : '';
+            const ibwNotice = document.getElementById('ibwNotice');
+            ibwNotice.classList.toggle('hidden', !bodyMetrics.shouldUseIbw);
+            if (bodyMetrics.shouldUseIbw) {
+                ibwNotice.textContent = `Övervikt (BMI > 25). Behov beräknas på justerad vikt: ${bodyMetrics.ibw.toFixed(0)} kg.`;
+            }
+            const calculationWeight = bodyMetrics.shouldUseIbw ? bodyMetrics.ibw : weight;
+            const needs = calculateDailyNeeds(calculationWeight, weight);
+            const totalIntake = calculateTotal('#intakeSheet .volume-input');
+            const totalKcal = calculateTotal('#intakeSheet .kcal-input');
+            const totalProteinIntake = calculateTotalProteinIntake();
+            const totalGlucoseIntake = calculateTotalGlucoseIntake();
+            const energyPerKg = weight > 0 ? (totalKcal / weight) : 0;
+            const glucosePerKg = weight > 0 ? (totalGlucoseIntake / weight) : 0;
+            const fluidGoalProgress = needs.fluid > 0 ? (totalIntake / needs.fluid * 100) : 0;
+            const energyGoalProgress = needs.energy > 0 ? (totalKcal / needs.energy * 100) : 0;
+            const proteinGoalProgress = needs.protein > 0 ? (totalProteinIntake / needs.protein * 100) : 0;
+            const glucoseGoalProgress = needs.glucose > 0 ? (totalGlucoseIntake / needs.glucose * 100) : 0;
+
+            
+            updateSummaryUI({ totalIntake, totalKcal, totalProteinIntake, totalGlucoseIntake, glucosePerKg, energyPerKg, fluidGoalProgress, energyGoalProgress, proteinGoalProgress, glucoseGoalProgress });
+        }
+
+        function calculateBodyMetrics(weight, height) {
+            if (weight <= 0 || height <= 0) return { bmi: 0, ibw: 0, shouldUseIbw: false };
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            const ibw = 25 * (heightInMeters * heightInMeters);
+            return { bmi, ibw, shouldUseIbw: bmi > 25 };
+        }
+        
+        function calculateDailyNeeds(calcWeight, actualWeight) {
+             // Energi
+            const levelKey = document.getElementById('selectedNutritionLevel').value;
+            let totalEnergy = 0;
+            if (levelKey && NUTRITION_LEVELS[levelKey]) {
+                const level = NUTRITION_LEVELS[levelKey];
+                let kcalPerKg = Array.isArray(level.kcal) ? parseFloat(document.getElementById('energySlider').value) : level.kcal;
+                totalEnergy = calcWeight * kcalPerKg;
+            }
+            document.getElementById('totalEnergyNeed').textContent = `Totalt: ${totalEnergy.toFixed(0)} kcal`;
+            document.getElementById('energyAdjustmentNotice').textContent = '';
+
+            // Protein
+            const proteinPerKg = parseFloat(document.getElementById('proteinSlider').value);
+            const totalProtein = document.getElementById('patientGroupSelect').value ? calcWeight * proteinPerKg : 0;
+            document.getElementById('totalProteinNeed').textContent = `Totalt: ${totalProtein.toFixed(0)} g`;
+            
+            // Vätska
+            const fluidPerKg = parseFloat(document.getElementById('fluidSlider').value);
+            const baseFluid = calcWeight * fluidPerKg;
+            let fluidAdjustment = 0;
+            let fluidAdjText = [];
+            const dehydrationValue = document.getElementById('dehydrationSelect').value;
+            if (dehydrationValue === 'no_shock') {
+                const adjustment = actualWeight * 0.05 * 1000;
+                fluidAdjustment += adjustment;
+                fluidAdjText.push(`+${adjustment.toFixed(0)}ml (dehydr.)`);
+            } else if (dehydrationValue === 'shock') {
+                const adjustment = actualWeight * 0.10 * 1000;
+                fluidAdjustment += adjustment;
+                fluidAdjText.push(`+${adjustment.toFixed(0)}ml (dehydr.)`);
+            }
+            const feverValueFluid = document.getElementById('feverSelect_fluid').value;
+            const feverFluidMap = { '38': 200, '39': 400, '40': 600 };
+            if (feverFluidMap[feverValueFluid]) {
+                fluidAdjustment += feverFluidMap[feverValueFluid];
+                fluidAdjText.push(`+${feverFluidMap[feverValueFluid]}ml (feber)`);
+            }
+            const totalFluid = baseFluid + fluidAdjustment;
+            document.getElementById('totalFluidNeed').textContent = `Totalt: ${totalFluid.toFixed(0)} ml`;
+            document.getElementById('fluidAdjustmentNotice').textContent = fluidAdjText.length > 0 ? `(Bas: ${baseFluid.toFixed(0)}ml ${fluidAdjText.join(' ')})` : '';
+            
+            // Glukos
+            const totalGlucoseNeed = 3 * calcWeight;
+
+            return { energy: totalEnergy, protein: totalProtein, fluid: totalFluid, glucose: totalGlucoseNeed };
+        }
+
+        function calculateTotal(selector) {
+            return Array.from(document.querySelectorAll(selector)).reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+        }
+        
+        function calculateTotalProteinIntake() {
+            let totalProtein = 0;
+            const rows = document.querySelectorAll('#intakeSheet .fluid-entry-row');
+            rows.forEach(row => {
+                const proteinInput = row.querySelector('.protein-input');
+                if (proteinInput) {
+                    totalProtein += parseFloat(proteinInput.value) || 0;
+                }
+            });
+            return totalProtein;
+        }
+
+        function calculateTotalGlucoseIntake() {
+            let totalGlucose = 0;
+            const rows = document.querySelectorAll('#intakeSheet .fluid-entry-row');
+            rows.forEach(row => {
+                const select = row.querySelector('.fluid-select');
+                const volumeInput = row.querySelector('.volume-input');
+                const volume = parseFloat(volumeInput.value) || 0;
+
+                if (select && select.selectedIndex >= 0) {
+                    const selectedOption = select.options[select.selectedIndex];
+                    if (selectedOption && !selectedOption.disabled) {
+                         const glucosePerMl = parseFloat(selectedOption.dataset.glucose) || 0;
+                         totalGlucose += volume * glucosePerMl;
+                    }
+                }
+            });
+            return totalGlucose;
+        }
+
+        function updateSummaryUI(data) {
+            document.getElementById('totalIntakeValue').textContent = data.totalIntake.toFixed(0);
+            document.getElementById('energyIntakeValue').textContent = data.totalKcal.toFixed(0);
+            document.getElementById('totalProteinIntakeValue').textContent = data.totalProteinIntake.toFixed(0);
+            document.getElementById('totalGlucoseIntakeValue').textContent = data.totalGlucoseIntake.toFixed(0);
+            document.getElementById('energyPerKgValue').textContent = data.energyPerKg.toFixed(1);
+            document.getElementById('glucosePerKgDisplay').textContent = `(${data.glucosePerKg.toFixed(1)} g/kg/dygn)`;
+            
+            document.getElementById('fluidGoalProgress').textContent = `(${data.fluidGoalProgress.toFixed(0)}% av basalbehov)`;
+            document.getElementById('energyGoalProgress').textContent = `(${data.energyGoalProgress.toFixed(0)}% av mål)`;
+            document.getElementById('proteinGoalProgress').textContent = `(${data.proteinGoalProgress.toFixed(0)}% av mål)`;
+            document.getElementById('glucoseGoalProgress').textContent = `(${data.glucoseGoalProgress.toFixed(0)}% av mål)`;
+        }
+
+        // --- IMPORT/EXPORT ---
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    applyImportedData(data);
+                } catch (error) {
+                    alert('Kunde inte läsa filen. Kontrollera att det är en giltig JSON-fil.');
+                    console.error("JSON Parse Error:", error);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
+        }
+
+        function applyImportedData(data) {
+            // Rensa befintliga rader
+            document.getElementById('crystalloidsList').innerHTML = '';
+            document.getElementById('tpnList').innerHTML = '';
+
+            // Importera patientdata
+            if (data.patientInfo) {
+                document.getElementById('weight').value = data.patientInfo.dailyWeight || '';
+                document.getElementById('length').value = data.patientInfo.height || '';
+            }
+
+            // Importera tillförsel
+            const intakeEntries = [
+                ...(data.fluidEntries || []),
+                ...(data.medicineEntries || [])
+            ];
+
+            intakeEntries.forEach(entry => {
+                const name = entry.customValue || entry.selectValue;
+                addFluidRow('crystalloids', name, entry.mlValue, entry.kcalValue);
+            });
+
+            (data.tpnSondmatEntries || []).forEach(entry => {
+                const name = entry.customValue || entry.selectValue;
+                addFluidRow('tpn', name, entry.mlValue, entry.kcalValue);
+            });
+
+            // Uppdatera alla beräkningar
+            calculateAndUpdateSummary();
+        }
+
+        // --- VERKTYG ---
+        function resetCalculator() {
+            if (confirm('Är du säker på att du vill rensa alla fält?')) {
+                document.querySelectorAll('input[type="text"], input[type="number"], input[type="time"]').forEach(input => input.value = '');
+                document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+                document.getElementById('crystalloidsList').innerHTML = '';
+                document.getElementById('tpnList').innerHTML = '';
+                addFluidRow('crystalloids');
+                addFluidRow('tpn');
+                document.getElementById('proteinSlider').value = 1.3;
+                updateSliderLabel(document.getElementById('proteinSlider'));
+                updateProteinUI();
+                const weightInput = document.getElementById('weight');
+                weightInput.classList.remove('filled-input');
+                weightInput.classList.add('important-input');
+                document.getElementById('length').classList.remove('filled-input');
+                document.getElementById('selectedNutritionLevel').value = '';
+                updateNutritionLevelUI();
+                calculateAndUpdateSummary();
+            }
+        }
+
+    </script>
+</body>
+</html>
+
+
