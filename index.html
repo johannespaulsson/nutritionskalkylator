@@ -2461,6 +2461,7 @@
                 this.updateSummaryUI();
                 this.calculateBMI(); 
                 this.updateNutritionCalculationWeight();
+                this.updateResults();
             },
             setNow(elementId) {
                 const timeInput = document.getElementById(elementId);
@@ -2790,7 +2791,7 @@
                     });
                     document.getElementById('selectNutritionLevelButton').disabled = !currentSelection;
                 }
-                 if (targetId === 'proteinLevelModalOverlay') {
+                if (targetId === 'proteinLevelModalOverlay') {
                     const modal = document.getElementById('proteinLevelModalOverlay');
                     const radios = modal.querySelectorAll('input[name="proteinLevel"]');
                     let currentSelection = document.getElementById('selectedProteinLevel').value;
@@ -2814,7 +2815,7 @@
                     this.dom.body.classList.remove('modal-open');
                 }
             },
-             populateKcalTableInModal() {
+            populateKcalTableInModal() {
                 const categoryMapping = [
                     { name: 'Kristalloider/Kolloider', key: 'fluid', containerSuffix: 'Kristalloider' },
                     { name: 'Läkemedelsvätskor', key: 'medicine', containerSuffix: 'Medicine' },
@@ -3198,7 +3199,7 @@
                     document.getElementById('kcalSlider').value = kcalValue;
                     document.getElementById('kcalSlider').disabled = false;
                     
-                    this.updateNutritionGoal();
+                    this.updateAllCalculations();
                     this.closeModal('nutritionLevelModalOverlay');
                 }
             },
@@ -3285,7 +3286,7 @@
                     document.getElementById('proteinSlider').value = proteinValue;
                     document.getElementById('proteinSlider').disabled = false;
                     
-                    this.updateProteinGoal();
+                    this.updateAllCalculations();
                     this.closeModal('proteinLevelModalOverlay');
                 }
             },
@@ -3439,4 +3440,5 @@
     </script>
 </body>
 </html>
+
 
