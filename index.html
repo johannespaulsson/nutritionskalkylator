@@ -103,7 +103,7 @@
             text-align: center;
             font-size: 1.5em;
         }
-        
+
         .info-row {
             display: grid;
             gap: 10px;
@@ -115,7 +115,7 @@
         .grid-4-cols {
             grid-template-columns: repeat(4, 1fr);
         }
-        
+
         /* Ny stil för 2-kolumns rutnät (används för Balansräkning) */
         .grid-container.two-column-grid {
             display: grid;
@@ -243,7 +243,7 @@
             text-align: center;
             border-radius: 4px;
         }
-        
+
         .number-input-buttons button {
             background-color: var(--secondary-color);
             color: white;
@@ -483,7 +483,7 @@
             margin-top: 4px;
             display: block;
         }
-        
+
         /* NYA STYLING REGLER */
         /* Flexbox för att placera Beräknad Perspiratio-input och knapp på samma rad */
         .calculated-perspiratio-group {
@@ -507,7 +507,7 @@
             padding: 6px 12px;
             font-size: 0.85rem;
         }
-        
+
         /* Nytt: Stil för Spara/Ladda-knapparna */
         .file-buttons-group {
             display: flex;
@@ -518,7 +518,7 @@
             margin-top: 0;
             flex-grow: 1; /* Får knapparna att ta upp lika mycket plats */
         }
-        
+
         /* Nytt: Stil för Verktygsknappar */
         .tool-buttons-group {
             display: flex;
@@ -565,7 +565,7 @@
         .label-with-tooltip label {
             margin-bottom: 0; /* Remove default margin from label inside this container */
         }
-        
+
         .tooltip {
             position: relative;
             display: inline-block;
@@ -763,7 +763,7 @@
             opacity: 1; /* Ensure full opacity */
             -webkit-text-fill-color: currentColor; /* Override user agent style for disabled options */
         }
-        
+
         /* Justering för mörkt läge */
         body.dark-theme #lossSelect_perspiratio_static {
             color: var(--text-color) !important; /* Använd temats textfärg */
@@ -772,9 +772,9 @@
 
         /* Specific styles for Diuresis Calculator modal */
         #diuresisCalculatorModalOverlay .modal-content {
-            max-width: 950px; 
+            max-width: 950px;
         }
-        
+
         #diuresisCalculatorModalOverlay .grid-container.two-column-diuresis {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -847,7 +847,7 @@
         .summary-table .item-row td {
             padding-left: 30px;
         }
-        
+
         /* Nytt: Grid för summary-tabeller */
         .summary-grid-container {
             display: grid;
@@ -859,7 +859,7 @@
         .summary-grid-container .summary-table {
             margin-bottom: 0;
         }
-        
+
         /* Nytt: Grid för detalj-tabeller */
         .details-grid-container {
             display: grid;
@@ -1013,15 +1013,100 @@
             font-weight: normal;
         }
 
+        /* ---- NY CSS FÖR PLANERINGSSEKTION ---- */
+        .planned-nutrition-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .planned-nutrition-column {
+            background-color: var(--grid-column-bg);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .planned-nutrition-column h4 {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--header-border);
+            padding-bottom: 3px;
+            margin: 0 0 6px 0;
+            font-size: 1em;
+        }
+        .planned-nutrition-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 6px;
+            align-items: center;
+        }
+        .planned-nutrition-row input,
+        .planned-nutrition-row select {
+            width: 100%;
+            padding: 3px;
+            font-size: 0.8rem;
+        }
+        .planned-nutrition-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--input-border);
+            margin-bottom: 4px;
+            min-height: 2.5em; /* Försök att linjera rubriker */
+            align-items: end; /* Linjera texten längst ner */
+        }
+        .planned-bolus-header {
+             display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--input-border);
+            margin-bottom: 4px;
+             min-height: 2.5em; /* Försök att linjera rubriker */
+            align-items: end; /* Linjera texten längst ner */
+        }
+         .planned-nutrition-summary p,
+         #nutritionPrognosis p {
+             margin: 4px 0;
+             font-size: 0.85rem;
+         }
+         #nutritionPrognosis {
+             grid-column: 1 / -1; /* Får prognosen att spänna över båda kolumner */
+             background-color: var(--result-bg);
+             border-color: var(--result-border);
+             padding: 10px;
+             border-radius: 6px;
+             margin-top: 10px;
+         }
+         #nutritionPrognosis h4 {
+             margin-top: 0;
+             font-size: 1em; /* Matcha kolumnrubriker */
+             color: var(--primary-color);
+             border-bottom: 1px solid var(--header-border);
+             padding-bottom: 3px;
+             margin-bottom: 6px;
+         }
+
+        /* ---- SLUT NY CSS ---- */
 
         /* Mediafråga för mindre skärmar (staplar kolumnerna) */
-        @media (max-width: 1024px) { 
+        @media (max-width: 1024px) {
              .grid-4-cols, .grid-5-cols, .grid-2-cols {
                  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             }
+            .planned-nutrition-section {
+                grid-template-columns: 1fr; /* Stapla kolumnerna */
+            }
         }
         @media (max-width: 768px) {
-            .grid-container, .grid-container.two-column-grid, .info-row, #nutritionCalculatorContent, #diuresisCalculatorModalOverlay .grid-container { 
+            .grid-container, .grid-container.two-column-grid, .info-row, #nutritionCalculatorContent, #diuresisCalculatorModalOverlay .grid-container {
                 grid-template-columns: 1fr;
             }
             .container {
@@ -1082,8 +1167,9 @@
             #nutritionCalculatorContent,
             .modal-content .grid-container.modal-three-column-grid,
             #diuresisCalculatorModalOverlay .grid-container.two-column-diuresis,
-            #diuresisCalculatorModalOverlay .grid-container { /* Applies to modal's inner grids */
-                grid-template-columns: 1fr; /* Single column on smaller screens */
+            #diuresisCalculatorModalOverlay .grid-container, /* Applies to modal's inner grids */
+             .planned-nutrition-section { /* Stapla planeringskolumner på små skärmar */
+                grid-template-columns: 1fr;
             }
             .modal-content p {
                 font-size: 0.8rem;
@@ -1326,7 +1412,7 @@
             <!-- Första kolumn: Kristalloider/Kolloider -->
             <div class="grid-column-item">
                 <div class="label-with-tooltip">
-                    <h3>Kristalloider/Kolloider</h3>
+                    <h3>Rena Glucoslösningar/Kolloider</h3>
                     <span class="tooltip">
                         <i class="fas fa-info-circle"></i>
                         <span class="tooltiptext">Du kan skriva in enkla uträkningar direkt i fältet genom att börja med ett likhetstecken. Exempel: =50+100*2.</span>
@@ -1403,7 +1489,7 @@
                 </div>
                 <div id="lossEntriesContainer">
                     <!-- Statisk, icke-borttagningsbar Perspiratio-rad -->
-                    <div class="loss-entry-row" data-id="perspiratio_static">
+                    <div class="loss-entry-row" data-id="perspiratio_static" id="perspiratio_static_row">
                         <div class="grid-item">
                             <!-- Hardcode the option for "Perspiratio" as it's static and disabled -->
                             <select id="lossSelect_perspiratio_static" disabled>
@@ -1738,7 +1824,7 @@
                             <td id="printWeightDifference" class="numeric-value"></td>
                         </tr>
                         <tr>
-                            <td>Kumulativ balans föregående dygn:</td>
+                            <td>Gårdagens kumulativa balans:</td>
                             <td id="printCumulativeBalancePrev" class="numeric-value"></td>
                         </tr>
                     </table>
@@ -1778,7 +1864,7 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- Ny sektion för detaljerad lista -->
             <div id="print-details-container" class="details-grid-container">
                 <div id="print-details-intake"></div>
@@ -1790,99 +1876,167 @@
         </div>
     </div>
     <!-- END Detaljerad Sammanställning Modal -->
-    
+
     <!-- START Nutritionskalkylator Modal -->
     <div id="nutritionCalculatorModalOverlay" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close-button" data-action="closeModal" data-target="nutritionCalculatorModalOverlay">×</button>
             <h2>Nutritionskalkylator</h2>
-            
+
             <div id="nutritionDataWarning" class="grid-column-item" style="display: none; background-color: #fff5f5; border-color: #ffdddd;">
                 <p style="font-size: 0.9rem; color: #d32f2f; text-align: center;">Var god fyll i längd, kön och dagens vikt i huvudfliken för att använda kalkylatorn.</p>
             </div>
 
             <div id="nutritionCalculatorContent">
-                <div class="grid-column-item">
-                    <h3>Beräkningsvikt</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="grid-item">
-                            <label>Beräkningsvikt baseras på:</label>
-                            <div>
-                                <label style="display:inline-block; margin-right: 15px;">
-                                    <input type="radio" name="calculationWeightSource" value="ideal" checked> Idealvikt
-                                </label>
-                                <label style="display:inline-block; margin-right: 15px;">
-                                    <input type="radio" name="calculationWeightSource" value="daily"> Dagens vikt
-                                </label>
-                                <label style="display:inline-block;">
-                                    <input type="radio" name="calculationWeightSource" value="custom"> Annat
-                                </label>
-                            </div>
-                        </div>
-                        <div class="grid-item" style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
-                           <label><input type="checkbox" id="applyFeverAdjustment" checked> Feberjustering</label>
-                           <label><input type="checkbox" id="applyBmiAdjustment" checked> BMI-justering</label>
-                        </div>
-                        <div class="grid-item">
-                            <label id="nutritionFinalCalculationWeightLabel" for="nutritionFinalCalculationWeight">Beräkningsvikt för nutrition (kg):</label>
-                            <input type="text" id="nutritionFinalCalculationWeight" class="calculated-output">
-                        </div>
-                        <div class="grid-item">
-                            <label for="bmiDisplay">BMI:</label>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <input type="text" id="bmiDisplay" readonly class="calculated-output" style="flex-grow: 1;">
-                                <span id="bmiCategory" class="adjusted-weight-notice" style="color: #dc3545; flex-shrink: 0;"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-column-item">
-                    <h3>Dygnsbehov</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                        <div class="grid-item">
-                            <label>Nutritionsnivå & Kalorimål</label>
-                            <button data-action="openModal" data-target="nutritionLevelModalOverlay" class="add-button" style="margin-top:0; width: 100%; background-color: #6c757d;">Välj nutritionsnivå</button>
-                            <div id="nutritionLevelDisplay" style="padding: 6px; font-weight: bold; min-height: 24px; margin-top: 10px;">Inget valt</div>
-                            <div class="slider-container">
-                               <input type="range" id="kcalSlider" min="0" max="35" step="5" value="0" disabled>
-                               <span id="kcalSliderValue">0 kcal/kg</span>
-                            </div>
-                            <div id="kcalGoalDisplay" style="font-weight: bold; font-size: 1.2em; padding: 6px; margin-top: 5px;">Mål: 0 kcal/dygn</div>
-                            <span id="kcalFeverWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;"></span>
-                            <input type="hidden" id="selectedNutritionLevel">
-                            <input type="hidden" id="selectedNutritionLevelKcal" value="">
-                        </div>
-                        <div class="grid-item">
-                           <label>Proteinnivå & Mål</label>
-                            <button data-action="openModal" data-target="proteinLevelModalOverlay" class="add-button" style="margin-top:0; width: 100%; background-color: #6c757d;">Välj proteinnivå</button>
-                           <div id="proteinLevelDisplay" style="padding: 6px; font-weight: bold; min-height: 24px; margin-top: 10px;">Inget valt</div>
-                           <div class="slider-container">
-                               <input type="range" id="proteinSlider" min="0" max="2.0" step="0.1" value="0" disabled>
-                               <span id="proteinSliderValue">0.0 g/kg</span>
-                            </div>
-                            <div id="proteinGoalDisplay" style="font-weight: bold; font-size: 1.2em; padding: 6px; margin-top: 5px;">Mål: 0 g/dygn</div>
-                            <span id="proteinBmiWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;">Proteinbehovet justeras ned till BMI 25</span>
-                            <input type="hidden" id="selectedProteinLevel">
-                            <input type="hidden" id="selectedProteinLevelValue" value="">
-                        </div>
-                        <div class="grid-item">
-                            <label>Basalt vätskebehov</label>
-                            <div style="visibility: hidden; pointer-events: none;">
-                                <div class="add-button" style="margin-top:0; width: 100%;">&nbsp;</div>
-                                <div style="padding: 6px; font-weight: bold; min-height: 24px; margin-top: 10px;">&nbsp;</div>
-                            </div>
+                 <div class="grid-column-item">
+                     <h3>Beräkningsvikt</h3>
+                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                         <div class="grid-item">
+                             <label>Beräkningsvikt baseras på:</label>
+                             <div>
+                                 <label style="display:inline-block; margin-right: 15px;">
+                                     <input type="radio" name="calculationWeightSource" value="ideal" checked> Idealvikt
+                                 </label>
+                                 <label style="display:inline-block; margin-right: 15px;">
+                                     <input type="radio" name="calculationWeightSource" value="daily"> Dagens vikt
+                                 </label>
+                                 <label style="display:inline-block;">
+                                     <input type="radio" name="calculationWeightSource" value="custom"> Annat
+                                 </label>
+                             </div>
+                         </div>
+                         <div class="grid-item" style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+                            <label><input type="checkbox" id="applyFeverAdjustment" checked> Feberjustering</label>
+                            <label><input type="checkbox" id="applyBmiAdjustment" checked> BMI-justering</label>
+                         </div>
+                         <div class="grid-item">
+                             <label id="nutritionFinalCalculationWeightLabel" for="nutritionFinalCalculationWeight">Beräkningsvikt för nutrition (kg):</label>
+                             <input type="text" id="nutritionFinalCalculationWeight" class="calculated-output">
+                         </div>
+                         <div class="grid-item">
+                             <label for="bmiDisplay">BMI:</label>
+                             <div style="display: flex; align-items: center; gap: 10px;">
+                                 <input type="text" id="bmiDisplay" readonly class="calculated-output" style="flex-grow: 1;">
+                                 <span id="bmiCategory" class="adjusted-weight-notice" style="color: #dc3545; flex-shrink: 0;"></span>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="grid-column-item">
+                     <h3>Dygnsbehov</h3>
+                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                         <div class="grid-item">
+                             <label>Nutritionsnivå & Kalorimål</label>
+                             <button data-action="openModal" data-target="nutritionLevelModalOverlay" class="add-button" style="margin-top:0; width: 100%; background-color: #6c757d;">Välj nutritionsnivå</button>
+                             <div id="nutritionLevelDisplay" style="padding: 6px; font-weight: bold; min-height: 24px; margin-top: 10px;">Inget valt</div>
                              <div class="slider-container">
-                               <input type="range" id="fluidSlider" min="0" max="40" step="1" value="30">
-                               <span id="fluidSliderValue">30 ml/kg</span>
-                            </div>
-                            <div id="fluidGoalDisplay" style="font-weight: bold; font-size: 1.2em; padding: 6px; margin-top: 5px;">Mål: 0 ml/dygn</div>
-                             <span id="fluidBmiWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;">Vätskebehovet justeras ned till BMI 25</span>
-                             <span id="fluidFeverWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;"></span>
-                        </div>
-                    </div>
-                </div>
+                                <input type="range" id="kcalSlider" min="0" max="35" step="5" value="0" disabled>
+                                <span id="kcalSliderValue">0 kcal/kg</span>
+                             </div>
+                             <div id="kcalGoalDisplay" style="font-weight: bold; font-size: 1.2em; padding: 6px; margin-top: 5px;">Mål: 0 kcal/dygn</div>
+                             <span id="kcalFeverWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;"></span>
+                             <input type="hidden" id="selectedNutritionLevel">
+                             <input type="hidden" id="selectedNutritionLevelKcal" value="">
+                         </div>
+                         <div class="grid-item">
+                            <label>Proteinnivå & Mål</label>
+                             <button data-action="openModal" data-target="proteinLevelModalOverlay" class="add-button" style="margin-top:0; width: 100%; background-color: #6c757d;">Välj proteinnivå</button>
+                            <div id="proteinLevelDisplay" style="padding: 6px; font-weight: bold; min-height: 24px; margin-top: 10px;">Inget valt</div>
+                            <div class="slider-container">
+                                <input type="range" id="proteinSlider" min="0" max="2.0" step="0.1" value="0" disabled>
+                                <span id="proteinSliderValue">0.0 g/kg</span>
+                             </div>
+                             <div id="proteinGoalDisplay" style="font-weight: bold; font-size: 1.2em; padding: 6px; margin-top: 5px;">Mål: 0 g/dygn</div>
+                             <span id="proteinBmiWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;">Proteinbehovet justeras ned till BMI 25</span>
+                             <input type="hidden" id="selectedProteinLevel">
+                             <input type="hidden" id="selectedProteinLevelValue" value="">
+                         </div>
+                         <div class="grid-item">
+                             <label>Basalt vätskebehov</label>
+                             <div style="visibility: hidden; pointer-events: none;">
+                                 <div class="add-button" style="margin-top:0; width: 100%;">&nbsp;</div>
+                                 <div style="padding: 6px; font-weight: bold; min-height: 24px; margin-top: 10px;">&nbsp;</div>
+                             </div>
+                              <div class="slider-container">
+                                <input type="range" id="fluidSlider" min="0" max="40" step="1" value="30">
+                                <span id="fluidSliderValue">30 ml/kg</span>
+                             </div>
+                             <div id="fluidGoalDisplay" style="font-weight: bold; font-size: 1.2em; padding: 6px; margin-top: 5px;">Mål: 0 ml/dygn</div>
+                              <span id="fluidBmiWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;">Vätskebehovet justeras ned till BMI 25</span>
+                              <span id="fluidFeverWarning" class="adjusted-weight-notice" style="color: #dc3545; display: none;"></span>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- Ny sektion för planering -->
+                 <div class="grid-column-item">
+                    <h3>Planera nutrition</h3>
+                     <div class="grid-item" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end;">
+                         <div>
+                             <label for="nutritionPlanStartTime">Planera från (starttid):</label>
+                             <div class="input-group">
+                                 <input type="time" id="nutritionPlanStartTime" value="06:00">
+                                 <button data-action="setNow" data-target="nutritionPlanStartTime">Nu</button>
+                             </div>
+                         </div>
+                         <div>
+                             <label for="nutritionPlanEndTime">Planera till (sluttid):</label>
+                             <div class="input-group">
+                                 <input type="time" id="nutritionPlanEndTime" value="06:00">
+                                 <button data-action="setNow" data-target="nutritionPlanEndTime">Nu</button>
+                             </div>
+                         </div>
+                         <p style="margin: 0 0 6px 0; font-size: 0.8rem;" id="nutritionPlanDuration">Planerad tid: 24.0 timmar</p>
+                     </div>
+                     <div class="planned-nutrition-section">
+                         <div class="planned-nutrition-column">
+                             <h4>Kontinuerlig nutrition</h4>
+                             <div class="planned-nutrition-header">
+                                 <div>Produkt</div>
+                                 <div>Hastighet (ml/h)</div>
+                                 <div></div>
+                             </div>
+                             <div id="plannedInfusionsContainer">
+                                 <!-- Rader läggs till här -->
+                             </div>
+                             <button data-action="addPlannedNutrition" data-type="infusion" class="add-button">Lägg till nutrition</button>
+                             <div class="planned-nutrition-summary">
+                                 <p>Totalt kcal/h (kontinuerlig): <strong id="plannedInfusionTotalKcalPerHour">0</strong></p>
+                                 <p>Totalt protein/h (kontinuerlig): <strong id="plannedInfusionTotalProteinPerHour">0.0</strong></p>
+                             </div>
+                         </div>
+                         <div class="planned-nutrition-column">
+                             <h4>Intermittent nutrition</h4>
+                             <div class="planned-bolus-header">
+                                 <div>Produkt</div>
+                                 <div>Total mängd (ml)</div>
+                                 <div></div>
+                             </div>
+                             <div id="plannedBolusesContainer">
+                                 <!-- Rader läggs till här -->
+                             </div>
+                             <button data-action="addPlannedNutrition" data-type="bolus" class="add-button">Lägg till nutrition</button>
+                             <div class="planned-nutrition-summary">
+                                 <p>Totalt kcal (intermittent): <strong id="plannedBolusTotalKcal">0</strong></p>
+                                 <p>Totalt protein (intermittent): <strong id="plannedBolusTotalProtein">0.0</strong></p>
+                             </div>
+                         </div>
+                     </div>
+                     <div id="nutritionPrognosis">
+                         <h4>Prognos för planerad period</h4>
+                         <p>Totalt planerat kcal: <strong id="plannedTotalKcal">0</strong></p>
+                         <p>Totalt planerat protein: <strong id="plannedTotalProtein">0.0</strong> g</p>
+                         <hr style="border: none; border-top: 1px solid var(--border-color); margin: 6px 0;">
+                         <p>Beräknat totalt intag (nuvarande + planerat):</p>
+                         <p style="padding-left: 10px;">Kalorier: <strong id="prognosisTotalKcal">0</strong> kcal (<strong id="prognosisTotalKcalPercent">0%</strong> av mål)</p>
+                         <p style="padding-left: 10px;">Protein: <strong id="prognosisTotalProtein">0.0</strong> g (<strong id="prognosisTotalProteinPercent">0%</strong> av mål)</p>
+                         <p style="font-size: 0.7rem; margin-top: 8px; color: #888;">* Prognosen är en beräkning baserad på angivna värden och tar ej hänsyn till avbrott, maxhastigheter etc.</p>
+                     </div>
+                 </div>
+
+
                  <div class="grid-column-item" style="background-color: var(--result-bg); border-color: var(--result-border); grid-column: 1 / -1;">
-                    <h3>Resultat</h3>
+                    <h3>Resultat (nuvarande intag)</h3>
                     <div id="nutritionResultContent">
                         <div class="result-item">
                             <span class="result-label">Energiintag</span>
@@ -1903,7 +2057,7 @@
                 </div>
             </div>
              <p style="text-align: center; font-size: 0.8rem; margin-top: 20px; grid-column: 1 / -1;">
-                Nutritionskalkylatorn utgår från styrdokumentet 
+                Nutritionskalkylatorn utgår från styrdokumentet
                 <a href="https://mellanarkiv-offentlig.vgregion.se/alfresco/s/archive/stream/public/v1/source/available/SOFIA/SKAS9696-242963441-9/SURROGATE/Nutrition%20-%20intensivvård.pdf" target="_blank" rel="noopener noreferrer" class="changelog-link">
                     Nutrition - Intensivvård
                 </a>.
@@ -1911,7 +2065,7 @@
         </div>
     </div>
     <!-- END Nutritionskalkylator Modal -->
-    
+
     <!-- START Nutrition Level Modal -->
     <div id="nutritionLevelModalOverlay" class="modal-overlay">
         <div class="modal-content">
@@ -2005,7 +2159,7 @@
             <p style="font-size: 0.8rem; margin-top: 20px;">Feedback/input till johpa15@vgregion.se</p>
         </div>
     </div>
-    
+
     <!-- Nytt: Modal för bekräftelse -->
     <div id="confirmationModalOverlay" class="modal-overlay">
         <div class="modal-content" style="max-width: 400px;">
@@ -2041,11 +2195,25 @@
                 medicineCategoryTotals: { Sedering: 0, Antibiotika: 0, Vasoaktiva: 0, Övrigt: 0 },
                 kcalSummary: { peroralt: 0, sondmat: 0, tpn: 0, ivMedicine: 0, intravenousTotal: 0 },
                 totalIntakeProtein: 0,
-                nutritionKcalGoal: 0,
-                nutritionProteinGoal: 0,
-                nutritionFluidGoal: 0,
+                plannedNutrition: { // New state for planned nutrition
+                    infusions: [],
+                    boluses: [],
+                    startTime: '06:00',
+                    endTime: '06:00',
+                    duration: 24,
+                    totalInfusionKcalPerHour: 0,
+                    totalInfusionProteinPerHour: 0,
+                    totalBolusKcal: 0,
+                    totalBolusProtein: 0,
+                    plannedTotalKcal: 0,
+                    plannedTotalProtein: 0,
+                    prognosisTotalKcal: 0,
+                    prognosisTotalProtein: 0,
+                    prognosisTotalKcalPercent: 0,
+                    prognosisTotalProteinPercent: 0
+                }
             },
-            counters: { fluid: 0, medicine: 0, bloodProduct: 0, tpnSondmat: 0, loss: 0 },
+            counters: { fluid: 0, medicine: 0, bloodProduct: 0, tpnSondmat: 0, loss: 0, plannedInfusion: 0, plannedBolus: 0 },
             config: {
                 fluid: {
                     containerId: 'fluidEntriesContainer',
@@ -2071,6 +2239,16 @@
                     containerId: 'lossEntriesContainer',
                     template: (id) => `<div class="loss-entry-row" data-id="${id}" data-type="loss"><div class="grid-item"><div class="custom-input-wrapper"><select class="select-main"></select><input type="text" class="custom-input" placeholder="Ange annan förlust" style="display: none;"><button class="cancel-custom-input" data-action="cancelCustomInput" style="display: none;">&times;</button></div></div><div class="grid-item"><input type="text" class="ml-input" value="" placeholder=""></div><button class="remove-fluid-button" data-action="removeRow"><i class="fas fa-trash"></i></button></div>`,
                     populateSelect: (select) => app.populateSelect(select, 'loss')
+                },
+                plannedInfusion: { // Config for planned infusions
+                    containerId: 'plannedInfusionsContainer',
+                    template: (id) => `<div class="planned-nutrition-row" data-id="${id}" data-type="plannedInfusion"><div class="grid-item"><select class="select-main"></select></div><div class="grid-item"><input type="text" class="rate-input" placeholder="ml/h"></div><button class="remove-fluid-button" data-action="removePlannedNutrition"><i class="fas fa-trash"></i></button></div>`,
+                    populateSelect: (select) => app.populateSelect(select, 'plannedInfusion')
+                },
+                plannedBolus: { // Config for planned boluses
+                    containerId: 'plannedBolusesContainer',
+                    template: (id) => `<div class="planned-nutrition-row" data-id="${id}" data-type="plannedBolus"><div class="grid-item"><select class="select-main"></select></div><div class="grid-item"><input type="text" class="amount-input" placeholder="ml"></div><button class="remove-fluid-button" data-action="removePlannedNutrition"><i class="fas fa-trash"></i></button></div>`,
+                    populateSelect: (select) => app.populateSelect(select, 'plannedBolus')
                 }
             },
             data: {
@@ -2078,21 +2256,21 @@
                     placeholder: 'Välj vätska', customOption: 'Övrig vätska',
                     categories: {
                         "Rena Glucoslösningar": [
-                            { name: "Glukos 2.5%", kcal: 0.1 }, 
-                            { name: "Glukos 5%", kcal: 0.2 }, 
-                            { name: "Glukos 10%", kcal: 0.4 }, 
-                            { name: "Glukos 20%", kcal: 0.8 }, 
+                            { name: "Glukos 2.5%", kcal: 0.1 },
+                            { name: "Glukos 5%", kcal: 0.2 },
+                            { name: "Glukos 10%", kcal: 0.4 },
+                            { name: "Glukos 20%", kcal: 0.8 },
                             { name: "Glukos 30%", kcal: 1.2 }
                         ],
                         "Kolloider": [{ name: "Albumin 20%", kcal: 0.8, protein: 0.2 }, { name: "Albumin 5%", kcal: 0 }],
                         "Elektrolytlösningar": [
-                            { name: "Glukos 5% med El", kcal: 0.2 }, 
-                            { name: "Glukos 10% med El", kcal: 0.4 }, 
-                            { name: "NaCl Picco-Kalibrering", kcal: 0 }, 
-                            { name: "Natriumbikarbonat 50 mg/ml", kcal: 0 }, 
-                            { name: "Natriumklorid 9 mg/ml", kcal: 0 }, 
-                            { name: "Natriumklorid hyperton", kcal: 0 }, 
-                            { name: "Plasmolyte", kcal: 0 }, 
+                            { name: "Glukos 5% med El", kcal: 0.2 },
+                            { name: "Glukos 10% med El", kcal: 0.4 },
+                            { name: "NaCl Picco-Kalibrering", kcal: 0 },
+                            { name: "Natriumbikarbonat 50 mg/ml", kcal: 0 },
+                            { name: "Natriumklorid 9 mg/ml", kcal: 0 },
+                            { name: "Natriumklorid hyperton", kcal: 0 },
+                            { name: "Plasmolyte", kcal: 0 },
                             { name: "Ringer-Acetat", kcal: 0 }
                         ]
                     }
@@ -2111,19 +2289,19 @@
                     placeholder: 'Välj TPN/Sondmat/Näringsdryck/Peroralt', customOption: 'Övrigt',
                     categories: {
                          "TPN": [
-                            { name: "Smof Kabiven 900 kcal extra nitrogen", kcal: 0.9, protein: 0.066 }, 
-                            { name: "Smof Kabiven 1100 kcal", kcal: 1.12, protein: 0.051 }, 
-                            { name: "Smof Kabiven PI 1300 kcal", kcal: 0.68 }, 
-                            { name: "Smof Kabiven 1350 kcal extra nitrogen", kcal: 0.9, protein: 0.065 }, 
-                            { name: "Smof Kabiven 1600 kcal", kcal: 1.08, protein: 0.051 }, 
-                            { name: "Smof Kabiven 1800 extra nitrogen", kcal: 1.1, protein: 0.066 }, 
+                            { name: "Smof Kabiven 900 kcal extra nitrogen", kcal: 0.9, protein: 0.066 },
+                            { name: "Smof Kabiven 1100 kcal", kcal: 1.12, protein: 0.051 },
+                            { name: "Smof Kabiven PI 1300 kcal", kcal: 0.68 },
+                            { name: "Smof Kabiven 1350 kcal extra nitrogen", kcal: 0.9, protein: 0.065 },
+                            { name: "Smof Kabiven 1600 kcal", kcal: 1.08, protein: 0.051 },
+                            { name: "Smof Kabiven 1800 extra nitrogen", kcal: 1.1, protein: 0.066 },
                             { name: "Smof Kabiven 2200 kcal", kcal: 1.12, protein: 0.051 },
                             { name: "Smof Kabiven perifer", kcal: 0.7, protein: 0.032}
                         ],
                         "Sondmat": [
                             { name: "Vatten i sond", kcal: 0 },
-                            { name: "Sondmat Fresubin 2 kcal HP", kcal: 2.0, protein: 0.1 }, 
-                            { name: "Sondmat Fresubin Original", kcal: 1, protein: 0.038 }, 
+                            { name: "Sondmat Fresubin 2 kcal HP", kcal: 2.0, protein: 0.1 },
+                            { name: "Sondmat Fresubin Original", kcal: 1, protein: 0.038 },
                             { name: "Sondmat Isosource standardfibre", kcal: 1 }
                         ],
                         "Näringsdryck": [
@@ -2138,16 +2316,38 @@
                         ]
                     }
                 },
-                loss: { placeholder: 'Välj förlusttyp', customOption: 'Annan förlust', options: ['Avföring', 'Blödning', 'Dialys (CRRT)', 'Dialys (IHD)', 'Diures', 'Drän 1', 'Drän 2', 'Drän 3', 'Kräkning', 'Sond', 'Stomi', 'Thoraxdrän hö', 'Thoraxdrän vä', 'VAC-pump'] }
+                loss: { placeholder: 'Välj förlusttyp', customOption: 'Annan förlust', options: ['Avföring', 'Blödning', 'Dialys (CRRT)', 'Dialys (IHD)', 'Diures', 'Drän 1', 'Drän 2', 'Drän 3', 'Kräkning', 'Sond', 'Stomi', 'Thoraxdrän hö', 'Thoraxdrän vä', 'VAC-pump'] },
+                // Options for the planning section
+                plannedInfusion: {
+                     placeholder: 'Välj infusion', customOption: 'Övrigt (kontinuerlig)',
+                     options: [] // Populated in init
+                },
+                plannedBolus: {
+                    placeholder: 'Välj produkt', customOption: 'Övrigt (intermittent)',
+                    options: [] // Populated in init
+                }
             },
             init() {
                 this.cacheDOMElements();
+                // Populate options for planning dropdowns after data is defined
+                this.data.plannedInfusion.options = [
+                    ...this.data.tpnSondmat.categories.TPN,
+                    ...(this.data.tpnSondmat.categories.Sondmat.filter(item => item.name !== "Vatten i sond")), // Include sondmat except water
+                    ...this.data.fluid.categories["Rena Glucoslösningar"],
+                    ...(this.data.medicine.categories.Sedering.filter(item => item.name.includes('Propofol')))
+                ];
+                 this.data.plannedBolus.options = [
+                     ...(this.data.tpnSondmat.categories.Sondmat.filter(item => item.name !== "Vatten i sond")), // Include sondmat except water
+                    ...this.data.tpnSondmat.categories.Näringsdryck,
+                    ...this.data.tpnSondmat.categories.Peroralt
+                ];
+
                 this.loadTheme();
                 this.bindEvents();
                 this.setDefaultValues();
                 this.addInitialRows();
                 this.checkInitialInputColors();
-                this.updateAllCalculations();
+                this.updateAllCalculations(); // Initial calculation
             },
             cacheDOMElements() {
                 this.dom = {
@@ -2163,6 +2363,8 @@
                         bloodProduct: document.getElementById('bloodProductEntriesContainer'),
                         tpnSondmat: document.getElementById('tpnSondmatEntriesContainer'),
                         loss: document.getElementById('lossEntriesContainer'),
+                        plannedInfusion: document.getElementById('plannedInfusionsContainer'), // New container
+                        plannedBolus: document.getElementById('plannedBolusesContainer')       // New container
                     },
                     summary: {
                         totalIntakeMl: document.getElementById('totalIntakeMl'),
@@ -2173,7 +2375,8 @@
                         cumulativeBalanceMl: document.getElementById('cumulativeBalanceMl'),
                         weightDifferenceKg: document.getElementById('weightDifferenceKg'),
                         avgHourlyDiuresis: document.getElementById('avgHourlyDiuresis'),
-                    }
+                    },
+                    nutritionPlan: null // Will be cached when modal opens
                 };
             },
             setDefaultValues() {
@@ -2183,9 +2386,15 @@
                 this.dom.dateInput.value = yesterday.toISOString().split('T')[0];
                 document.getElementById('naclSyringes').value = '0';
                 document.getElementById('pressureSets').value = '0';
+                 // Set default times for main app if not already set (e.g., after reset)
+                 if (!document.getElementById('startTime').value) document.getElementById('startTime').value = '06:00';
+                 if (!document.getElementById('endTime').value) document.getElementById('endTime').value = '06:00';
             },
             addInitialRows() {
-                this.addRow('loss', { selectValue: 'Diures', isInitial: true });
+                // Only add if the container is empty (prevent duplicates on reset)
+                 if (this.dom.containers.loss && !this.dom.containers.loss.querySelector('[data-id="loss_1"]')) {
+                    this.addRow('loss', { selectValue: 'Diures', isInitial: true });
+                 }
             },
             checkInitialInputColors() {
                 document.querySelectorAll('.important-input, .filled-input').forEach(input => {
@@ -2205,8 +2414,10 @@
             bindEvents() {
                 this.dom.body.addEventListener('click', this.handleDelegatedClick.bind(this));
                 const mainContent = document.querySelector('body');
+                // Use event delegation for input/change on main content
                 mainContent.addEventListener('input', this.handleFormInput.bind(this));
                 mainContent.addEventListener('change', this.handleFormInput.bind(this));
+
                 mainContent.addEventListener('blur', (e) => {
                     if (e.target.matches('input[type="text"]')) this.handleFormulaInput(e);
                 }, true);
@@ -2219,6 +2430,7 @@
                 });
                 this.dom.loadFromFileInput.addEventListener('change', this.loadDataFromFile.bind(this));
 
+                // Modal specific event listeners
                 const nutritionLevelModal = document.getElementById('nutritionLevelModalOverlay');
                 if (nutritionLevelModal) {
                     nutritionLevelModal.addEventListener('change', (e) => {
@@ -2240,7 +2452,7 @@
                         }
                     });
                 }
-                
+
                 const kcalSlider = document.getElementById('kcalSlider');
                 if(kcalSlider) {
                     kcalSlider.addEventListener('input', this.updateNutritionGoal.bind(this));
@@ -2253,99 +2465,156 @@
                 if(fluidSlider) {
                     fluidSlider.addEventListener('input', this.updateFluidGoal.bind(this));
                 }
+
+                // Listeners specific to the nutrition planning time inputs - move binding to openModal
             },
+
             handleDelegatedClick(e) {
                 const target = e.target.closest('[data-action]');
                 if (!target) return;
                 const { action, target: targetId, delta, type } = target.dataset;
+                let shouldRecalculateAll = false; // Flag to recalculate all at the end if needed
+
                 switch (action) {
-                    case 'setNow': this.setNow(targetId); break;
-                    case 'changeNumber': this.changeNumber(targetId, parseInt(delta, 10)); break;
-                    case 'addRow': this.addRow(type); break;
+                    case 'setNow':
+                         this.setNow(targetId);
+                         // If the target is one of the planning times, only recalc planned
+                         if (targetId === 'nutritionPlanStartTime' || targetId === 'nutritionPlanEndTime') {
+                             this.calculatePlannedNutrition();
+                         } else {
+                            shouldRecalculateAll = true; // Otherwise, likely needs full recalc
+                         }
+                         break;
+                    case 'changeNumber':
+                        this.changeNumber(targetId, parseInt(delta, 10));
+                        shouldRecalculateAll = true;
+                        break;
+                    case 'addRow':
+                        this.addRow(type);
+                        shouldRecalculateAll = true;
+                        break;
                     case 'removeRow':
                         target.closest('[data-id]').remove();
-                        this.updateAllCalculations();
+                        shouldRecalculateAll = true;
                         break;
-                    case 'transferPerspiratio': this.transferPerspiratioToLoss(); break;
-                    case 'openModal': this.openModal(targetId); break;
+                    case 'transferPerspiratio':
+                         this.transferPerspiratioToLoss();
+                         shouldRecalculateAll = true; // Persp value changed loss
+                         break;
+                    case 'openModal': this.openModal(targetId); break; // openModal handles its own calcs
                     case 'closeModal': this.closeModal(targetId); break;
                     case 'save': this.saveDataToFile(); break;
-                    case 'load': this.dom.loadFromFileInput.click(); break;
+                    case 'load': this.dom.loadFromFileInput.click(); break; // load triggers recalc via populate
                     case 'print': window.print(); break;
-                    case 'resetAll': this.resetAll(); break;
-                    case 'cancelCustomInput': this.cancelCustomInput(target); break;
-                    case 'selectNutritionLevel': this.selectNutritionLevel(); break;
-                    case 'selectProteinLevel': this.selectProteinLevel(); break;
+                    case 'resetAll': this.resetAll(); break; // reset triggers recalc
+                    case 'cancelCustomInput':
+                         this.cancelCustomInput(target);
+                         shouldRecalculateAll = true; // Value changed
+                         break;
+                    case 'selectNutritionLevel': this.selectNutritionLevel(); break; // Triggers recalc
+                    case 'selectProteinLevel': this.selectProteinLevel(); break; // Triggers recalc
                     case 'toggleTheme': this.toggleTheme(); break;
+                    case 'addPlannedNutrition':
+                         this.addPlannedNutritionRow(type);
+                         // No immediate recalc needed, happens on input in the new row
+                         break;
+                    case 'removePlannedNutrition':
+                         target.closest('[data-id]').remove();
+                         this.calculatePlannedNutrition(); // Only recalc planned nutrition
+                         break;
                 }
+                 // If any action potentially changed totals, recalculate everything
+                 // We avoid this inside loops or frequent events for performance
+                 // if (shouldRecalculateAll) {
+                 //    this.updateAllCalculations(); // Removed redundant call - handled by input/change now
+                 // }
             },
             handleFormInput(e) {
                 const target = e.target;
+
+                 // Update colors for important/filled inputs
                 if (target.matches('.important-input, .filled-input')) {
                     this.updateInputColor(target);
                 }
-                
-                if (['height', 'gender', 'dailyWeight', 'maxTemp'].includes(target.id)) {
-                    this.updateAllCalculations();
-                }
-                
+
+                 // Handle nutrition calculator weight source changes
                  if(target.name === 'calculationWeightSource' || target.id === 'applyBmiAdjustment' || target.id === 'applyFeverAdjustment') {
-                    this.updateNutritionCalculationWeight();
+                    this.updateNutritionCalculationWeight(); // This function now calls update goals
                 }
                  if (target.id === 'nutritionFinalCalculationWeight') {
-                    document.querySelector('input[name="calculationWeightSource"][value="custom"]').checked = true;
-                    this.updateNutritionGoal();
+                     const customRadio = document.querySelector('input[name="calculationWeightSource"][value="custom"]');
+                     if (customRadio) customRadio.checked = true;
+                    this.updateNutritionGoal(); // Also update goals when custom weight changes
+                    this.updateProteinGoal();
+                    this.updateFluidGoal();
+                    this.calculatePlannedNutrition(); // Update prognosis if weight changes
                 }
 
+                // Toggle "Other location" input
                 if (target.id === 'bedSelect') {
                     this.dom.otherLocationInput.style.display = target.value === 'Annan plats' ? 'block' : 'none';
                 }
+
+                 // Reset manual override flag for perspiratio in diuresis calc if time changes
                  if (target.id === 'diuresisCalcTime') {
-                    document.getElementById('expectedPerspiratioRemaining').dataset.manualOverride = 'false';
-                }
-                const row = target.closest('[data-id]');
-                if (row) {
-                    const kcalOutput = row.querySelector('.kcal-output');
-                    const proteinOutput = row.querySelector('.protein-output');
+                     const perspInput = document.getElementById('expectedPerspiratioRemaining');
+                     if (perspInput) perspInput.dataset.manualOverride = 'false';
+                 }
 
-                    if (kcalOutput) {
-                        if (target.classList.contains('kcal-output')) {
-                            kcalOutput.dataset.manualOverride = 'true';
-                        } else if (target.classList.contains('select-main') || target.classList.contains('ml-input')) {
-                            kcalOutput.dataset.manualOverride = 'false';
-                        }
-                    }
-                     if (proteinOutput) {
-                        if (target.classList.contains('protein-output')) {
-                            proteinOutput.dataset.manualOverride = 'true';
-                        } else if (target.classList.contains('select-main') || target.classList.contains('ml-input')) {
-                            proteinOutput.dataset.manualOverride = 'false';
-                        }
-                    }
+                 // Handle input changes within main fluid/loss rows
+                 const mainRow = target.closest('[data-type]:not([data-type^="planned"])');
+                 if (mainRow) {
+                     const kcalOutput = mainRow.querySelector('.kcal-output');
+                     const proteinOutput = mainRow.querySelector('.protein-output');
 
-                    if (target.classList.contains('select-main')) {
-                        const configData = this.data[row.dataset.type];
-                        if (configData.customOption || configData.customOption2) {
-                            const showCustom = target.value === configData.customOption || (configData.customOption2 && target.value === configData.customOption2);
-                            this.toggleCustomInput(target.closest('.custom-input-wrapper') || target.parentElement, showCustom);
-                        }
-                        
-                        const selectedOption = target.options[target.selectedIndex];
-                        const defaultMl = selectedOption.dataset.defaultMl;
-                        const mlInput = row.querySelector('.ml-input');
-                        if (defaultMl && mlInput) {
-                            mlInput.value = defaultMl;
-                        }
+                      // Handle manual override flags
+                      if (kcalOutput) {
+                          if (target.classList.contains('kcal-output')) {
+                              kcalOutput.dataset.manualOverride = 'true';
+                          } else if (target.classList.contains('select-main') || target.classList.contains('ml-input')) {
+                               kcalOutput.dataset.manualOverride = 'false'; // Reset if selection or ml changes
+                          }
+                      }
+                      if (proteinOutput) {
+                           if (target.classList.contains('protein-output')) {
+                               proteinOutput.dataset.manualOverride = 'true';
+                           } else if (target.classList.contains('select-main') || target.classList.contains('ml-input')) {
+                                proteinOutput.dataset.manualOverride = 'false'; // Reset if selection or ml changes
+                           }
+                      }
 
-                        if (row.dataset.type === 'bloodProduct') {
-                            const tooltipSpan = row.querySelector('.tooltip');
-                            if (tooltipSpan) {
-                                tooltipSpan.style.display = target.value === 'Trombocyter' ? 'inline-block' : 'none';
-                            }
-                        }
-                    }
-                }
-                this.updateAllCalculations();
+                     if (target.classList.contains('select-main')) {
+                         const configData = this.data[mainRow.dataset.type];
+                         if (configData && (configData.customOption || configData.customOption2)) {
+                             const showCustom = target.value === configData.customOption || (configData.customOption2 && target.value === configData.customOption2);
+                             this.toggleCustomInput(target.closest('.custom-input-wrapper') || target.parentElement, showCustom);
+                         }
+
+                         const selectedOption = target.options[target.selectedIndex];
+                         const defaultMl = selectedOption.dataset.defaultMl;
+                         const mlInput = mainRow.querySelector('.ml-input');
+                         if (defaultMl && mlInput && !mlInput.value) { // Only set default if ml is empty
+                             mlInput.value = defaultMl;
+                         }
+
+                         if (mainRow.dataset.type === 'bloodProduct') {
+                             const tooltipSpan = mainRow.querySelector('.tooltip');
+                             if (tooltipSpan) {
+                                 tooltipSpan.style.display = target.value === 'Trombocyter' ? 'inline-block' : 'none';
+                             }
+                         }
+                     }
+                 }
+
+                // Handle input changes within planned nutrition rows
+                 const plannedRow = target.closest('[data-type^="planned"]');
+                 if (plannedRow) {
+                     this.calculatePlannedNutrition(); // Recalculate planned totals on any change within these rows
+                 }
+                  // Recalculate *everything* after any input/change event
+                  // This ensures all derived values are updated consistently
+                  this.updateAllCalculations();
+
             },
             handleFormulaInput(event) {
                 const input = event.target;
@@ -2361,73 +2630,156 @@
                     const result = new Function(`return ${expression}`)();
                     if (typeof result === 'number' && !isNaN(result)) {
                         input.value = Math.round(result);
-                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                        input.dispatchEvent(new Event('input', { bubbles: true })); // Trigger update calculations
                     }
                 } catch (e) {
                     console.error(`Error evaluating formula: "${expression}"`, e);
                 }
             },
-            addRow(type, initialData = {}) {
-                const config = this.config[type];
-                if (!config) return;
-                this.counters[type]++;
-                const id = `${type}_${this.counters[type]}`;
-                const container = this.dom.containers[type];
-                container.insertAdjacentHTML('beforeend', config.template(id));
-                const newRow = container.querySelector(`[data-id="${id}"]`);
-                const select = newRow.querySelector('.select-main');
-                if (select) {
-                    this.populateSelect(select, type);
-                }
-                if (initialData.selectValue) {
-                    select.value = initialData.selectValue;
-                }
-                if (Object.keys(initialData).length > 0 && !initialData.isInitial) {
-                    if(select) select.value = initialData.selectValue || '';
-                    newRow.querySelector('.ml-input').value = initialData.mlValue || '';
-                    if(newRow.querySelector('.kcal-output')) newRow.querySelector('.kcal-output').value = initialData.kcalValue || '';
-                    if(newRow.querySelector('.protein-output')) newRow.querySelector('.protein-output').value = initialData.proteinValue || '';
-                    const customInputWrapper = newRow.querySelector('.custom-input-wrapper');
-                    if(customInputWrapper) {
-                        const configData = this.data[type];
-                        const isCustom = select.value === configData.customOption || (configData.customOption2 && select.value === configData.customOption2);
-                        if (isCustom) {
-                            this.toggleCustomInput(customInputWrapper, true);
-                            customInputWrapper.querySelector('.custom-input').value = initialData.customValue || '';
-                        }
-                    }
-                }
-                if(initialData.isInitial !== true) this.updateAllCalculations();
-            },
+             // Handles adding rows for main sections (fluid, medicine, etc.)
+             addRow(type, initialData = {}) {
+                 const config = this.config[type];
+                 if (!config || !this.dom.containers[type]) return; // Check if container exists
+                 this.counters[type]++;
+                 const id = `${type}_${this.counters[type]}`;
+                 const container = this.dom.containers[type];
+                 container.insertAdjacentHTML('beforeend', config.template(id));
+                 const newRow = container.querySelector(`[data-id="${id}"]`);
+                 const select = newRow.querySelector('.select-main');
+                 if (select && config.populateSelect) {
+                     config.populateSelect(select);
+                 }
+
+                  // Apply initial data if provided
+                  if (Object.keys(initialData).length > 0) {
+                      if (initialData.selectValue && select) {
+                          select.value = initialData.selectValue;
+                           // Trigger change event to handle custom input visibility if needed
+                           select.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
+                     const mlInput = newRow.querySelector('.ml-input');
+                     if (mlInput && initialData.mlValue !== undefined) mlInput.value = initialData.mlValue;
+                     const kcalOutput = newRow.querySelector('.kcal-output');
+                     if (kcalOutput && initialData.kcalValue !== undefined) {
+                         kcalOutput.value = initialData.kcalValue;
+                         kcalOutput.dataset.manualOverride = 'true'; // Assume loaded value is manual
+                     }
+                     const proteinOutput = newRow.querySelector('.protein-output');
+                     if (proteinOutput && initialData.proteinValue !== undefined) {
+                          proteinOutput.value = initialData.proteinValue;
+                          proteinOutput.dataset.manualOverride = 'true'; // Assume loaded value is manual
+                     }
+
+                     // Handle custom value for "Övrigt"
+                     if (select && (select.value === config.customOption || (config.customOption2 && select.value === config.customOption2))) {
+                          const customInput = newRow.querySelector('.custom-input');
+                          if (customInput && initialData.customValue !== undefined) {
+                              customInput.value = initialData.customValue;
+                          }
+                     }
+                 }
+
+
+                 if (!initialData.isInitial) { // Avoid recalc for the very first Diures row
+                    this.updateAllCalculations();
+                 }
+             },
+             // Modified addRow specifically for planned nutrition
+              addPlannedNutritionRow(type, initialData = {}) {
+                 const configKey = type === 'infusion' ? 'plannedInfusion' : 'plannedBolus';
+                 const config = this.config[configKey];
+                 const container = this.dom.containers[configKey]; // Use cached container
+
+                  if (!config || !container) {
+                      console.error("Config or container missing for planned nutrition type:", type);
+                      return;
+                  }
+
+                 this.counters[configKey]++;
+                 const id = `${configKey}_${this.counters[configKey]}`;
+                 container.insertAdjacentHTML('beforeend', config.template(id));
+                 const newRow = container.querySelector(`[data-id="${id}"]`);
+                 const select = newRow.querySelector('.select-main');
+                 if (select && config.populateSelect) {
+                     config.populateSelect(select);
+                 }
+
+                 // Apply initial data if provided (for loading from file)
+                 if (Object.keys(initialData).length > 0) {
+                     if (select && initialData.selectValue !== undefined) {
+                          select.value = initialData.selectValue;
+                          select.dispatchEvent(new Event('change', { bubbles: true })); // Handle custom input if needed
+                     }
+                     const rateInput = newRow.querySelector('.rate-input');
+                     if (rateInput && initialData.rateValue !== undefined) rateInput.value = initialData.rateValue;
+                     const amountInput = newRow.querySelector('.amount-input');
+                     if (amountInput && initialData.amountValue !== undefined) amountInput.value = initialData.amountValue;
+
+                      // Handle custom value for "Övrigt"
+                     if (select && (select.value === config.customOption)) {
+                          const customInput = newRow.querySelector('.custom-input'); // Assuming custom input exists, add if needed
+                          if (customInput && initialData.customValue !== undefined) {
+                              customInput.value = initialData.customValue;
+                          }
+                     }
+                 }
+
+                  // No automatic recalculation here, it happens on input/change
+             },
             populateSelect(selectElement, type) {
                 const configData = this.data[type];
-                if (!configData) return;
-                selectElement.innerHTML = '';
-                this.addOption(selectElement, '', configData.placeholder);
-                const addCustomOption = (optName) => {
-                    if (!optName) return;
-                    this.addOption(selectElement, optName, optName, 0, null, 0);
-                };
-                addCustomOption(configData.customOption);
-                addCustomOption(configData.customOption2);
-                if (configData.options) {
-                    configData.options.forEach(opt => {
-                        if (typeof opt === 'object') this.addOption(selectElement, opt.name, opt.name, opt.kcal, null, opt.protein);
-                        else this.addOption(selectElement, opt, opt);
-                    });
+                if (!configData || !selectElement) return; // Add checks
+                selectElement.innerHTML = ''; // Clear existing options
+                this.addOption(selectElement, '', configData.placeholder || 'Välj...'); // Use placeholder
+
+                // Add custom option first if it exists
+                if (configData.customOption) {
+                    this.addOption(selectElement, configData.customOption, configData.customOption, 0, null, 0);
                 }
+                 // Add custom option 2 if it exists (relevant for some main sections)
+                 if (configData.customOption2) {
+                     this.addOption(selectElement, configData.customOption2, configData.customOption2, 0, null, 0);
+                 }
+
+
+                // Add options from list (flatten if necessary, handle objects vs strings)
+                 if (configData.options && Array.isArray(configData.options)) {
+                     // Flatten potential category structure within options for planning lists
+                     const flatOptions = configData.options.flatMap(opt =>
+                         opt.items ? opt.items.map(item => ({ ...item, category: opt.category })) : opt
+                     );
+
+                     // Sort flat list alphabetically by name
+                     flatOptions.sort((a, b) => (a.name || a).localeCompare(b.name || b));
+                     flatOptions.forEach(opt => {
+                         if (typeof opt === 'object' && opt.name) { // Ensure it's an object with a name
+                             this.addOption(selectElement, opt.name, opt.name, opt.kcal, opt.defaultMl, opt.protein);
+                         } else if (typeof opt === 'string') {
+                             this.addOption(selectElement, opt, opt); // Handle simple string options
+                         }
+                     });
+                 }
+
+
+                // Add options from categories (for main sections)
                 if (configData.categories) {
-                    for (const categoryLabel in configData.categories) {
+                    const sortedCategories = Object.keys(configData.categories).sort();
+                    sortedCategories.forEach(categoryLabel => {
                         const optgroup = document.createElement('optgroup');
                         optgroup.label = categoryLabel;
-                        configData.categories[categoryLabel].forEach(item => {
-                            this.addOption(optgroup, item.name, item.name, item.kcal, item.defaultMl, item.protein);
-                        });
+                        // Sort items within category alphabetically by name
+                         if (Array.isArray(configData.categories[categoryLabel])) { // Check if category value is array
+                            configData.categories[categoryLabel].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+                            configData.categories[categoryLabel].forEach(item => {
+                                this.addOption(optgroup, item.name, item.name, item.kcal, item.defaultMl, item.protein);
+                            });
+                         }
                         selectElement.appendChild(optgroup);
-                    }
+                    });
                 }
             },
             addOption(parent, value, text, kcal = null, defaultMl = null, protein = null) {
+                 if (!parent) return; // Prevent errors if parent doesn't exist
                 const option = document.createElement('option');
                 option.value = value;
                 option.textContent = text;
@@ -2448,27 +2800,33 @@
             },
             cancelCustomInput(button) {
                 const wrapper = button.parentElement;
+                 if (!wrapper) return;
                 this.toggleCustomInput(wrapper, false);
-                wrapper.querySelector('select').value = '';
-                wrapper.querySelector('input').value = '';
+                const select = wrapper.querySelector('select');
+                 if (select) select.value = '';
+                const input = wrapper.querySelector('input');
+                 if (input) input.value = '';
                 this.updateAllCalculations();
             },
             updateAllCalculations() {
                 this.calculateIdealAndAdjustedWeight();
                 this.calculatePerspiratio();
-                this.calculateTotals();
+                this.calculateTotals(); // Calculates main totals and updates state
                 this.calculateDiuresis();
-                this.updateSummaryUI();
-                this.calculateBMI(); 
-                this.updateNutritionCalculationWeight();
-                this.updateResults();
+                this.updateSummaryUI(); // Updates main summary table
+                this.calculateBMI();
+                this.updateNutritionCalculationWeight(); // Includes goal updates
+                this.calculatePlannedNutrition(); // Calculates planned totals and updates prognosis section
+                this.updateResults(); // Updates main result section based on state.totalIntake...
             },
             setNow(elementId) {
                 const timeInput = document.getElementById(elementId);
                 if (!timeInput) return;
                 const now = new Date();
                 timeInput.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                 // Trigger both events to ensure calculations run
                 timeInput.dispatchEvent(new Event('input', { bubbles: true }));
+                timeInput.dispatchEvent(new Event('change', { bubbles: true }));
             },
             changeNumber(elementId, delta) {
                 const input = document.getElementById(elementId);
@@ -2483,57 +2841,63 @@
                     const [endH, endM] = endTimeStr.split(':').map(Number);
                     const startMinutes = startH * 60 + startM;
                     let endMinutes = endH * 60 + endM;
+                    if (isNaN(startMinutes) || isNaN(endMinutes)) return 0; // Added validation
                     if (startMinutes === endMinutes) return 24;
                     if (endMinutes < startMinutes) endMinutes += 24 * 60;
                     return (endMinutes - startMinutes) / 60;
                 } catch (error) {
+                    console.error("Error calculating duration:", startTimeStr, endTimeStr, error); // Log error with inputs
                     return 0;
                 }
             },
              calculateIdealAndAdjustedWeight() {
-                const height = parseFloat(document.getElementById('height').value);
-                const gender = document.getElementById('gender').value;
-                const dailyWeight = parseFloat(document.getElementById('dailyWeight').value);
+                const height = parseFloat(document.getElementById('height')?.value); // Safe access
+                const gender = document.getElementById('gender')?.value; // Safe access
+                const dailyWeight = parseFloat(document.getElementById('dailyWeight')?.value); // Safe access
                 const idealWeightInput = document.getElementById('idealWeight');
                 const notice = document.getElementById('adjustedWeightNotice');
                 const label = document.getElementById('idealWeightLabel');
 
                 if (!idealWeightInput || !notice || !label) return 0;
 
-                if (!height || !gender) {
+                if (!height || !gender || isNaN(height)) { // Added NaN check
                     idealWeightInput.value = "Var god ange längd och kön";
                     notice.style.display = 'none';
                     label.textContent = "Idealvikt (kg):";
                     this.state.adjustedWeight = false;
+                    this.state.idealWeight = 0; // Reset ideal weight state
                     return 0;
                 }
 
                 let idealWeight = (gender === 'Man') ? (50 + 0.91 * (height - 152.4)) : (45.5 + 0.91 * (height - 152.4));
+                idealWeight = Math.max(0, idealWeight); // Ensure non-negative
                 idealWeight = Math.round(idealWeight * 10) / 10;
-                
+                this.state.idealWeight = idealWeight; // Store the calculated ideal weight
+
                 let displayWeight = idealWeight;
                 this.state.adjustedWeight = false;
                 notice.style.display = 'none';
                 label.textContent = "Idealvikt (kg):";
 
-                if (dailyWeight && dailyWeight > (idealWeight * 1.20)) {
+                if (dailyWeight && !isNaN(dailyWeight) && dailyWeight > (idealWeight * 1.20)) { // Added NaN check
                     displayWeight = idealWeight + 0.4 * (dailyWeight - idealWeight);
                     this.state.adjustedWeight = true;
                     notice.textContent = "(justerad)";
                     notice.style.display = 'inline';
                 }
-                
+
                 displayWeight = Math.round(displayWeight * 10) / 10;
+                 displayWeight = Math.max(0, displayWeight); // Ensure non-negative display value
                 idealWeightInput.value = displayWeight.toFixed(1);
-                
+
                 return displayWeight;
             },
             calculateBMI() {
-                const height = parseFloat(document.getElementById('height').value);
-                const dailyWeight = parseFloat(document.getElementById('dailyWeight').value);
+                const height = parseFloat(document.getElementById('height')?.value); // Safe access
+                const dailyWeight = parseFloat(document.getElementById('dailyWeight')?.value); // Safe access
                 const bmiDisplay = document.getElementById('bmiDisplay');
                 if (bmiDisplay) {
-                    if (height && dailyWeight) {
+                    if (height && dailyWeight && !isNaN(height) && !isNaN(dailyWeight) && height > 0) { // Added checks
                         const bmi = dailyWeight / ((height / 100) * (height / 100));
                         bmiDisplay.value = bmi.toFixed(1);
                         this.updateBmiCategory(bmi);
@@ -2547,7 +2911,7 @@
                 const bmiCategoryElement = document.getElementById('bmiCategory');
                  if (!bmiCategoryElement) return;
                 let category = '';
-                if (bmi) {
+                if (bmi !== null && !isNaN(bmi)) { // Check for null and NaN
                     if (bmi < 18.5) category = 'Undervikt';
                     else if (bmi < 25) category = 'Normalvikt';
                     else if (bmi < 30) category = 'Övervikt';
@@ -2558,10 +2922,12 @@
                 bmiCategoryElement.textContent = category;
             },
             _calculatePerspiratioLogic(durationInHours) {
-                const isUnder15 = document.getElementById('isUnder15').value === 'yes';
-                const weight = parseFloat(document.getElementById('dailyWeight').value) || 0;
-                const ventilationStatus = document.getElementById('breathingSupport').value;
-                const temperature = parseFloat(document.getElementById('maxTemp').value) || 37.0;
+                const isUnder15 = document.getElementById('isUnder15')?.value === 'yes'; // Safe access
+                const weight = parseFloat(document.getElementById('dailyWeight')?.value) || 0; // Safe access
+                const ventilationStatus = document.getElementById('breathingSupport')?.value; // Safe access
+                const temperature = parseFloat(document.getElementById('maxTemp')?.value) || 37.0; // Safe access
+
+                 if (durationInHours === undefined || isNaN(durationInHours)) durationInHours = 0; // Added check
 
                 if (isUnder15 || weight < 50) {
                     this.state.perspiratioWarning = "Perspiratioberäkning ej möjligt vid ålder < 15 och/eller vikt < 50 kg";
@@ -2587,31 +2953,35 @@
                     sTempFactor = 0.5;
                 } else if (temperature > 41) {
                     sTempFactor = 2;
-                } else {
+                } else if (!isNaN(sTempDifference)) { // Added NaN check
                     sTempFactor = 1 + (sTempDifference * 0.25);
                 }
 
                 const perspiratio24h = lBasicPerspiratio * sTempFactor;
                 const finalPerspiratio = perspiratio24h * (durationInHours / 24);
-                
+
                 return Math.round(finalPerspiratio);
             },
             calculatePerspiratio() {
-                const duration = this.calculateDurationInHours(document.getElementById('startTime').value, document.getElementById('endTime').value);
+                const duration = this.calculateDurationInHours(document.getElementById('startTime')?.value, document.getElementById('endTime')?.value); // Safe access
                 const finalPerspiratio = this._calculatePerspiratioLogic(duration);
-                
-                document.getElementById('calculatedPerspiratio').value = `${finalPerspiratio} ml`;
-                document.getElementById('perspiratioWarning').textContent = this.state.perspiratioWarning;
+
+                const perspOutput = document.getElementById('calculatedPerspiratio');
+                 if (perspOutput) perspOutput.value = `${finalPerspiratio} ml`;
+                const perspWarning = document.getElementById('perspiratioWarning');
+                 if(perspWarning) perspWarning.textContent = this.state.perspiratioWarning;
             },
             transferPerspiratioToLoss() {
-                const perspiratioValue = parseFloat(document.getElementById('calculatedPerspiratio').value) || 0;
-                document.getElementById('lossMlInput_perspiratio_static').value = perspiratioValue;
+                const perspiratioValue = parseFloat(document.getElementById('calculatedPerspiratio')?.value) || 0; // Safe access
+                 const lossInput = document.getElementById('lossMlInput_perspiratio_static');
+                 if (lossInput) lossInput.value = perspiratioValue;
                 this.updateAllCalculations();
             },
             calculateTotals() {
-                this.state.dailyWeight = parseFloat(document.getElementById('dailyWeight').value) || 0;
-                this.state.initialWeight = parseFloat(document.getElementById('initialWeight').value) || 0;
+                this.state.dailyWeight = parseFloat(document.getElementById('dailyWeight')?.value) || 0; // Safe access
+                this.state.initialWeight = parseFloat(document.getElementById('initialWeight')?.value) || 0; // Safe access
 
+                 // Reset state totals
                 Object.assign(this.state, {
                     totalIntakeMl: 0, totalIntakeKcal: 0, totalLossMl: 0, totalIntakeProtein: 0,
                     medicineCategoryTotals: { Sedering: 0, Antibiotika: 0, Vasoaktiva: 0, Övrigt: 0 },
@@ -2619,78 +2989,99 @@
                     totalDiuresisMl: 0, totalPerspiratioMl: 0, totalOtherLossMl: 0
                 });
                 let kcalFromKristalloider = 0;
-                document.querySelectorAll('[data-id]').forEach(row => {
-                    const type = row.dataset.type;
-                    if (!type) { // Handle static perspiratio row
-                        if(row.querySelector('#lossMlInput_perspiratio_static')) {
-                            const mlValue = parseFloat(row.querySelector('#lossMlInput_perspiratio_static').value) || 0;
+
+                 // Iterate through containers and rows safely
+                 ['fluid', 'medicine', 'bloodProduct', 'tpnSondmat', 'loss'].forEach(containerKey => {
+                    const container = this.dom.containers[containerKey];
+                    if (!container) return; // Skip if container doesn't exist
+
+                    container.querySelectorAll('[data-id]').forEach(row => {
+                        const type = row.dataset.type;
+                        if (!type || type.startsWith('planned') || row.id === 'perspiratio_static_row') return; // Skip planned & static persp for now
+
+                        const mlInput = row.querySelector('.ml-input');
+                        const mlValue = parseFloat(mlInput?.value) || 0;
+                        const select = row.querySelector('.select-main');
+                        const selectedOption = select?.options[select.selectedIndex];
+                        const kcalOutput = row.querySelector('.kcal-output');
+                        const proteinOutput = row.querySelector('.protein-output');
+                        let kcalValue = 0;
+                        let proteinValue = 0;
+
+                        if (selectedOption) {
+                             // Kcal calculation
+                             if (kcalOutput) {
+                                if (kcalOutput.dataset.manualOverride !== 'true' && selectedOption.dataset.kcalPerMl !== undefined) {
+                                    const kcalPerMl = parseFloat(selectedOption.dataset.kcalPerMl || '0');
+                                    kcalValue = Math.round(mlValue * kcalPerMl);
+                                    kcalOutput.value = mlValue > 0 ? kcalValue : '';
+                                } else {
+                                    kcalValue = parseFloat(kcalOutput.value) || 0;
+                                }
+                             }
+                             // Protein calculation
+                             if (proteinOutput) {
+                                if (proteinOutput.dataset.manualOverride !== 'true' && selectedOption.dataset.proteinPerMl !== undefined) {
+                                    const proteinPerMl = parseFloat(selectedOption.dataset.proteinPerMl || '0');
+                                    proteinValue = Math.round(mlValue * proteinPerMl * 10) / 10;
+                                    proteinOutput.value = mlValue > 0 ? proteinValue.toFixed(1) : '';
+                                } else {
+                                    proteinValue = parseFloat(proteinOutput.value) || 0;
+                                }
+                             }
+                        }
+
+                         // Summing totals based on type
+                        if (['fluid', 'medicine', 'bloodProduct', 'tpnSondmat'].includes(type)) {
+                            this.state.totalIntakeMl += mlValue;
+                            this.state.totalIntakeKcal += kcalValue;
+                            this.state.totalIntakeProtein += proteinValue;
+                        } else if (type === 'loss') {
                             this.state.totalLossMl += mlValue;
-                            this.state.totalPerspiratioMl += mlValue;
+                            if (select?.value === 'Diures') this.state.totalDiuresisMl += mlValue;
+                            else this.state.totalOtherLossMl += mlValue;
                         }
-                        return;
-                    }
-                    const mlInput = row.querySelector('.ml-input');
-                    const mlValue = parseFloat(mlInput?.value) || 0;
-                    const select = row.querySelector('.select-main');
-                    const selectedOption = select?.options[select.selectedIndex];
-                    const kcalOutput = row.querySelector('.kcal-output');
-                    const proteinOutput = row.querySelector('.protein-output');
-                    let kcalValue = 0;
-                    let proteinValue = 0;
 
-                    if (selectedOption) {
-                        if (kcalOutput) {
-                            if (kcalOutput.dataset.manualOverride !== 'true') {
-                                const kcalPerMl = parseFloat(selectedOption.dataset.kcalPerMl || '0');
-                                kcalValue = Math.round(mlValue * kcalPerMl);
-                                kcalOutput.value = mlValue > 0 ? kcalValue : '';
+                        // Specific Kcal summaries
+                        if (type === 'fluid') kcalFromKristalloider += kcalValue;
+                        if (type === 'medicine' && select) {
+                            this.state.kcalSummary.ivMedicine += kcalValue;
+                            const category = Object.keys(this.data.medicine.categories).find(cat =>
+                                Array.isArray(this.data.medicine.categories[cat]) && // Check if category is array
+                                this.data.medicine.categories[cat].some(item => item.name === select.value)
+                            ) || 'Övrigt';
+                            if (this.state.medicineCategoryTotals[category] !== undefined) {
+                                this.state.medicineCategoryTotals[category] += mlValue;
                             } else {
-                                kcalValue = parseFloat(kcalOutput.value) || 0;
+                               this.state.medicineCategoryTotals['Övrigt'] += mlValue; // Fallback
                             }
                         }
-                        if (proteinOutput) {
-                            if (proteinOutput.dataset.manualOverride !== 'true') {
-                                const proteinPerMl = parseFloat(selectedOption.dataset.proteinPerMl || '0');
-                                proteinValue = Math.round(mlValue * proteinPerMl * 10) / 10;
-                                proteinOutput.value = mlValue > 0 ? proteinValue.toFixed(1) : '';
-                            } else {
-                                proteinValue = parseFloat(proteinOutput.value) || 0;
-                            }
-                        }
-                    }
+                        if (type === 'tpnSondmat' && select) {
+                             if (select.value === 'Peroralt intag') this.state.kcalSummary.peroralt += kcalValue;
+                             else if (select.value.startsWith('Sondmat') || select.value === 'Vatten i sond') this.state.kcalSummary.sondmat += kcalValue;
+                             // Assuming anything else in this category is TPN or Näringsdryck which counts towards TPN summary here
+                             else this.state.kcalSummary.tpn += kcalValue;
+                         }
+                    });
+                 });
 
-                    if (['fluid', 'medicine', 'bloodProduct', 'tpnSondmat'].includes(type)) {
-                        this.state.totalIntakeMl += mlValue;
-                        this.state.totalIntakeKcal += kcalValue;
-                        this.state.totalIntakeProtein += proteinValue;
-                    } else if (type === 'loss') {
-                        this.state.totalLossMl += mlValue;
-                        if (select?.value === 'Diures') this.state.totalDiuresisMl += mlValue;
-                        else this.state.totalOtherLossMl += mlValue;
-                    }
-                    if (type === 'fluid') kcalFromKristalloider += kcalValue;
-                    if (type === 'medicine') {
-                        this.state.kcalSummary.ivMedicine += kcalValue;
-                        const category = Object.keys(this.data.medicine.categories).find(cat => this.data.medicine.categories[cat].some(item => item.name === select.value)) || 'Övrigt';
-                        this.state.medicineCategoryTotals[category] += mlValue;
-                    }
-                    if (type === 'tpnSondmat') {
-                        if (select.value === 'Peroralt intag') this.state.kcalSummary.peroralt += kcalValue;
-                        else if (select.value.startsWith('Sondmat') || select.value === 'Vatten i sond') this.state.kcalSummary.sondmat += kcalValue;
-                        else this.state.kcalSummary.tpn += kcalValue;
-                    }
-                });
-                const naclSyringes = parseFloat(document.getElementById('naclSyringes').value) || 0;
+                 // Add static perspiratio loss *after* iterating dynamic rows
+                 const staticPerspMl = parseFloat(document.getElementById('lossMlInput_perspiratio_static')?.value) || 0;
+                 this.state.totalLossMl += staticPerspMl;
+                 this.state.totalPerspiratioMl += staticPerspMl;
+
+
+                const naclSyringes = parseFloat(document.getElementById('naclSyringes')?.value) || 0; // Safe access
                 this.state.naclSyringeVolume = naclSyringes * 10;
                 this.state.totalIntakeMl += this.state.naclSyringeVolume;
 
-                const pressureSets = parseFloat(document.getElementById('pressureSets').value) || 0;
-                const duration = this.calculateDurationInHours(document.getElementById('startTime').value, document.getElementById('endTime').value);
+                const pressureSets = parseFloat(document.getElementById('pressureSets')?.value) || 0; // Safe access
+                const duration = this.calculateDurationInHours(document.getElementById('startTime')?.value, document.getElementById('endTime')?.value); // Safe access
                 this.state.pressureSetVolume = Math.round(pressureSets * 3 * duration);
                 this.state.totalIntakeMl += this.state.pressureSetVolume;
 
                 this.state.netBalanceMl = this.state.totalIntakeMl - this.state.totalLossMl;
-                const cumulativePrev = parseFloat(document.getElementById('cumulativeBalancePrev').value) || 0;
+                const cumulativePrev = parseFloat(document.getElementById('cumulativeBalancePrev')?.value) || 0; // Safe access
                 this.state.cumulativeBalanceMl = cumulativePrev + this.state.netBalanceMl;
                 this.state.weightDifferenceKg = this.state.initialWeight ? (this.state.dailyWeight - this.state.initialWeight) : 0;
                 this.state.kcalSummary.intravenousTotal = this.state.kcalSummary.ivMedicine + this.state.kcalSummary.tpn + kcalFromKristalloider;
@@ -2718,96 +3109,187 @@
                 }
             },
             calculateDiuresis() {
-                const desiredBalance = parseFloat(document.getElementById('desiredBalanceTomorrow').value) || 0;
-                const calcTime = document.getElementById('diuresisCalcTime').value;
+                 // Ensure elements exist before proceeding
+                 const desiredBalanceEl = document.getElementById('desiredBalanceTomorrow');
+                 const calcTimeEl = document.getElementById('diuresisCalcTime');
+                 const plannedSingleIntakeEl = document.getElementById('plannedSingleIntake');
+                 const plannedHourlyIntakeEl = document.getElementById('plannedHourlyIntake');
+                 const plannedSingleLossesEl = document.getElementById('plannedSingleLosses');
+                 const expectedPerspiratioInput = document.getElementById('expectedPerspiratioRemaining');
+
+                 if (!desiredBalanceEl || !calcTimeEl || !plannedSingleIntakeEl || !plannedHourlyIntakeEl || !plannedSingleLossesEl || !expectedPerspiratioInput) {
+                    // console.warn("One or more diuresis calculator elements not found.");
+                     return; // Exit if elements aren't ready
+                 }
+
+
+                const desiredBalance = parseFloat(desiredBalanceEl.value) || 0;
+                const calcTime = calcTimeEl.value;
                 const remainingHours = this.calculateDurationInHours(calcTime, '06:00');
-                const plannedSingleIntake = parseFloat(document.getElementById('plannedSingleIntake').value) || 0;
-                const plannedHourlyIntake = parseFloat(document.getElementById('plannedHourlyIntake').value) || 0;
-                const plannedSingleLosses = parseFloat(document.getElementById('plannedSingleLosses').value) || 0;
-                
-                const expectedPerspiratioInput = document.getElementById('expectedPerspiratioRemaining');
+                const plannedSingleIntake = parseFloat(plannedSingleIntakeEl.value) || 0;
+                const plannedHourlyIntake = parseFloat(plannedHourlyIntakeEl.value) || 0;
+                const plannedSingleLosses = parseFloat(plannedSingleLossesEl.value) || 0;
+
+
                 const calculatedPerspiratio = this._calculatePerspiratioLogic(remainingHours);
 
-                expectedPerspiratioInput.value = calculatedPerspiratio;
+                 // Only update if not manually overridden
+                 if (expectedPerspiratioInput.dataset.manualOverride !== 'true') {
+                     expectedPerspiratioInput.value = calculatedPerspiratio;
+                 }
                 const expectedPerspiratio = parseFloat(expectedPerspiratioInput.value) || 0;
 
-                document.getElementById('remainingTimeTo0600').value = remainingHours.toFixed(1);
-                
+                const remainingTimeEl = document.getElementById('remainingTimeTo0600');
+                 if (remainingTimeEl) remainingTimeEl.value = remainingHours.toFixed(1);
+
+
                 const totalFutureIntake = plannedSingleIntake + (plannedHourlyIntake * remainingHours);
                 const totalFutureLoss = plannedSingleLosses + expectedPerspiratio;
-                
+
                 const requiredDiuresis = this.state.netBalanceMl + totalFutureIntake - totalFutureLoss - desiredBalance;
                 const diuresisPerHour = remainingHours > 0 ? requiredDiuresis / remainingHours : 0;
 
-                // Update summary table in modal
-                document.getElementById('summaryBalanceTillNow').textContent = Math.round(this.state.netBalanceMl);
-                document.getElementById('summaryRemainingHoursFuture').textContent = remainingHours.toFixed(1);
-                document.getElementById('summaryPlannedSingleIntakeSummary').textContent = Math.round(plannedSingleIntake);
-                document.getElementById('plannedHourlyIntakeDisplay').textContent = Math.round(plannedHourlyIntake);
-                document.getElementById('remainingHoursDisplay').textContent = remainingHours.toFixed(1);
-                document.getElementById('summaryPlannedHourlyIntakeTotal').textContent = Math.round(plannedHourlyIntake * remainingHours);
-                document.getElementById('summaryPlannedSingleLossesSummary').textContent = Math.round(plannedSingleLosses);
-                document.getElementById('summaryExpectedPerspiratioRemainingSummary').textContent = Math.round(expectedPerspiratio);
-                document.getElementById('summaryDesiredBalanceTomorrowSummary').textContent = Math.round(desiredBalance);
-                document.getElementById('summaryTotalCalculatedIntake').textContent = Math.round(this.state.totalIntakeMl + totalFutureIntake);
-                document.getElementById('summaryTotalCalculatedLossExclDiuresis').textContent = Math.round(this.state.totalOtherLossMl + this.state.totalPerspiratioMl + totalFutureLoss);
-                document.getElementById('diuresisNeedPerHour').textContent = diuresisPerHour.toFixed(1);
+                // Update summary table in modal - check if elements exist
+                 const elementsToUpdate = {
+                     'summaryBalanceTillNow': Math.round(this.state.netBalanceMl),
+                     'summaryRemainingHoursFuture': remainingHours.toFixed(1),
+                     'summaryPlannedSingleIntakeSummary': Math.round(plannedSingleIntake),
+                     'plannedHourlyIntakeDisplay': Math.round(plannedHourlyIntake),
+                     'remainingHoursDisplay': remainingHours.toFixed(1),
+                     'summaryPlannedHourlyIntakeTotal': Math.round(plannedHourlyIntake * remainingHours),
+                     'summaryPlannedSingleLossesSummary': Math.round(plannedSingleLosses),
+                     'summaryExpectedPerspiratioRemainingSummary': Math.round(expectedPerspiratio),
+                     'summaryDesiredBalanceTomorrowSummary': Math.round(desiredBalance),
+                     'summaryTotalCalculatedIntake': Math.round(this.state.totalIntakeMl + totalFutureIntake),
+                     'summaryTotalCalculatedLossExclDiuresis': Math.round(this.state.totalOtherLossMl + this.state.totalPerspiratioMl + totalFutureLoss),
+                     'diuresisNeedPerHour': diuresisPerHour.toFixed(1)
+                 };
+
+                 for (const id in elementsToUpdate) {
+                     const el = document.getElementById(id);
+                     if (el) {
+                         el.textContent = elementsToUpdate[id];
+                     }
+                 }
             },
-            openModal(targetId) {
-                if (targetId === 'calculationsModalOverlay') this.populateKcalTableInModal();
-                if (targetId === 'printDetailedSummaryModalOverlay') this.populatePrintModal();
-                if (targetId === 'diuresisCalculatorModalOverlay') {
-                    document.getElementById('expectedPerspiratioRemaining').dataset.manualOverride = 'false';
-                    this.setNow('diuresisCalcTime');
-                    this.calculateDiuresis();
-                }
-                if (targetId === 'nutritionCalculatorModalOverlay' || targetId === 'proteinLevelModalOverlay') {
-                    const height = document.getElementById('height').value;
-                    const gender = document.getElementById('gender').value;
-                    const dailyWeight = document.getElementById('dailyWeight').value;
-                    const warningDiv = document.getElementById('nutritionDataWarning');
-                    const contentDiv = document.getElementById('nutritionCalculatorContent');
-                    
-                    if (!height || !gender || !dailyWeight) {
-                        warningDiv.style.display = 'block';
-                        contentDiv.style.display = 'none';
-                    } else {
-                        warningDiv.style.display = 'none';
-                        contentDiv.style.display = 'grid'; // Changed from block
-                        this.updateAllCalculations();
-                    }
-                }
-                if (targetId === 'nutritionLevelModalOverlay') {
-                    const modal = document.getElementById('nutritionLevelModalOverlay');
-                    const radios = modal.querySelectorAll('input[name="nutritionLevel"]');
-                    let currentSelection = document.getElementById('selectedNutritionLevel').value;
-                    radios.forEach(radio => {
-                        radio.checked = (radio.value === currentSelection);
-                        if (radio.checked) {
-                            radio.closest('.nutrition-level-option').classList.add('selected');
-                        } else {
-                             radio.closest('.nutrition-level-option').classList.remove('selected');
+             openModal(targetId) {
+                const modalOverlay = document.getElementById(targetId);
+                 if (!modalOverlay) return;
+
+                 // Logic specific to each modal
+                 if (targetId === 'calculationsModalOverlay') this.populateKcalTableInModal();
+                 if (targetId === 'printDetailedSummaryModalOverlay') this.populatePrintModal();
+                 if (targetId === 'diuresisCalculatorModalOverlay') {
+                     const perspInput = document.getElementById('expectedPerspiratioRemaining');
+                      if (perspInput) perspInput.dataset.manualOverride = 'false';
+                     this.setNow('diuresisCalcTime'); // Set time first
+                     this.calculateDiuresis(); // Then calculate
+                 }
+                 if (targetId === 'nutritionCalculatorModalOverlay') {
+                     // Check required data
+                     const height = document.getElementById('height')?.value;
+                     const gender = document.getElementById('gender')?.value;
+                     const dailyWeight = document.getElementById('dailyWeight')?.value;
+                     const warningDiv = document.getElementById('nutritionDataWarning');
+                     const contentDiv = document.getElementById('nutritionCalculatorContent');
+
+                     if (warningDiv && contentDiv) { // Ensure elements exist
+                         if (!height || !gender || !dailyWeight) {
+                             warningDiv.style.display = 'block';
+                             contentDiv.style.display = 'none';
+                         } else {
+                             warningDiv.style.display = 'none';
+                             contentDiv.style.display = 'grid';
+                              // Cache elements specifically for this modal IF NOT ALREADY CACHED
+                              this.cacheNutritionPlanElements();
+                             // Recalculate everything now that elements are confirmed/cached
+                              this.updateAllCalculations();
+                         }
+                     } else {
+                         console.error("Warning or content div for nutrition calculator not found.");
+                     }
+                 }
+
+                 // Handle pre-selection for level modals
+                  if (targetId === 'nutritionLevelModalOverlay') {
+                     const modal = document.getElementById('nutritionLevelModalOverlay');
+                     if (modal) {
+                         const radios = modal.querySelectorAll('input[name="nutritionLevel"]');
+                         let currentSelection = document.getElementById('selectedNutritionLevel')?.value; // Safe access
+                         radios.forEach(radio => {
+                             radio.checked = (radio.value === currentSelection);
+                             const optionDiv = radio.closest('.nutrition-level-option');
+                             if (optionDiv) { // Check if closest found
+                                 optionDiv.classList.toggle('selected', radio.checked);
+                             }
+                         });
+                         const selectButton = document.getElementById('selectNutritionLevelButton');
+                         if (selectButton) selectButton.disabled = !currentSelection;
+                      }
+                  }
+                  if (targetId === 'proteinLevelModalOverlay') {
+                      const modal = document.getElementById('proteinLevelModalOverlay');
+                      if (modal) {
+                         const radios = modal.querySelectorAll('input[name="proteinLevel"]');
+                         let currentSelection = document.getElementById('selectedProteinLevel')?.value; // Safe access
+                         radios.forEach(radio => {
+                             radio.checked = (radio.value === currentSelection);
+                             const optionDiv = radio.closest('.nutrition-level-option');
+                             if (optionDiv) { // Check if closest found
+                                 optionDiv.classList.toggle('selected', radio.checked);
+                             }
+                         });
+                         const selectButton = document.getElementById('selectProteinLevelButton');
+                          if (selectButton) selectButton.disabled = !currentSelection;
+                      }
+                  }
+
+
+                 modalOverlay.classList.add('active');
+                 this.dom.body.classList.add('modal-open');
+             },
+             // Helper to cache nutrition plan elements specifically when modal opens
+              cacheNutritionPlanElements() {
+                  // Only cache if not already done or if elements might have been removed (e.g., after reset)
+                  if (!this.dom.nutritionPlan || !document.getElementById('nutritionPlanStartTime')) {
+                      this.dom.nutritionPlan = {
+                          startTime: document.getElementById('nutritionPlanStartTime'),
+                          endTime: document.getElementById('nutritionPlanEndTime'),
+                          duration: document.getElementById('nutritionPlanDuration'),
+                          infusionTotalKcalPerHour: document.getElementById('plannedInfusionTotalKcalPerHour'),
+                          infusionTotalProteinPerHour: document.getElementById('plannedInfusionTotalProteinPerHour'),
+                          bolusTotalKcal: document.getElementById('plannedBolusTotalKcal'),
+                          bolusTotalProtein: document.getElementById('plannedBolusTotalProtein'),
+                          plannedTotalKcal: document.getElementById('plannedTotalKcal'),
+                          plannedTotalProtein: document.getElementById('plannedTotalProtein'),
+                          prognosisTotalKcal: document.getElementById('prognosisTotalKcal'),
+                          prognosisTotalProtein: document.getElementById('prognosisTotalProtein'),
+                          prognosisTotalKcalPercent: document.getElementById('prognosisTotalKcalPercent'),
+                          prognosisTotalProteinPercent: document.getElementById('prognosisTotalProteinPercent'),
+                           // Store container refs, not templates
+                           infusionsContainer: document.getElementById('plannedInfusionsContainer'),
+                           bolusesContainer: document.getElementById('plannedBolusesContainer')
+                      };
+                      // Set default times when caching for the first time
+                       if (this.dom.nutritionPlan.startTime && !this.dom.nutritionPlan.startTime.value) {
+                           this.dom.nutritionPlan.startTime.value = '06:00';
+                       }
+                       if (this.dom.nutritionPlan.endTime && !this.dom.nutritionPlan.endTime.value) {
+                           this.dom.nutritionPlan.endTime.value = '06:00';
+                       }
+                        // Add event listeners for time changes *after* caching
+                        if (this.dom.nutritionPlan.startTime) {
+                             this.dom.nutritionPlan.startTime.removeEventListener('change', this.boundCalculatePlannedNutrition); // Remove old listener if any
+                             this.boundCalculatePlannedNutrition = this.calculatePlannedNutrition.bind(this); // Store bound function
+                             this.dom.nutritionPlan.startTime.addEventListener('change', this.boundCalculatePlannedNutrition);
                         }
-                    });
-                    document.getElementById('selectNutritionLevelButton').disabled = !currentSelection;
-                }
-                if (targetId === 'proteinLevelModalOverlay') {
-                    const modal = document.getElementById('proteinLevelModalOverlay');
-                    const radios = modal.querySelectorAll('input[name="proteinLevel"]');
-                    let currentSelection = document.getElementById('selectedProteinLevel').value;
-                    radios.forEach(radio => {
-                        radio.checked = (radio.value === currentSelection);
-                        if (radio.checked) {
-                            radio.closest('.nutrition-level-option').classList.add('selected');
-                        } else {
-                             radio.closest('.nutrition-level-option').classList.remove('selected');
+                        if (this.dom.nutritionPlan.endTime) {
+                            this.dom.nutritionPlan.endTime.removeEventListener('change', this.boundCalculatePlannedNutrition); // Remove old listener if any
+                            // Use the same bound function reference
+                            this.dom.nutritionPlan.endTime.addEventListener('change', this.boundCalculatePlannedNutrition);
                         }
-                    });
-                    document.getElementById('selectProteinLevelButton').disabled = !currentSelection;
-                }
-                document.getElementById(targetId)?.classList.add('active');
-                this.dom.body.classList.add('modal-open');
-            },
+                  }
+              },
             closeModal(targetId) {
                 document.getElementById(targetId)?.classList.remove('active');
                 const anyModalActive = document.querySelector('.modal-overlay.active');
@@ -2815,9 +3297,9 @@
                     this.dom.body.classList.remove('modal-open');
                 }
             },
-            populateKcalTableInModal() {
+             populateKcalTableInModal() {
                 const categoryMapping = [
-                    { name: 'Kristalloider/Kolloider', key: 'fluid', containerSuffix: 'Kristalloider' },
+                    { name: 'Rena Glucoslösningar/Kolloider', key: 'fluid', containerSuffix: 'Kristalloider' }, // Adjusted name here
                     { name: 'Läkemedelsvätskor', key: 'medicine', containerSuffix: 'Medicine' },
                     { name: 'TPN/Sondmat/Näringsdryck/Peroralt', key: 'tpnSondmat', containerSuffix: 'TpnSondmat' }
                 ];
@@ -2830,13 +3312,15 @@
                     const table = document.createElement('table');
                     table.innerHTML = '<thead><tr><th>Vätska/Produkt</th><th style="text-align:right;">Kcal/ml</th><th style="text-align:right;">Protein g/ml</th></tr></thead>';
                     const tbody = document.createElement('tbody');
-                    
+
                     const dataSet = this.data[mapping.key];
+                     if (!dataSet) return; // Add check
+
                     const items = [];
 
                     if (dataSet.customOption) items.push({ name: dataSet.customOption, kcal: 0, protein: 0 });
                     if (dataSet.customOption2) items.push({ name: dataSet.customOption2, kcal: 0, protein: 0 });
-                    if (dataSet.options) {
+                    if (dataSet.options && Array.isArray(dataSet.options)) { // Check if options is an array
                         dataSet.options.forEach(opt => {
                             if (typeof opt === 'object') {
                                 items.push(opt);
@@ -2847,10 +3331,12 @@
                     }
                     if (dataSet.categories) {
                         for (const cat in dataSet.categories) {
-                            items.push(...dataSet.categories[cat]);
+                            if (Array.isArray(dataSet.categories[cat])) { // Ensure category items are an array
+                               items.push(...dataSet.categories[cat]);
+                            }
                         }
                     }
-                    
+
                     items.sort((a, b) => (a.name || a).localeCompare(b.name || b));
 
                     const uniqueItems = items.filter((item, index, self) =>
@@ -2880,64 +3366,85 @@
             },
             populatePrintModal() {
                 this.updateAllCalculations(); // Ensure state is current
-                
-                // NEW: Populate the info box
-                document.getElementById('summaryDatePrint').textContent = document.getElementById('dateInput').value;
-                document.getElementById('summaryTimePeriodPrint').textContent = `${document.getElementById('startTime').value} - ${document.getElementById('endTime').value}`;
+
+                // Populate the info box
+                 const datePrint = document.getElementById('summaryDatePrint');
+                 if (datePrint) datePrint.textContent = document.getElementById('dateInput')?.value || '';
+                 const timePrint = document.getElementById('summaryTimePeriodPrint');
+                 if (timePrint) timePrint.textContent = `${document.getElementById('startTime')?.value || '??:??'} - ${document.getElementById('endTime')?.value || '??:??'}`;
                 const bedSelect = document.getElementById('bedSelect');
-                document.getElementById('summaryLocationPrint').textContent = bedSelect.value === 'Annan plats' ? document.getElementById('otherLocationInput').value : bedSelect.value;
-                
-                document.getElementById('printInitialWeight').textContent = `${this.state.initialWeight.toFixed(1)} kg`;
-                document.getElementById('printDailyWeight').textContent = `${this.state.dailyWeight.toFixed(1)} kg`;
-                
-                const idealWeightValue = document.getElementById('idealWeight').value;
+                 const locationPrint = document.getElementById('summaryLocationPrint');
+                 if (bedSelect && locationPrint) locationPrint.textContent = bedSelect.value === 'Annan plats' ? (document.getElementById('otherLocationInput')?.value || '') : bedSelect.value;
+
+                 const initWeightPrint = document.getElementById('printInitialWeight');
+                 if (initWeightPrint) initWeightPrint.textContent = `${this.state.initialWeight.toFixed(1)} kg`;
+                 const dailyWeightPrint = document.getElementById('printDailyWeight');
+                 if (dailyWeightPrint) dailyWeightPrint.textContent = `${this.state.dailyWeight.toFixed(1)} kg`;
+
+                const idealWeightValue = document.getElementById('idealWeight')?.value; // Safe access
                 const printIdealWeightLabelElement = document.getElementById('printIdealWeightLabel');
                 const printIdealWeightValueElement = document.getElementById('printIdealWeight');
-                const idealWeightRow = printIdealWeightValueElement.parentElement; // This gets the <tr>
+                const idealWeightRow = printIdealWeightValueElement?.parentElement; // Safe access
 
-                if (idealWeightValue && !isNaN(parseFloat(idealWeightValue))) {
-                    idealWeightRow.style.display = ''; // or 'table-row' to be specific
-                    printIdealWeightLabelElement.textContent = this.state.adjustedWeight ? 'Justerad idealvikt:' : 'Idealvikt:';
-                    printIdealWeightValueElement.textContent = `${idealWeightValue} kg`;
-                } else {
-                    idealWeightRow.style.display = 'none';
+                if (idealWeightRow) { // Check if row exists
+                    if (idealWeightValue && !isNaN(parseFloat(idealWeightValue))) {
+                        idealWeightRow.style.display = ''; // or 'table-row' to be specific
+                        if (printIdealWeightLabelElement) printIdealWeightLabelElement.textContent = this.state.adjustedWeight ? 'Justerad idealvikt:' : 'Idealvikt:';
+                        if (printIdealWeightValueElement) printIdealWeightValueElement.textContent = `${idealWeightValue} kg`;
+                    } else {
+                        idealWeightRow.style.display = 'none';
+                    }
                 }
-                
-                document.getElementById('printWeightDifference').textContent = `${this.state.weightDifferenceKg.toFixed(1)} kg`;
-                document.getElementById('printCumulativeBalancePrev').textContent = `${document.getElementById('cumulativeBalancePrev').value} ml`;
 
-                document.getElementById('printTotalIntakeMl').textContent = `${Math.round(this.state.totalIntakeMl)} ml`;
-                document.getElementById('printTotalLossMl').textContent = `${Math.round(this.state.totalLossMl)} ml`;
-                document.getElementById('printNetBalanceMl').textContent = `${Math.round(this.state.netBalanceMl)} ml`;
-                document.getElementById('printCumulativeBalanceMl').textContent = `${Math.round(this.state.cumulativeBalanceMl)} ml`;
-                document.getElementById('printTotalKcalIntake').textContent = `${Math.round(this.state.totalIntakeKcal)} Kcal`;
-                document.getElementById('printTotalProteinIntake').textContent = `${this.state.totalIntakeProtein.toFixed(1)} g`;
+                 const weightDiffPrint = document.getElementById('printWeightDifference');
+                 if (weightDiffPrint) weightDiffPrint.textContent = `${this.state.weightDifferenceKg.toFixed(1)} kg`;
+                 const cumBalPrevPrint = document.getElementById('printCumulativeBalancePrev');
+                 if (cumBalPrevPrint) cumBalPrevPrint.textContent = `${document.getElementById('cumulativeBalancePrev')?.value || 0} ml`; // Default to 0
+
+                 const intakeMlPrint = document.getElementById('printTotalIntakeMl');
+                 if (intakeMlPrint) intakeMlPrint.textContent = `${Math.round(this.state.totalIntakeMl)} ml`;
+                 const lossMlPrint = document.getElementById('printTotalLossMl');
+                 if (lossMlPrint) lossMlPrint.textContent = `${Math.round(this.state.totalLossMl)} ml`;
+                 const netBalPrint = document.getElementById('printNetBalanceMl');
+                 if (netBalPrint) netBalPrint.textContent = `${Math.round(this.state.netBalanceMl)} ml`;
+                 const cumBalPrint = document.getElementById('printCumulativeBalanceMl');
+                 if (cumBalPrint) cumBalPrint.textContent = `${Math.round(this.state.cumulativeBalanceMl)} ml`;
+                 const kcalPrint = document.getElementById('printTotalKcalIntake');
+                 if (kcalPrint) kcalPrint.textContent = `${Math.round(this.state.totalIntakeKcal)} Kcal`;
+                 const protPrint = document.getElementById('printTotalProteinIntake');
+                 if (protPrint) protPrint.textContent = `${this.state.totalIntakeProtein.toFixed(1)} g`;
+
 
                 const intakeContainer = document.getElementById('print-details-intake');
                 const lossContainer = document.getElementById('print-details-loss');
 
                 if(!intakeContainer || !lossContainer) return;
-                
+
                 let intakeHtml = '';
                 let lossAndGoalHtml = '';
 
                 // --- INTAKE ---
                 const intakeSections = [
-                    { title: 'Kristalloider/Kolloider', type: 'fluid' },
+                    { title: 'Rena Glucoslösningar/Kolloider', type: 'fluid' }, // Updated title
                     { title: 'Läkemedelsvätskor', type: 'medicine' },
                     { title: 'Blodprodukter', type: 'bloodProduct' },
                     { title: 'TPN/Sondmat/Peroralt', type: 'tpnSondmat' }
                 ];
-                
+
                 let allIntakeEntries = [];
                 intakeSections.forEach(section => {
                     const entries = [];
-                    document.querySelectorAll(`#${this.config[section.type].containerId} [data-id]`).forEach(row => {
+                    const containerId = this.config[section.type]?.containerId; // Safe access
+                     if (!containerId) return;
+                     const container = document.getElementById(containerId); // Get container element
+                     if (!container) return; // Skip if container not found
+
+                    container.querySelectorAll('[data-id]').forEach(row => {
                         const mlValue = parseFloat(row.querySelector('.ml-input')?.value) || 0;
                         if (mlValue > 0) {
                             const select = row.querySelector('.select-main');
                             let name = select?.value;
-                            if (select.value.startsWith('Övrig') || select.value.startsWith('Annan')) {
+                            if (name && (name.startsWith('Övrig') || name.startsWith('Annan'))) {
                                 name = row.querySelector('.custom-input')?.value || name;
                             }
                             const kcalValue = parseFloat(row.querySelector('.kcal-output')?.value) || 0;
@@ -2965,9 +3472,9 @@
                     allIntakeEntries.forEach(section => {
                         intakeHtml += `<tr class="category-row"><td colspan="2"><strong>${section.category}</strong></td></tr>`;
                         section.items.forEach(item => {
-                            const kcalText = item.kcal > 0 ? ` (${item.kcal} Kcal)` : '';
+                            const kcalText = item.kcal > 0 ? ` (${Math.round(item.kcal)} Kcal)` : ''; // Round kcal
                             const proteinText = item.protein > 0 ? ` (${item.protein.toFixed(1)}g Protein)` : '';
-                            intakeHtml += `<tr class="item-row"><td>${item.name}</td><td class="numeric-value">${Math.round(item.ml)} ml${kcalText}${proteinText}</td></tr>`;
+                            intakeHtml += `<tr class="item-row"><td>${item.name || 'Okänd'}</td><td class="numeric-value">${Math.round(item.ml)} ml${kcalText}${proteinText}</td></tr>`; // Round ml
                         });
                     });
                     intakeHtml += '</table>';
@@ -2976,21 +3483,23 @@
 
                 // --- LOSSES ---
                 const lossEntries = [];
-                // Dynamic losses
-                document.querySelectorAll(`#lossEntriesContainer [data-id]`).forEach(row => {
-                    if (row.dataset.id === 'perspiratio_static') return; // Skip static one for now
-                    const mlValue = parseFloat(row.querySelector('.ml-input')?.value) || 0;
-                    if (mlValue > 0) {
-                        const select = row.querySelector('.select-main');
-                        let name = select?.value;
-                        if (name === 'Annan förlust') {
-                            name = row.querySelector('.custom-input')?.value || name;
+                 const lossContainerEl = document.getElementById('lossEntriesContainer'); // Get container element
+                 if (lossContainerEl) {
+                    lossContainerEl.querySelectorAll('[data-id]').forEach(row => {
+                        if (row.dataset.id === 'perspiratio_static') return; // Skip static one for now
+                        const mlValue = parseFloat(row.querySelector('.ml-input')?.value) || 0;
+                        if (mlValue > 0) {
+                            const select = row.querySelector('.select-main');
+                            let name = select?.value;
+                            if (name === 'Annan förlust') {
+                                name = row.querySelector('.custom-input')?.value || name;
+                            }
+                            lossEntries.push({ name, ml: mlValue });
                         }
-                        lossEntries.push({ name, ml: mlValue });
-                    }
-                });
+                    });
+                 }
                 // Static perspiratio
-                const perspiratioMl = parseFloat(document.getElementById('lossMlInput_perspiratio_static').value) || 0;
+                const perspiratioMl = parseFloat(document.getElementById('lossMlInput_perspiratio_static')?.value) || 0;
                 if (perspiratioMl > 0) {
                     lossEntries.push({ name: 'Perspiratio', ml: perspiratioMl });
                 }
@@ -2998,9 +3507,9 @@
                 if (lossEntries.length > 0) {
                     lossAndGoalHtml += `<h3>Förluster</h3><table class="summary-table">`;
                     lossEntries.forEach(entry => {
-                        let text = `<tr><td>${entry.name}</td><td class="numeric-value">${Math.round(entry.ml)} ml</td></tr>`;
+                        let text = `<tr><td>${entry.name || 'Okänd'}</td><td class="numeric-value">${Math.round(entry.ml)} ml</td></tr>`; // Round ml
                         if (entry.name === 'Diures') {
-                            text = `<tr><td>${entry.name}</td><td class="numeric-value">${Math.round(entry.ml)} ml (${this.state.avgHourlyDiuresis.toFixed(2)} ml/kg/h)</td></tr>`;
+                            text = `<tr><td>${entry.name}</td><td class="numeric-value">${Math.round(entry.ml)} ml (${this.state.avgHourlyDiuresis.toFixed(2)} ml/kg/h)</td></tr>`; // Round ml
                         }
                         lossAndGoalHtml += text;
                     });
@@ -3008,19 +3517,19 @@
                 }
 
                 // --- DIURESIS GOAL ---
-                if (document.getElementById('includeDiuresisGoalInPrint').checked) {
+                if (document.getElementById('includeDiuresisGoalInPrint')?.checked) { // Safe access
                     const currentBalance = this.state.netBalanceMl;
-                    const futureIntake = (parseFloat(document.getElementById('plannedSingleIntake').value) || 0) + 
-                                         ((parseFloat(document.getElementById('plannedHourlyIntake').value) || 0) * this.calculateDurationInHours(document.getElementById('diuresisCalcTime').value, '06:00'));
-                    const futureLoss = (parseFloat(document.getElementById('plannedSingleLosses').value) || 0) + 
-                                       (parseFloat(document.getElementById('expectedPerspiratioRemaining').value) || 0);
-                    const desiredBalance = parseFloat(document.getElementById('desiredBalanceTomorrow').value) || 0;
-                    const diuresisNeedPerHour = document.getElementById('diuresisNeedPerHour').textContent;
-                    const remainingHours = this.calculateDurationInHours(document.getElementById('diuresisCalcTime').value, '06:00').toFixed(1);
+                    const futureIntake = (parseFloat(document.getElementById('plannedSingleIntake')?.value) || 0) + // Safe access
+                                         ((parseFloat(document.getElementById('plannedHourlyIntake')?.value) || 0) * this.calculateDurationInHours(document.getElementById('diuresisCalcTime')?.value, '06:00')); // Safe access
+                    const futureLoss = (parseFloat(document.getElementById('plannedSingleLosses')?.value) || 0) + // Safe access
+                                       (parseFloat(document.getElementById('expectedPerspiratioRemaining')?.value) || 0); // Safe access
+                    const desiredBalance = parseFloat(document.getElementById('desiredBalanceTomorrow')?.value) || 0; // Safe access
+                    const diuresisNeedPerHour = document.getElementById('diuresisNeedPerHour')?.textContent || '0.0'; // Safe access
+                    const remainingHours = this.calculateDurationInHours(document.getElementById('diuresisCalcTime')?.value, '06:00').toFixed(1); // Safe access
                     const diuresisNeedTotal = parseFloat(diuresisNeedPerHour) * parseFloat(remainingHours);
 
                     lossAndGoalHtml += `
-                        <h3>Plan för att nå vätskebalansmål (från kl. ${document.getElementById('diuresisCalcTime').value})</h3>
+                        <h3>Plan för att nå vätskebalansmål (från kl. ${document.getElementById('diuresisCalcTime')?.value || '??:??'})</h3>
                         <table class="summary-table">
                             <tr><td>Nuvarande nettobalans:</td><td class="numeric-value">${Math.round(currentBalance)} ml</td></tr>
                             <tr><td>+ Förväntad framtida tillförsel:</td><td class="numeric-value">${Math.round(futureIntake)} ml</td></tr>
@@ -3035,20 +3544,45 @@
                 lossContainer.innerHTML = lossAndGoalHtml;
             },
             collectFormData() {
-                const data = { patientInfo: {}, fluidEntries: [], medicineEntries: [], bloodProductEntries: [], tpnSondmatEntries: [], lossEntries: [], perspiratioCalc: {}, diuresisCalc: {} };
-                ['dateInput', 'startTime', 'endTime', 'bedSelect', 'otherLocationInput', 'initialWeight', 'dailyWeight', 'height', 'gender', 'isUnder15', 'cumulativeBalancePrev', 'naclSyringes', 'pressureSets'].forEach(id => data.patientInfo[id] = document.getElementById(id).value);
-                
-                document.querySelectorAll('#fluidEntriesContainer [data-id]').forEach(row => data.fluidEntries.push({ selectValue: row.querySelector('.select-main').value, mlValue: row.querySelector('.ml-input').value, kcalValue: row.querySelector('.kcal-output').value, proteinValue: row.querySelector('.protein-output').value, customValue: row.querySelector('.custom-input').value }));
-                document.querySelectorAll('#medicineEntriesContainer [data-id]').forEach(row => data.medicineEntries.push({ selectValue: row.querySelector('.select-main').value, mlValue: row.querySelector('.ml-input').value, kcalValue: row.querySelector('.kcal-output').value, proteinValue: row.querySelector('.protein-output').value, customValue: row.querySelector('.custom-input').value }));
-                document.querySelectorAll('#bloodProductEntriesContainer [data-id]').forEach(row => data.bloodProductEntries.push({ selectValue: row.querySelector('.select-main').value, mlValue: row.querySelector('.ml-input').value }));
-                document.querySelectorAll('#tpnSondmatEntriesContainer [data-id]').forEach(row => data.tpnSondmatEntries.push({ selectValue: row.querySelector('.select-main').value, mlValue: row.querySelector('.ml-input').value, kcalValue: row.querySelector('.kcal-output').value, proteinValue: row.querySelector('.protein-output').value, customValue: row.querySelector('.custom-input').value }));
+                const data = {
+                    patientInfo: {}, fluidEntries: [], medicineEntries: [], bloodProductEntries: [], tpnSondmatEntries: [], lossEntries: [],
+                    perspiratioCalc: {}, diuresisCalc: {}, nutritionPlan: { infusions: [], boluses: [], startTime: '', endTime: ''} // Add nutrition plan to data
+                };
+                ['dateInput', 'startTime', 'endTime', 'bedSelect', 'otherLocationInput', 'initialWeight', 'dailyWeight', 'height', 'gender', 'isUnder15', 'cumulativeBalancePrev', 'naclSyringes', 'pressureSets'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) data.patientInfo[id] = el.value;
+                 });
+
+                 // Main entries
+                document.querySelectorAll('#fluidEntriesContainer [data-id]').forEach(row => data.fluidEntries.push({ selectValue: row.querySelector('.select-main')?.value, mlValue: row.querySelector('.ml-input')?.value, kcalValue: row.querySelector('.kcal-output')?.value, proteinValue: row.querySelector('.protein-output')?.value, customValue: row.querySelector('.custom-input')?.value }));
+                document.querySelectorAll('#medicineEntriesContainer [data-id]').forEach(row => data.medicineEntries.push({ selectValue: row.querySelector('.select-main')?.value, mlValue: row.querySelector('.ml-input')?.value, kcalValue: row.querySelector('.kcal-output')?.value, proteinValue: row.querySelector('.protein-output')?.value, customValue: row.querySelector('.custom-input')?.value }));
+                document.querySelectorAll('#bloodProductEntriesContainer [data-id]').forEach(row => data.bloodProductEntries.push({ selectValue: row.querySelector('.select-main')?.value, mlValue: row.querySelector('.ml-input')?.value }));
+                document.querySelectorAll('#tpnSondmatEntriesContainer [data-id]').forEach(row => data.tpnSondmatEntries.push({ selectValue: row.querySelector('.select-main')?.value, mlValue: row.querySelector('.ml-input')?.value, kcalValue: row.querySelector('.kcal-output')?.value, proteinValue: row.querySelector('.protein-output')?.value, customValue: row.querySelector('.custom-input')?.value }));
                 document.querySelectorAll('#lossEntriesContainer [data-id]').forEach(row => {
-                    if(row.dataset.id !== 'perspiratio_static') data.lossEntries.push({ selectValue: row.querySelector('.select-main').value, mlValue: row.querySelector('.ml-input').value, customValue: row.querySelector('.custom-input').value })
+                    if(row.dataset.id !== 'perspiratio_static') data.lossEntries.push({ selectValue: row.querySelector('.select-main')?.value, mlValue: row.querySelector('.ml-input')?.value, customValue: row.querySelector('.custom-input')?.value })
                 });
-                data.lossEntries.push({ selectValue: 'Perspiratio', mlValue: document.getElementById('lossMlInput_perspiratio_static').value }); // Add static perspiratio
-                
-                data.perspiratioCalc = { breathingSupport: document.getElementById('breathingSupport').value, maxTemp: document.getElementById('maxTemp').value };
-                data.diuresisCalc = { desiredBalanceTomorrow: document.getElementById('desiredBalanceTomorrow').value, diuresisCalcTime: document.getElementById('diuresisCalcTime').value, plannedSingleIntake: document.getElementById('plannedSingleIntake').value, plannedHourlyIntake: document.getElementById('plannedHourlyIntake').value, plannedSingleLosses: document.getElementById('plannedSingleLosses').value };
+                data.lossEntries.push({ selectValue: 'Perspiratio', mlValue: document.getElementById('lossMlInput_perspiratio_static')?.value }); // Add static perspiratio
+
+                // Calculators
+                data.perspiratioCalc = { breathingSupport: document.getElementById('breathingSupport')?.value, maxTemp: document.getElementById('maxTemp')?.value };
+                data.diuresisCalc = { desiredBalanceTomorrow: document.getElementById('desiredBalanceTomorrow')?.value, diuresisCalcTime: document.getElementById('diuresisCalcTime')?.value, plannedSingleIntake: document.getElementById('plannedSingleIntake')?.value, plannedHourlyIntake: document.getElementById('plannedHourlyIntake')?.value, plannedSingleLosses: document.getElementById('plannedSingleLosses')?.value };
+
+                // Nutrition Plan
+                 data.nutritionPlan.startTime = document.getElementById('nutritionPlanStartTime')?.value;
+                 data.nutritionPlan.endTime = document.getElementById('nutritionPlanEndTime')?.value;
+                 document.querySelectorAll('#plannedInfusionsContainer [data-id]').forEach(row => {
+                     data.nutritionPlan.infusions.push({
+                         selectValue: row.querySelector('.select-main')?.value,
+                         rateValue: row.querySelector('.rate-input')?.value // Use rateValue
+                     });
+                 });
+                 document.querySelectorAll('#plannedBolusesContainer [data-id]').forEach(row => {
+                     data.nutritionPlan.boluses.push({
+                         selectValue: row.querySelector('.select-main')?.value,
+                         amountValue: row.querySelector('.amount-input')?.value // Use amountValue
+                     });
+                 });
+
                 return data;
             },
             saveDataToFile() {
@@ -3060,7 +3594,7 @@
                     const bed = data.patientInfo.bedSelect === 'Annan plats' ? (data.patientInfo.otherLocationInput || 'OkändSäng') : (data.patientInfo.bedSelect || 'OkändSäng');
                     const date = data.patientInfo.dateInput || 'OkäntDatum';
                     const filename = `${bed}_${date}_${time}.json`;
-                    
+
                     const blob = new Blob([jsonData], { type: 'application/json' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -3091,26 +3625,36 @@
                 event.target.value = ''; // Reset file input
             },
             populateFormWithData(data) {
-                // Clear existing dynamic rows
+                // Clear existing dynamic rows (including planned ones)
                 Object.values(this.dom.containers).forEach(container => {
-                    container.querySelectorAll('[data-id]:not([data-id="perspiratio_static"])').forEach(row => row.remove());
+                     if (container) { // Check if container exists
+                         // Clear only dynamic rows, keep static perspiratio structure
+                         if (container.id === 'lossEntriesContainer') {
+                            container.querySelectorAll('[data-id]:not([data-id="perspiratio_static"])').forEach(row => row.remove());
+                         } else {
+                            container.innerHTML = ''; // Clear other containers completely
+                         }
+                     }
                 });
-                Object.keys(this.counters).forEach(key => this.counters[key] = 0);
+                Object.keys(this.counters).forEach(key => this.counters[key] = 0); // Reset counters
 
                 // Populate patient info
-                for(const id in data.patientInfo) {
-                    const el = document.getElementById(id);
-                    if(el) el.value = data.patientInfo[id];
+                if (data.patientInfo) {
+                    for(const id in data.patientInfo) {
+                        const el = document.getElementById(id);
+                        if(el) el.value = data.patientInfo[id];
+                    }
                 }
-                
-                // Create and populate rows
+
+                // Create and populate main rows
                 data.fluidEntries?.forEach(d => this.addRow('fluid', d));
                 data.medicineEntries?.forEach(d => this.addRow('medicine', d));
                 data.bloodProductEntries?.forEach(d => this.addRow('bloodProduct', d));
                 data.tpnSondmatEntries?.forEach(d => this.addRow('tpnSondmat', d));
                 data.lossEntries?.forEach(d => {
                     if (d.selectValue === 'Perspiratio') {
-                        document.getElementById('lossMlInput_perspiratio_static').value = d.mlValue;
+                        const perspInput = document.getElementById('lossMlInput_perspiratio_static');
+                        if (perspInput) perspInput.value = d.mlValue;
                     } else {
                         this.addRow('loss', d);
                     }
@@ -3130,61 +3674,106 @@
                     }
                 }
 
+                // Populate Nutrition Plan
+                 if (data.nutritionPlan) {
+                     // Cache elements if not already done (needed after clearing)
+                     this.cacheNutritionPlanElements();
+
+                     const startTimeEl = this.dom.nutritionPlan.startTime;
+                     if (startTimeEl) startTimeEl.value = data.nutritionPlan.startTime || '06:00';
+                     const endTimeEl = this.dom.nutritionPlan.endTime;
+                     if (endTimeEl) endTimeEl.value = data.nutritionPlan.endTime || '06:00';
+
+                     // Add rows using the specific function and initialData structure
+                     data.nutritionPlan.infusions?.forEach(infusionData => {
+                         this.addPlannedNutritionRow('infusion', infusionData);
+                     });
+                     data.nutritionPlan.boluses?.forEach(bolusData => {
+                          this.addPlannedNutritionRow('bolus', bolusData);
+                     });
+                 }
+
+
                 this.checkInitialInputColors();
-                this.updateAllCalculations();
+                this.updateAllCalculations(); // Recalculate everything once form is populated
             },
             resetAll() {
-                // Rensa alla input-fält
+                // Rensa alla input-fält, select etc.
                 document.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="hidden"], select').forEach(el => {
-                    if (el.id === 'startTime' || el.id === 'endTime') {
+                    // Behåll standardvärden för vissa fält
+                    if (el.id === 'startTime' || el.id === 'endTime' || el.id === 'nutritionPlanStartTime' || el.id === 'nutritionPlanEndTime') {
                         el.value = '06:00';
                     } else if (el.id === 'maxTemp') {
                         el.value = '37.0';
                     } else if (el.id === 'isUnder15') {
                         el.value = 'no';
+                    } else if (el.id === 'breathingSupport') {
+                         el.value = 'standard'; // Reset breathing support
+                    } else if (el.id === 'naclSyringes' || el.id === 'pressureSets') {
+                         el.value = '0'; // Reset counters
                     } else if (el.tagName === 'SELECT') {
-                        el.selectedIndex = 0;
-                    } else {
-                        el.value = '';
+                         if (el.id !== 'lossSelect_perspiratio_static') {
+                            el.selectedIndex = 0; // Reset select lists
+                         }
+                    } else if (el.id !== 'lossMlInput_perspiratio_static'){
+                        el.value = ''; // Rensa övriga textfält
                     }
                 });
+                 // Rensa statisk perspiratio-värde
+                 const staticPerspInput = document.getElementById('lossMlInput_perspiratio_static');
+                 if (staticPerspInput) staticPerspInput.value = '';
 
-                // Rensa alla dynamiska rader
-                Object.values(this.dom.containers).forEach(container => {
-                    container.innerHTML = '';
-                });
-                
-                // Återställ perspiratio-raden
-                this.dom.containers.loss.innerHTML = `
-                    <div class="loss-entry-row" data-id="perspiratio_static">
-                        <div class="grid-item">
-                            <select id="lossSelect_perspiratio_static" disabled>
-                                <option value="Perspiratio" selected disabled>Perspiratio</option>
-                            </select>
-                        </div>
-                        <div class="grid-item">
-                            <input type="text" id="lossMlInput_perspiratio_static" value="">
-                        </div>
-                        <button class="remove-fluid-button disabled" disabled><i class="fas fa-trash"></i></button>
-                    </div>`;
+                // Rensa alla dynamiska rader (inklusive planerade)
+                 Object.values(this.dom.containers).forEach(container => {
+                      if (container) {
+                          // Rensa bara dynamiska rader i loss-containern
+                          if (container.id === 'lossEntriesContainer') {
+                             container.querySelectorAll('[data-id]:not([data-id="perspiratio_static"])').forEach(row => row.remove());
+                          } else {
+                             container.innerHTML = ''; // Töm övriga helt
+                          }
+                      }
+                 });
 
-                // Återställ nutritionskalkylatorn
-                document.getElementById('nutritionLevelDisplay').textContent = 'Inget valt';
-                document.getElementById('kcalSlider').value = 0;
-                document.getElementById('kcalSlider').disabled = true;
-                document.getElementById('proteinLevelDisplay').textContent = 'Inget valt';
-                document.getElementById('proteinSlider').value = 0;
-                document.getElementById('proteinSlider').disabled = true;
-                
-                this.state.nutritionKcalGoal = 0;
-                this.state.nutritionProteinGoal = 0;
-                this.state.nutritionFluidGoal = 0;
-                
-                // Återställ standardvärden och initiala rader
-                this.setDefaultValues();
-                this.addInitialRows();
-                this.checkInitialInputColors();
-                this.updateAllCalculations();
+                 // Återställ nutritionskalkylatorns val och sliders
+                 const nutLevelDisplay = document.getElementById('nutritionLevelDisplay');
+                 if (nutLevelDisplay) nutLevelDisplay.textContent = 'Inget valt';
+                 const kcalSlider = document.getElementById('kcalSlider');
+                 if (kcalSlider) { kcalSlider.value = 0; kcalSlider.disabled = true; }
+                 const proteinLevelDisplay = document.getElementById('proteinLevelDisplay');
+                 if (proteinLevelDisplay) proteinLevelDisplay.textContent = 'Inget valt';
+                 const proteinSlider = document.getElementById('proteinSlider');
+                  if (proteinSlider) { proteinSlider.value = 0; proteinSlider.disabled = true; }
+                  // Reset hidden values
+                   const selectedNutLevel = document.getElementById('selectedNutritionLevel');
+                   if (selectedNutLevel) selectedNutLevel.value = '';
+                   const selectedNutKcal = document.getElementById('selectedNutritionLevelKcal');
+                   if (selectedNutKcal) selectedNutKcal.value = '';
+                   const selectedProtLevel = document.getElementById('selectedProteinLevel');
+                   if (selectedProtLevel) selectedProtLevel.value = '';
+                   const selectedProtValue = document.getElementById('selectedProteinLevelValue');
+                   if (selectedProtValue) selectedProtValue.value = '';
+                    // Reset calculation weight radio
+                    const idealRadio = document.querySelector('input[name="calculationWeightSource"][value="ideal"]');
+                    if (idealRadio) idealRadio.checked = true;
+                    // Reset checkboxes
+                     const feverCheckbox = document.getElementById('applyFeverAdjustment');
+                     if (feverCheckbox) feverCheckbox.checked = true;
+                     const bmiCheckbox = document.getElementById('applyBmiAdjustment');
+                     if (bmiCheckbox) bmiCheckbox.checked = true;
+                     // Reset fluid slider
+                      const fluidSliderEl = document.getElementById('fluidSlider');
+                      if(fluidSliderEl) fluidSliderEl.value = 30; // Reset to default
+
+
+                 // Återställ counters
+                 Object.keys(this.counters).forEach(key => this.counters[key] = 0);
+
+                // Återställ standarddatum och initiala rader
+                this.setDefaultValues(); // Sets date etc.
+                this.addInitialRows(); // Re-adds Diures row
+                this.checkInitialInputColors(); // Set correct input field colors
+                this.updateAllCalculations(); // Recalculate everything
                 this.closeModal('confirmationModalOverlay');
             },
             selectNutritionLevel() {
@@ -3192,80 +3781,110 @@
                 if (selectedRadio) {
                     const selectedValue = selectedRadio.value;
                     const kcalValue = selectedRadio.dataset.kcal;
+                    const nutLevelDisplay = document.getElementById('nutritionLevelDisplay');
+                    const selectedNutLevel = document.getElementById('selectedNutritionLevel');
+                    const selectedNutKcal = document.getElementById('selectedNutritionLevelKcal');
+                    const kcalSlider = document.getElementById('kcalSlider');
 
-                    document.getElementById('nutritionLevelDisplay').textContent = selectedValue;
-                    document.getElementById('selectedNutritionLevel').value = selectedValue;
-                    document.getElementById('selectedNutritionLevelKcal').value = kcalValue;
-                    document.getElementById('kcalSlider').value = kcalValue;
-                    document.getElementById('kcalSlider').disabled = false;
-                    
-                    this.updateAllCalculations();
+                     if(nutLevelDisplay) nutLevelDisplay.textContent = selectedValue;
+                     if(selectedNutLevel) selectedNutLevel.value = selectedValue;
+                     if(selectedNutKcal) selectedNutKcal.value = kcalValue;
+                     if(kcalSlider) {
+                        kcalSlider.value = kcalValue;
+                        kcalSlider.disabled = false;
+                     }
+
+                    this.updateAllCalculations(); // Recalculate after selection
                     this.closeModal('nutritionLevelModalOverlay');
                 }
             },
+            selectProteinLevel() {
+                const selectedRadio = document.querySelector('input[name="proteinLevel"]:checked');
+                if (selectedRadio) {
+                    const selectedValue = selectedRadio.value;
+                    const proteinValue = selectedRadio.dataset.protein;
+                    const protLevelDisplay = document.getElementById('proteinLevelDisplay');
+                    const selectedProtLevel = document.getElementById('selectedProteinLevel');
+                    const selectedProtValue = document.getElementById('selectedProteinLevelValue');
+                    const proteinSlider = document.getElementById('proteinSlider');
+
+                     if(protLevelDisplay) protLevelDisplay.textContent = selectedValue;
+                     if(selectedProtLevel) selectedProtLevel.value = selectedValue;
+                     if(selectedProtValue) selectedProtValue.value = proteinValue;
+                     if(proteinSlider) {
+                         proteinSlider.value = proteinValue;
+                         proteinSlider.disabled = false;
+                     }
+
+                    this.updateAllCalculations(); // Recalculate after selection
+                    this.closeModal('proteinLevelModalOverlay');
+                }
+            },
             updateNutritionCalculationWeight() {
-                const source = document.querySelector('input[name="calculationWeightSource"]:checked').value;
+                const source = document.querySelector('input[name="calculationWeightSource"]:checked')?.value; // Safe access
                 const finalWeightInput = document.getElementById('nutritionFinalCalculationWeight');
+                 if (!finalWeightInput) return; // Exit if not found
 
                 if (source === 'custom') {
-                    this.updateNutritionGoal();
-                    this.updateProteinGoal();
-                    this.updateFluidGoal();
-                    return;
+                    // When custom is selected, don't auto-update the value, just recalculate goals based on it
+                } else {
+                     const dailyWeight = parseFloat(document.getElementById('dailyWeight')?.value); // Safe
+                     const idealOrAdjustedWeight = parseFloat(document.getElementById('idealWeight')?.value); // Safe
+
+                    if (source === 'ideal') {
+                        finalWeightInput.value = isNaN(idealOrAdjustedWeight) ? '' : idealOrAdjustedWeight.toFixed(1);
+                    } else { // source === 'daily'
+                        finalWeightInput.value = isNaN(dailyWeight) ? '' : dailyWeight.toFixed(1);
+                    }
                 }
 
-                const dailyWeight = parseFloat(document.getElementById('dailyWeight').value);
-                const idealOrAdjustedWeight = parseFloat(document.getElementById('idealWeight').value);
-                
-                if (source === 'ideal') {
-                    finalWeightInput.value = isNaN(idealOrAdjustedWeight) ? '' : idealOrAdjustedWeight.toFixed(1);
-                } else { // source === 'daily'
-                    finalWeightInput.value = isNaN(dailyWeight) ? '' : dailyWeight.toFixed(1);
-                }
-                
+                // Always update goals after weight source logic
                 this.updateNutritionGoal();
                 this.updateProteinGoal();
                 this.updateFluidGoal();
+                 // Recalculate planned nutrition as goals/weight might affect prognosis %
+                 this.calculatePlannedNutrition();
             },
             updateNutritionGoal() {
                 const kcalSlider = document.getElementById('kcalSlider');
+                 if (!kcalSlider) return;
                 const kcalPerKg = parseFloat(kcalSlider.value);
-                let calculationWeight = parseFloat(document.getElementById('nutritionFinalCalculationWeight').value);
-                const temp = parseFloat(document.getElementById('maxTemp').value);
-                const adjustForFever = document.getElementById('applyFeverAdjustment').checked;
-                
+                let calculationWeight = parseFloat(document.getElementById('nutritionFinalCalculationWeight')?.value); // Safe
+                const temp = parseFloat(document.getElementById('maxTemp')?.value); // Safe
+                const adjustForFever = document.getElementById('applyFeverAdjustment')?.checked; // Safe access
+
                 const kcalGoalDisplay = document.getElementById('kcalGoalDisplay');
                 const kcalSliderValue = document.getElementById('kcalSliderValue');
                 const nutritionLevelDisplay = document.getElementById('nutritionLevelDisplay');
                 const selectedNutritionLevel = document.getElementById('selectedNutritionLevel');
                 const kcalFeverWarning = document.getElementById('kcalFeverWarning');
-                
-                kcalSliderValue.textContent = `${kcalPerKg} kcal/kg`;
+
+                 if (kcalSliderValue) kcalSliderValue.textContent = `${kcalPerKg} kcal/kg`;
 
                 if (calculationWeight && !isNaN(calculationWeight)) {
                     let totalKcal = Math.round(kcalPerKg * calculationWeight);
-                    
-                    if(adjustForFever && temp > 37) {
+
+                    if(adjustForFever && temp > 37 && !isNaN(temp)) { // Added NaN check
                         const feverAdjustmentPercent = (temp - 37) * 10;
                         totalKcal = Math.round(totalKcal * (1 + feverAdjustmentPercent / 100));
-                        kcalFeverWarning.textContent = `(Feberjusterat +${feverAdjustmentPercent.toFixed(0)}%)`;
-                        kcalFeverWarning.style.display = 'block';
-                    } else {
+                        if (kcalFeverWarning) {
+                            kcalFeverWarning.textContent = `(Feberjusterat +${feverAdjustmentPercent.toFixed(0)}%)`;
+                            kcalFeverWarning.style.display = 'block';
+                        }
+                    } else if (kcalFeverWarning) {
                         kcalFeverWarning.style.display = 'none';
                     }
 
-                    kcalGoalDisplay.textContent = `Mål: ${totalKcal} kcal/dygn`;
-                    this.state.nutritionKcalGoal = totalKcal;
+                    if (kcalGoalDisplay) kcalGoalDisplay.textContent = `Mål: ${totalKcal} kcal/dygn`;
                 } else {
-                    kcalGoalDisplay.textContent = `Mål: Ange patientdata`;
-                    this.state.nutritionKcalGoal = 0;
-                    kcalFeverWarning.style.display = 'none';
+                    if (kcalGoalDisplay) kcalGoalDisplay.textContent = `Mål: Ange patientdata`;
+                    if (kcalFeverWarning) kcalFeverWarning.style.display = 'none';
                 }
-                
-                if (kcalSlider.disabled) return;
+
+                if (kcalSlider.disabled || !nutritionLevelDisplay || !selectedNutritionLevel) return;
 
                 let levelText = "Egen inställning";
-                if (kcalPerKg < 12.5) levelText = "Nivå 0: Resusciteringsfas (5-10 kcal/kg)";
+                 if (kcalPerKg < 12.5) levelText = "Nivå 0: Resusciteringsfas (5-10 kcal/kg)";
                 else if (kcalPerKg < 17.5) levelText = "Nivå 1: Akut instabil fas (15 kcal/kg)";
                 else if (kcalPerKg < 22.5) levelText = "Nivå 2: Akut stabil fas (20 kcal/kg)";
                 else if (kcalPerKg < 27.5) levelText = "Nivå 3: Tidig återuppbyggnadsfas (25 kcal/kg)";
@@ -3273,62 +3892,50 @@
 
                 nutritionLevelDisplay.textContent = levelText;
                 selectedNutritionLevel.value = levelText;
-            },
-            selectProteinLevel() {
-                const selectedRadio = document.querySelector('input[name="proteinLevel"]:checked');
-                if (selectedRadio) {
-                    const selectedValue = selectedRadio.value;
-                    const proteinValue = selectedRadio.dataset.protein;
-
-                    document.getElementById('proteinLevelDisplay').textContent = selectedValue;
-                    document.getElementById('selectedProteinLevel').value = selectedValue;
-                    document.getElementById('selectedProteinLevelValue').value = proteinValue;
-                    document.getElementById('proteinSlider').value = proteinValue;
-                    document.getElementById('proteinSlider').disabled = false;
-                    
-                    this.updateAllCalculations();
-                    this.closeModal('proteinLevelModalOverlay');
-                }
+                 this.calculatePlannedNutrition(); // Update prognosis if goal changes
             },
             updateProteinGoal() {
                 const proteinSlider = document.getElementById('proteinSlider');
+                 if (!proteinSlider) return;
                 const proteinPerKg = parseFloat(proteinSlider.value);
-                let calculationWeight = parseFloat(document.getElementById('nutritionFinalCalculationWeight').value);
-                const height = parseFloat(document.getElementById('height').value);
-                const dailyWeight = parseFloat(document.getElementById('dailyWeight').value);
-                const adjustForBmi = document.getElementById('applyBmiAdjustment').checked;
-                
+                let calculationWeight = parseFloat(document.getElementById('nutritionFinalCalculationWeight')?.value); // Safe
+                const height = parseFloat(document.getElementById('height')?.value); // Safe
+                const dailyWeight = parseFloat(document.getElementById('dailyWeight')?.value); // Safe
+                const adjustForBmi = document.getElementById('applyBmiAdjustment')?.checked; // Safe access
+
                 const proteinGoalDisplay = document.getElementById('proteinGoalDisplay');
                 const proteinSliderValue = document.getElementById('proteinSliderValue');
                 const proteinLevelDisplay = document.getElementById('proteinLevelDisplay');
                 const selectedProteinLevel = document.getElementById('selectedProteinLevel');
                 const proteinBmiWarning = document.getElementById('proteinBmiWarning');
 
-                proteinSliderValue.textContent = `${proteinPerKg.toFixed(1)} g/kg`;
-                
-                if(height && dailyWeight) {
-                    const bmi = dailyWeight / ((height/100) * (height/100));
-                    if(adjustForBmi && bmi > 25) {
-                        calculationWeight = 25 * ((height/100) * (height/100));
-                        proteinBmiWarning.style.display = 'block';
+                 if (proteinSliderValue) proteinSliderValue.textContent = `${proteinPerKg.toFixed(1)} g/kg`;
+
+                if (proteinBmiWarning) { // Check if element exists
+                    if(height && dailyWeight && !isNaN(height) && !isNaN(dailyWeight) && height > 0) { // Added checks
+                        const bmi = dailyWeight / ((height/100) * (height/100));
+                        if(adjustForBmi && bmi > 25) {
+                            calculationWeight = 25 * ((height/100) * (height/100)); // Calculate weight for BMI 25
+                             calculationWeight = Math.max(0, calculationWeight); // Ensure non-negative
+                            proteinBmiWarning.style.display = 'block';
+                        } else {
+                            proteinBmiWarning.style.display = 'none';
+                        }
                     } else {
                         proteinBmiWarning.style.display = 'none';
                     }
-                } else {
-                    proteinBmiWarning.style.display = 'none';
                 }
 
 
                 if (calculationWeight && !isNaN(calculationWeight)) {
+                     calculationWeight = Math.max(0, calculationWeight); // Ensure non-negative
                     const totalProtein = Math.round(proteinPerKg * calculationWeight);
-                    proteinGoalDisplay.textContent = `Mål: ${totalProtein} g/dygn`;
-                    this.state.nutritionProteinGoal = totalProtein;
+                    if (proteinGoalDisplay) proteinGoalDisplay.textContent = `Mål: ${totalProtein} g/dygn`;
                 } else {
-                    proteinGoalDisplay.textContent = `Mål: Ange patientdata`;
-                    this.state.nutritionProteinGoal = 0;
+                    if (proteinGoalDisplay) proteinGoalDisplay.textContent = `Mål: Ange patientdata`;
                 }
 
-                if(proteinSlider.disabled) return;
+                if(proteinSlider.disabled || !proteinLevelDisplay || !selectedProteinLevel) return;
 
                 let levelText = "Egen inställning";
                 if (proteinPerKg <= 0.6) {
@@ -3337,102 +3944,217 @@
                     levelText = "Standard IVA-patient";
                 } else if (proteinPerKg >= 1.6 && proteinPerKg <= 2.0) {
                     levelText = "Brännskador, IHD, trauma";
-                } else if (proteinPerKg > 2.0) {
+                } else if (proteinPerKg > 2.0) { // Should only happen via button click setting 2.0
                     levelText = "Obesitas (BMI > 30)";
                 }
 
                 proteinLevelDisplay.textContent = levelText;
                 selectedProteinLevel.value = levelText;
+                 this.calculatePlannedNutrition(); // Update prognosis if goal changes
             },
              updateFluidGoal() {
                 const fluidSlider = document.getElementById('fluidSlider');
+                 if (!fluidSlider) return;
                 const fluidPerKg = parseFloat(fluidSlider.value);
-                let calculationWeight = parseFloat(document.getElementById('nutritionFinalCalculationWeight').value);
-                const height = parseFloat(document.getElementById('height').value);
-                const dailyWeight = parseFloat(document.getElementById('dailyWeight').value);
-                const temp = parseFloat(document.getElementById('maxTemp').value);
-                const adjustForFever = document.getElementById('applyFeverAdjustment').checked;
-                const adjustForBmi = document.getElementById('applyBmiAdjustment').checked;
-                
+                let calculationWeight = parseFloat(document.getElementById('nutritionFinalCalculationWeight')?.value); // Safe
+                const height = parseFloat(document.getElementById('height')?.value); // Safe
+                const dailyWeight = parseFloat(document.getElementById('dailyWeight')?.value); // Safe
+                const temp = parseFloat(document.getElementById('maxTemp')?.value); // Safe
+                const adjustForFever = document.getElementById('applyFeverAdjustment')?.checked; // Safe access
+                const adjustForBmi = document.getElementById('applyBmiAdjustment')?.checked; // Safe access
+
                 const fluidGoalDisplay = document.getElementById('fluidGoalDisplay');
                 const fluidSliderValue = document.getElementById('fluidSliderValue');
                 const fluidBmiWarning = document.getElementById('fluidBmiWarning');
                 const fluidFeverWarning = document.getElementById('fluidFeverWarning');
 
-                fluidSliderValue.textContent = `${fluidPerKg} ml/kg`;
-                
-                if(height && dailyWeight) {
-                    const bmi = dailyWeight / ((height/100) * (height/100));
-                    if(adjustForBmi && bmi > 25) {
-                        calculationWeight = 25 * ((height/100) * (height/100));
-                        fluidBmiWarning.style.display = 'block';
+                 if (fluidSliderValue) fluidSliderValue.textContent = `${fluidPerKg} ml/kg`;
+
+                if (fluidBmiWarning) { // Check if element exists
+                    if(height && dailyWeight && !isNaN(height) && !isNaN(dailyWeight) && height > 0) { // Added checks
+                        const bmi = dailyWeight / ((height/100) * (height/100));
+                        if(adjustForBmi && bmi > 25) {
+                            calculationWeight = 25 * ((height/100) * (height/100)); // Calculate weight for BMI 25
+                            calculationWeight = Math.max(0, calculationWeight); // Ensure non-negative
+                            fluidBmiWarning.style.display = 'block';
+                        } else {
+                            fluidBmiWarning.style.display = 'none';
+                        }
                     } else {
                         fluidBmiWarning.style.display = 'none';
                     }
-                } else {
-                    fluidBmiWarning.style.display = 'none';
                 }
 
                 if (calculationWeight && !isNaN(calculationWeight)) {
+                     calculationWeight = Math.max(0, calculationWeight); // Ensure non-negative
                     let totalFluid = Math.round(fluidPerKg * calculationWeight);
 
-                    if(adjustForFever && temp > 37) {
+                    if(adjustForFever && temp > 37 && !isNaN(temp)) { // Added NaN check
                         const feverAdjustmentMl = (temp - 37) * 200;
                         totalFluid += Math.round(feverAdjustmentMl);
-                        fluidFeverWarning.textContent = `(Feberjusterat +${Math.round(feverAdjustmentMl)} ml)`;
-                        fluidFeverWarning.style.display = 'block';
-                    } else {
+                        if (fluidFeverWarning) {
+                            fluidFeverWarning.textContent = `(Feberjusterat +${Math.round(feverAdjustmentMl)} ml)`;
+                            fluidFeverWarning.style.display = 'block';
+                        }
+                    } else if (fluidFeverWarning) {
                         fluidFeverWarning.style.display = 'none';
                     }
-                    fluidGoalDisplay.textContent = `Mål: ${totalFluid} ml/dygn`;
-                    this.state.nutritionFluidGoal = totalFluid;
+                    if (fluidGoalDisplay) fluidGoalDisplay.textContent = `Mål: ${totalFluid} ml/dygn`;
                 } else {
-                    fluidGoalDisplay.textContent = `Mål: Ange patientdata`;
-                    this.state.nutritionFluidGoal = 0;
-                    fluidFeverWarning.style.display = 'none';
+                    if (fluidGoalDisplay) fluidGoalDisplay.textContent = `Mål: Ange patientdata`;
+                    if (fluidFeverWarning) fluidFeverWarning.style.display = 'none';
                 }
+                 this.calculatePlannedNutrition(); // Update prognosis if goal changes
             },
              updateResults() {
-                const kcalGoal = this.state.nutritionKcalGoal || 0;
-                const proteinGoal = this.state.nutritionProteinGoal || 0;
-                const fluidGoal = this.state.nutritionFluidGoal || 0;
+                const kcalGoalText = document.getElementById('kcalGoalDisplay')?.textContent || ''; // Safe access
+                const proteinGoalText = document.getElementById('proteinGoalDisplay')?.textContent || ''; // Safe access
+                const fluidGoalText = document.getElementById('fluidGoalDisplay')?.textContent || ''; // Safe access
+
+                const kcalGoal = parseFloat(kcalGoalText.match(/(\d+)\s*kcal/)?.[1]) || 0;
+                const proteinGoal = parseFloat(proteinGoalText.match(/(\d+)\s*g/)?.[1]) || 0;
+                const fluidGoal = parseFloat(fluidGoalText.match(/(\d+)\s*ml/)?.[1]) || 0;
+
 
                 const currentKcal = Math.round(this.state.totalIntakeKcal);
                 const currentFluid = Math.round(this.state.totalIntakeMl);
-                const currentProtein = Math.round(this.state.totalIntakeProtein);
+                const currentProtein = this.state.totalIntakeProtein; // Use potentially non-rounded state value for calculation
 
                 const energyPercent = kcalGoal > 0 ? Math.round((currentKcal / kcalGoal) * 100) : 0;
                 const fluidPercent = fluidGoal > 0 ? Math.round((currentFluid / fluidGoal) * 100) : 0;
                 const proteinPercent = proteinGoal > 0 ? Math.round((currentProtein / proteinGoal) * 100) : 0;
 
-                // Energy
-                document.getElementById('energyResultValue').textContent = `${currentKcal} kcal`;
-                document.getElementById('energyResultPercent').textContent = `(${energyPercent}% av mål)`;
+                // Update UI safely
+                 const energyValEl = document.getElementById('energyResultValue');
+                 if (energyValEl) energyValEl.textContent = `${currentKcal} kcal`;
+                 const energyPercEl = document.getElementById('energyResultPercent');
+                 if (energyPercEl) energyPercEl.textContent = `(${energyPercent}% av mål)`;
 
-                // Protein
-                document.getElementById('proteinResultValue').textContent = `${currentProtein} g`;
-                document.getElementById('proteinResultPercent').textContent = `(${proteinPercent}% av mål)`;
+                 const proteinValEl = document.getElementById('proteinResultValue');
+                 if (proteinValEl) proteinValEl.textContent = `${currentProtein.toFixed(1)} g`; // Show one decimal for protein
+                 const proteinPercEl = document.getElementById('proteinResultPercent');
+                 if (proteinPercEl) proteinPercEl.textContent = `(${proteinPercent}% av mål)`;
 
-                // Fluid
-                document.getElementById('fluidResultValue').textContent = `${currentFluid} ml`;
-                document.getElementById('fluidResultPercent').textContent = `(${fluidPercent}% av basalbehov)`;
+                 const fluidValEl = document.getElementById('fluidResultValue');
+                 if (fluidValEl) fluidValEl.textContent = `${currentFluid} ml`;
+                 const fluidPercEl = document.getElementById('fluidResultPercent');
+                 if (fluidPercEl) fluidPercEl.textContent = `(${fluidPercent}% av basalbehov)`;
             },
+            // --- NEW: Calculate Planned Nutrition ---
+             calculatePlannedNutrition() {
+                 // Ensure DOM elements are cached and ready
+                  if (!this.dom.nutritionPlan || !this.dom.nutritionPlan.startTime || !this.dom.nutritionPlan.endTime) {
+                      // console.warn("Planned nutrition elements not ready during calculation."); // Less aggressive warning
+                      return; // Don't proceed if core elements aren't there
+                  }
+                 const startTime = this.dom.nutritionPlan.startTime.value;
+                 const endTime = this.dom.nutritionPlan.endTime.value;
+                 const duration = this.calculateDurationInHours(startTime, endTime);
+                 this.state.plannedNutrition.duration = duration;
+                  if (this.dom.nutritionPlan.duration) this.dom.nutritionPlan.duration.textContent = `Planerad tid: ${duration.toFixed(1)} timmar`;
+
+                 let totalInfusionKcalPerHour = 0;
+                 let totalInfusionProteinPerHour = 0;
+                 let totalBolusKcal = 0;
+                 let totalBolusProtein = 0;
+
+                 // Calculate infusions
+                 this.dom.nutritionPlan.infusionsContainer?.querySelectorAll('.planned-nutrition-row').forEach(row => { // Safe access
+                     const select = row.querySelector('.select-main');
+                     const rateInput = row.querySelector('.rate-input');
+                     const rate = parseFloat(rateInput?.value) || 0;
+                     const selectedOption = select?.options[select.selectedIndex];
+
+                     if (selectedOption && rate > 0) {
+                         const kcalPerMl = parseFloat(selectedOption.dataset.kcalPerMl || '0');
+                         const proteinPerMl = parseFloat(selectedOption.dataset.proteinPerMl || '0');
+                         totalInfusionKcalPerHour += rate * kcalPerMl;
+                         totalInfusionProteinPerHour += rate * proteinPerMl;
+                     }
+                 });
+
+                 // Calculate boluses
+                 this.dom.nutritionPlan.bolusesContainer?.querySelectorAll('.planned-nutrition-row').forEach(row => { // Safe access
+                     const select = row.querySelector('.select-main');
+                     const amountInput = row.querySelector('.amount-input');
+                     const amount = parseFloat(amountInput?.value) || 0;
+                     const selectedOption = select?.options[select.selectedIndex];
+
+                     if (selectedOption && amount > 0) {
+                         const kcalPerMl = parseFloat(selectedOption.dataset.kcalPerMl || '0');
+                         const proteinPerMl = parseFloat(selectedOption.dataset.proteinPerMl || '0');
+                         totalBolusKcal += amount * kcalPerMl;
+                         totalBolusProtein += amount * proteinPerMl;
+                     }
+                 });
+
+                 // Update state
+                 this.state.plannedNutrition.totalInfusionKcalPerHour = totalInfusionKcalPerHour;
+                 this.state.plannedNutrition.totalInfusionProteinPerHour = totalInfusionProteinPerHour;
+                 this.state.plannedNutrition.totalBolusKcal = totalBolusKcal;
+                 this.state.plannedNutrition.totalBolusProtein = totalBolusProtein;
+
+                 const plannedTotalKcalFromInfusions = totalInfusionKcalPerHour * duration;
+                 const plannedTotalProteinFromInfusions = totalInfusionProteinPerHour * duration;
+
+                 this.state.plannedNutrition.plannedTotalKcal = plannedTotalKcalFromInfusions + totalBolusKcal;
+                 this.state.plannedNutrition.plannedTotalProtein = plannedTotalProteinFromInfusions + totalBolusProtein;
+
+                 // Update UI for planned summary safely
+                  if (this.dom.nutritionPlan.infusionTotalKcalPerHour) this.dom.nutritionPlan.infusionTotalKcalPerHour.textContent = Math.round(totalInfusionKcalPerHour);
+                  if (this.dom.nutritionPlan.infusionTotalProteinPerHour) this.dom.nutritionPlan.infusionTotalProteinPerHour.textContent = totalInfusionProteinPerHour.toFixed(1);
+                  if (this.dom.nutritionPlan.bolusTotalKcal) this.dom.nutritionPlan.bolusTotalKcal.textContent = Math.round(totalBolusKcal);
+                  if (this.dom.nutritionPlan.bolusTotalProtein) this.dom.nutritionPlan.bolusTotalProtein.textContent = totalBolusProtein.toFixed(1);
+                  if (this.dom.nutritionPlan.plannedTotalKcal) this.dom.nutritionPlan.plannedTotalKcal.textContent = Math.round(this.state.plannedNutrition.plannedTotalKcal);
+                  if (this.dom.nutritionPlan.plannedTotalProtein) this.dom.nutritionPlan.plannedTotalProtein.textContent = this.state.plannedNutrition.plannedTotalProtein.toFixed(1);
+
+                  // Calculate and update prognosis
+                  this.updateNutritionPrognosis();
+             },
+              // --- NEW: Update Prognosis ---
+              updateNutritionPrognosis() {
+                  if (!this.dom.nutritionPlan || !this.dom.nutritionPlan.startTime) return; // Ensure elements are ready
+
+                  const currentKcal = this.state.totalIntakeKcal;
+                  const currentProtein = this.state.totalIntakeProtein;
+                  const plannedKcal = this.state.plannedNutrition.plannedTotalKcal;
+                  const plannedProtein = this.state.plannedNutrition.plannedTotalProtein;
+
+                  const prognosisTotalKcal = currentKcal + plannedKcal;
+                  const prognosisTotalProtein = currentProtein + plannedProtein;
+
+                  const kcalGoalText = document.getElementById('kcalGoalDisplay')?.textContent || '';
+                  const proteinGoalText = document.getElementById('proteinGoalDisplay')?.textContent || '';
+                  const kcalGoal = parseFloat(kcalGoalText.match(/(\d+)\s*kcal/)?.[1]) || 0;
+                  const proteinGoal = parseFloat(proteinGoalText.match(/(\d+)\s*g/)?.[1]) || 0;
+
+                  const prognosisKcalPercent = kcalGoal > 0 ? Math.round((prognosisTotalKcal / kcalGoal) * 100) : 0;
+                  const prognosisProteinPercent = proteinGoal > 0 ? Math.round((prognosisTotalProtein / proteinGoal) * 100) : 0;
+
+                  // Update state
+                  this.state.plannedNutrition.prognosisTotalKcal = prognosisTotalKcal;
+                  this.state.plannedNutrition.prognosisTotalProtein = prognosisTotalProtein;
+                  this.state.plannedNutrition.prognosisTotalKcalPercent = prognosisKcalPercent;
+                  this.state.plannedNutrition.prognosisTotalProteinPercent = prognosisProteinPercent;
+
+                  // Update UI safely
+                  if (this.dom.nutritionPlan.prognosisTotalKcal) this.dom.nutritionPlan.prognosisTotalKcal.textContent = Math.round(prognosisTotalKcal);
+                  if (this.dom.nutritionPlan.prognosisTotalKcalPercent) this.dom.nutritionPlan.prognosisTotalKcalPercent.textContent = prognosisKcalPercent;
+                  if (this.dom.nutritionPlan.prognosisTotalProtein) this.dom.nutritionPlan.prognosisTotalProtein.textContent = prognosisTotalProtein.toFixed(1);
+                  if (this.dom.nutritionPlan.prognosisTotalProteinPercent) this.dom.nutritionPlan.prognosisTotalProteinPercent.textContent = prognosisProteinPercent;
+              },
             toggleTheme() {
                 this.dom.body.classList.toggle('dark-theme');
                 const isDark = this.dom.body.classList.contains('dark-theme');
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                this.dom.themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                 if (this.dom.themeToggle) this.dom.themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
             },
             loadTheme() {
                 const savedTheme = localStorage.getItem('theme');
                 const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-                    this.dom.body.classList.add('dark-theme');
-                     this.dom.themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                } else {
-                    this.dom.body.classList.remove('dark-theme');
-                    this.dom.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                }
+                 const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+                 this.dom.body.classList.toggle('dark-theme', isDark);
+                 if (this.dom.themeToggle) this.dom.themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
             }
         };
 
@@ -3440,5 +4162,4 @@
     </script>
 </body>
 </html>
-
 
