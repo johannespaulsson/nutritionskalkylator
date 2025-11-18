@@ -603,15 +603,15 @@
     
     <!-- --- DEV / TEST PANEL (SIMULERA ANDRA APPEN) --- -->
     <details class="dev-panel">
-        <summary>🛠 Utvecklarverktyg: Simulera "Andra Appen" (Vätskebalans)</summary>
+        <summary>🛠 Utvecklarverktyg: Simulera "Vätskebalans IVA" (Testdata)</summary>
         <p style="margin-top: 0; font-size: 0.85rem; color: #555;">
-            Använd detta för att skapa testdata i exakt det format din gamla app sparar (IVA 6 JSON-formatet).
+            Denna panel simulerar att din andra app sparar data i LocalStorage enligt din specifikation (iva_skovde_vatskebalans_saves).
         </p>
         
         <div class="dev-controls">
             <button class="dev-button" id="btnDevShowStorage">Visa LocalStorage</button>
             <button class="dev-button" id="btnDevClearStorage">Rensa LocalStorage</button>
-            <button class="dev-button" id="btnDevGenPatients">Generera test-patienter (IVA Lista)</button>
+            <button class="dev-button" id="btnDevGenPatients">Generera test-patienter</button>
         </div>
         
         <div class="dev-output" id="devOutput">Klicka på en knapp för att se data...</div>
@@ -825,7 +825,7 @@
                 <span class="modal-close">&times;</span>
             </div>
             <div class="modal-body">
-                <p style="color: #666; margin-bottom: 15px;">Välj en patient från listan (sparad i webbläsaren från din andra app):</p>
+                <p style="color: #666; margin-bottom: 15px;">Välj en patient från listan (sparad från Vätskebalans-appen):</p>
                 <ul id="savedPatientList" class="patient-list">
                     <!-- Listan fylls på med JS -->
                     <li style="color: #aaa; font-style: italic;">Hämtar lista...</li>
@@ -962,6 +962,8 @@
 
             // Spara data för delning (När man jobbar i denna appen)
             function saveSharedData() {
+                // Denna appen skriver INTE till 'iva_skovde_vatskebalans_saves' (det är bara för import)
+                // Men vi sparar sessionen så man kan ladda om sidan
                 const patientData = {
                     currentWeight: currentWeightInput.value,
                     calcWeight: calculationWeightInput.value,
@@ -972,41 +974,45 @@
                 };
 
                 if (patientData.currentWeight || patientData.length) {
-                    localStorage.setItem('iva_patient_data', JSON.stringify(patientData));
+                    localStorage.setItem('iva_nutrition_session', JSON.stringify(patientData));
                 }
             }
             
-            // Hjälpfunktion för att fylla i formuläret smartare
+            // Hjälpfunktion för att fylla i formuläret
             function populateForm(data) {
                 if(!data || typeof data !== 'object') return;
                 
-                // 1. Försök hitta data i strukturen från din GAMLA app (baserat på JSON-filen)
+                // Hämta data från den specifika strukturen (från 'iva_skovde_vatskebalans_saves' ELLER sessionsdata)
+                
                 let pLen, pGen, pWgt, pTemp, pFev;
 
+                // Fall 1: Data från Vätskebalans-appen (enligt specifikation)
                 if (data.patientInfo) {
-                    // Det här är formatet från din JSON-fil!
                     pLen = data.patientInfo.height;
                     pGen = data.patientInfo.gender;
+                    // Prioritera dagens vikt, annars intagsvikt
                     pWgt = data.patientInfo.dailyWeight || data.patientInfo.initialWeight;
-                    // Temperaturen ligger under perspiratioCalc
+                    
                     if (data.perspiratioCalc) {
                         pTemp = data.perspiratioCalc.maxTemp;
                     }
-                    // Feberjustering är inte explicit i din gamla app, så vi gissar
-                    pFev = true; 
-                } else {
-                    // Det här är formatet från DENNA nya appen (iva_patient_data)
-                    pLen = data.length || data.langd || data.Length || "";
-                    pGen = data.gender || data.sex || data.kon || "";
-                    pWgt = data.currentWeight || data.weight || data.vikt || "";
-                    pTemp = data.temp || data.temperature || data.feber || 37.5;
-                    pFev = (data.feverAdj !== undefined) ? data.feverAdj : true; 
+                    // Vi antar att om febertemp är satt > 37.5 så vill man ha feberjustering
+                    const tempVal = parseFloat(pTemp);
+                    pFev = (tempVal && tempVal > 37.5);
+                } 
+                // Fall 2: Sessionsdata från denna appen
+                else {
+                    pLen = data.length;
+                    pGen = data.gender;
+                    pWgt = data.currentWeight;
+                    pTemp = data.temp;
+                    pFev = (data.feverAdj !== undefined) ? data.feverAdj : true;
                 }
 
                 // Fyll i formuläret
                 if(pLen) lengthInput.value = pLen;
                 
-                // Hantera Kön: Din app säger "Man" eller "Kvinna"
+                // Hantera Kön
                 if(pGen) {
                     const gLower = pGen.toString().toLowerCase();
                     if(gLower.includes('man') || gLower.includes('male')) genderInput.value = "male";
@@ -1108,61 +1114,56 @@
                 saveSharedData();
             }
             
-            // --- IMPORT-LOGIK (Läser listan) ---
+            // --- IMPORT-LOGIK (Specifik för Vätskebalans-data) ---
             function updatePatientList() {
-                // Läs listan från din andra app (som vi kom överens om ska heta 'iva_saved_patients')
-                const storedListJSON = localStorage.getItem('iva_saved_patients');
-                let patients = [];
+                // Hämta data från den specifika nyckeln
+                const storedJSON = localStorage.getItem('iva_skovde_vatskebalans_saves');
+                let allSaves = {};
                 
-                if (storedListJSON) {
+                if (storedJSON) {
                     try {
-                        patients = JSON.parse(storedListJSON);
+                        allSaves = JSON.parse(storedJSON);
                     } catch(e) { console.error("Kunde inte läsa patientlista", e); }
                 }
 
+                // Konvertera objektet till en lista och sortera (nyast först)
+                const sortedKeys = Object.keys(allSaves).sort((a, b) => b - a);
+
                 savedPatientList.innerHTML = "";
                 
-                if (patients.length === 0) {
+                if (sortedKeys.length === 0) {
                      const li = document.createElement('li');
                      li.innerHTML = '<span style="color: #aaa; font-style: italic;">Inga sparade patienter hittades. Använd dev-tools nedan för att skapa testdata.</span>';
                      savedPatientList.appendChild(li);
                 } else {
-                    // Sortera så nyaste kommer först (om datum finns)
-                    patients.reverse(); 
-                    
-                    patients.forEach(p => {
-                        const li = document.createElement('li');
-                        // Snygg formatering av datum/id
-                        // Om din gamla app sparar ID direkt som en sträng eller datum
-                        // Vi gissar att strukturen är { id: "...", data: {...} } eller liknande
-                        // Om det är din JSON-fil direkt sparad i listan:
-                        
-                        let displayId = "Okänd";
-                        let displayDate = "";
-                        let dataToLoad = p; // Default
-
-                        if (p.id) {
-                            displayId = p.id;
-                            displayDate = p.date || "";
-                            dataToLoad = p.data || p;
-                        } else if (p.patientInfo) {
-                            // Om hela JSON-objektet ligger direkt i listan
-                            displayId = p.patientInfo.bedSelect || "Patient";
-                            displayDate = p.patientInfo.dateInput || "";
-                            dataToLoad = p;
+                    sortedKeys.forEach(key => {
+                        const saveItem = allSaves[key];
+                        // Plocka fram visningsnamn
+                        let displayName = saveItem.name || "Okänd patient";
+                        // Om ingen "name" finns, bygg en av infon
+                        if (!saveItem.name && saveItem.data && saveItem.data.patientInfo) {
+                            const pi = saveItem.data.patientInfo;
+                            displayName = `${pi.bedSelect || 'Säng?'} - ${pi.dateInput || ''}`;
                         }
 
+                        const li = document.createElement('li');
                         li.innerHTML = `
                             <div>
-                                <div class="pat-id">${displayId}</div>
-                                <div class="pat-date">${displayDate}</div>
+                                <div class="pat-id">${displayName}</div>
+                                <div class="pat-date">ID: ${key}</div>
                             </div>
                             <div style="color: #1a73e8;"><i class="fas fa-arrow-right"></i></div>
                         `;
                         li.addEventListener('click', () => {
-                            if(confirm(`Vill du importera patient ${displayId}?`)) {
-                                populateForm(dataToLoad);
-                                closeModal(importModal);
+                            // Hämta det inre 'data'-objektet
+                            const clinicalData = saveItem.data;
+                            if (clinicalData) {
+                                if(confirm(`Vill du importera "${displayName}"?`)) {
+                                    populateForm(clinicalData);
+                                    closeModal(importModal);
+                                }
+                            } else {
+                                alert("Kunde inte läsa data för denna patient.");
                             }
                         });
                         savedPatientList.appendChild(li);
@@ -1189,38 +1190,58 @@
             });
 
             btnDevGenPatients.addEventListener('click', () => {
-                // HÄR ÄR DIN TESTDATA - BASERAD PÅ DIN FIL "IVA 6_2025-11-17..."
-                const testPatients = [
-                    { 
-                        // Exempel 1: Din JSON-struktur direkt
-                        patientInfo: {
-                            dateInput: "2025-11-17",
-                            bedSelect: "IVA 6 (Simulerad)",
-                            dailyWeight: "71",
-                            height: "169",
-                            gender: "Man"
-                        },
-                        perspiratioCalc: {
-                            maxTemp: "37.0"
-                        }
-                    },
-                    {
-                         // Exempel 2: En annan patient
-                        patientInfo: {
-                            dateInput: "2025-11-18",
-                            bedSelect: "IVA 4 (Simulerad)",
-                            dailyWeight: "85",
-                            height: "182",
-                            gender: "Kvinna"
-                        },
-                        perspiratioCalc: {
-                            maxTemp: "38.5"
+                // TESTDATA SOM MATCHAR DIN SPECIFIKATION
+                const timestamp = Date.now();
+                const testData = {
+                    [timestamp]: {
+                        id: timestamp,
+                        name: "IVA 6 - 2025-11-17 06:00 (Test)",
+                        timestamp: new Date().toISOString(),
+                        data: {
+                            patientInfo: {
+                                dateInput: "2025-11-17",
+                                startTime: "06:00",
+                                endTime: "06:00",
+                                bedSelect: "IVA 6",
+                                otherLocationInput: "",
+                                initialWeight: "70",
+                                dailyWeight: "71",
+                                height: "169",
+                                gender: "Man",
+                                isUnder15: "no",
+                                cumulativeBalancePrev: "-500",
+                                naclSyringes: "7",
+                                pressureSets: "1"
+                            },
+                            fluidEntries: [],
+                            medicineEntries: [],
+                            bloodProductEntries: [],
+                            tpnSondmatEntries: [],
+                            lossEntries: [],
+                            perspiratioCalc: {
+                                breathingSupport: "standard",
+                                maxTemp: "37.0"
+                            },
+                            diuresisCalc: {},
+                            nutritionPlan: {}
                         }
                     }
-                ];
-                localStorage.setItem('iva_saved_patients', JSON.stringify(testPatients));
+                };
+                
+                // Vi måste läsa in befintlig data först för att inte skriva över om man klickar flera gånger
+                // (Men för testknappen kör vi overwrite eller merge)
+                const existing = localStorage.getItem('iva_skovde_vatskebalans_saves');
+                let merged = testData;
+                if(existing) {
+                    try {
+                        const parsed = JSON.parse(existing);
+                        merged = { ...parsed, ...testData };
+                    } catch(e) {}
+                }
+
+                localStorage.setItem('iva_skovde_vatskebalans_saves', JSON.stringify(merged));
                 refreshDevOutput();
-                alert("Testdata (i ditt filformat) skapad! Testa 'Hämta sparad patient' nu.");
+                alert("Testpatient skapad enligt specifikationen!");
             });
 
 
@@ -1264,8 +1285,7 @@
                 meanTempInput.disabled = false;
                 bmiAdjustmentCheckbox.checked = true;
 
-                localStorage.removeItem('iva_patient_data');
-                // Vi tar INTE bort hela listan (iva_saved_patients), bara den aktuella sessionen
+                localStorage.removeItem('iva_nutrition_session');
 
                 updateCalculationWeight();
                 closeModal(confirmModal);
@@ -1311,10 +1331,15 @@
 
             // Init
             meanTempInput.disabled = !feverAdjustmentCheckbox.checked;
+            
             // Läs in senaste sessionen om den finns (för att återuppta arbete)
-            const lastSession = localStorage.getItem('iva_patient_data');
+            const lastSession = localStorage.getItem('iva_nutrition_session');
             if(lastSession) {
                 try { populateForm(JSON.parse(lastSession)); } catch(e){}
+            }
+            
+            if (!lengthInput.value && !currentWeightInput.value) {
+                updateCalculationWeight(); 
             }
         });
     </script>
