@@ -15,7 +15,6 @@
             background-color: #f4f4f4;
             color: #333;
             font-size: 0.9rem;
-            /* Tog bort padding-bottom för dev-panel */
         }
 
         body.modal-open {
@@ -251,6 +250,53 @@
             color: #666;
             margin-left: 4px;
         }
+
+        /* ----- TOAST NOTIFICATION ----- */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            pointer-events: none; /* Klick går igenom om ingen toast finns */
+        }
+        .toast {
+            pointer-events: auto;
+            background-color: #323232;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideUpFade 0.4s ease-out;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .toast i {
+            color: #4caf50; /* Grön bock */
+        }
+        .toast.info i {
+            color: #2196f3; /* Blå info */
+        }
+        .toast u {
+            cursor: pointer;
+            color: #90caf9;
+            text-decoration: none;
+            border-bottom: 1px dotted #90caf9;
+            margin-left: 5px;
+        }
+        .toast u:hover {
+            color: #bbdefb;
+            border-bottom-style: solid;
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
 
         /* ----- MODALER ----- */
         .modal-backdrop {
@@ -839,6 +885,52 @@
 
 
     <script>
+        // GLOBAL HJÄLPFUNKTION FÖR TOAST (måste ligga utanför DOMContentLoaded om den anropas i HTML, men här ok)
+        function showToast(message, duration = 4000) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (message.includes('Nyare data')) toast.classList.add('info');
+            
+            // Ikon
+            let icon = '<i class="fas fa-check-circle"></i>';
+            if (message.includes('Nyare')) icon = '<i class="fas fa-info-circle"></i>';
+            
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 400);
+            }, duration);
+        }
+
+        // Exponera en funktion för "Force Load" från toasten
+        window.forceLoadLatest = function() {
+            const storedJSON = localStorage.getItem('iva_skovde_vatskebalans_saves');
+            if (storedJSON) {
+                const allSaves = JSON.parse(storedJSON);
+                const sortedKeys = Object.keys(allSaves).sort((a, b) => b - a);
+                if(sortedKeys.length > 0) {
+                    const latestSave = allSaves[sortedKeys[0]];
+                    // Dispatcha ett custom event eller anropa en global funktion
+                    // Förenkling: Vi sätter en flagga och laddar om sidan, eller accessar via window-objekt om vi exponerat main-logiken.
+                    // Eftersom populateForm ligger inuti DOMContentLoaded scope, måste vi vara lite smarta.
+                    // Lösning: Vi triggar en ny sökning via knappen "Importera" programmatiskt, eller reload.
+                    // Enklast: Spara "auto_load_latest" flagga och reload.
+                    localStorage.setItem('iva_auto_load_trigger', 'true');
+                    location.reload();
+                }
+            }
+        };
+
+
         document.addEventListener('DOMContentLoaded', () => {
 
             // === Hämta element från DOM ===
@@ -981,8 +1073,6 @@
             // Hjälpfunktion för att fylla i formuläret
             function populateForm(data) {
                 if(!data || typeof data !== 'object') return;
-                
-                // Hämta data från den specifika strukturen (från 'iva_skovde_vatskebalans_saves' ELLER sessionsdata)
                 
                 let pLen, pGen, pWgt, pTemp, pFev;
 
@@ -1161,6 +1251,7 @@
                                 if(confirm(`Vill du importera "${displayName}"?`)) {
                                     populateForm(clinicalData);
                                     closeModal(importModal);
+                                    showToast(`Importerade: ${displayName}`);
                                 }
                             } else {
                                 alert("Kunde inte läsa data för denna patient.");
@@ -1170,6 +1261,74 @@
                     });
                 }
             }
+
+            // --- AUTO-LADDNING (Sista pusselbiten) ---
+            function autoLoadLatest() {
+                // 1. Kolla om vi triggats av "Force Load"
+                if (localStorage.getItem('iva_auto_load_trigger') === 'true') {
+                    localStorage.removeItem('iva_auto_load_trigger');
+                    loadLatestExternal(true); // Tvinga
+                    return;
+                }
+
+                // 2. Kolla om vi har en pågående session
+                const hasSession = localStorage.getItem('iva_nutrition_session');
+                
+                if (hasSession) {
+                    // Om session finns, ladda den först
+                    try { populateForm(JSON.parse(hasSession)); } catch(e){}
+                    
+                    // Kolla om det finns NYARE extern data?
+                    // Det kan vara störande att få en fråga varje gång om man jobbar.
+                    // Men vi kollar om det finns extern data och visar en diskret toast
+                    checkIfExternalIsNewer();
+                } else {
+                    // Ingen session (tomt) -> Försök ladda senaste externa direkt
+                    loadLatestExternal(false); 
+                }
+            }
+
+            function loadLatestExternal(force) {
+                const storedJSON = localStorage.getItem('iva_skovde_vatskebalans_saves');
+                if (!storedJSON) return;
+
+                const allSaves = JSON.parse(storedJSON);
+                const sortedKeys = Object.keys(allSaves).sort((a, b) => b - a); // Nyast först
+                
+                if (sortedKeys.length > 0) {
+                    const latest = allSaves[sortedKeys[0]];
+                    
+                    if (latest && latest.data) {
+                        // Namn för toast
+                        let pName = latest.name || "Patient";
+                        if (!latest.name && latest.data.patientInfo) {
+                            pName = `${latest.data.patientInfo.bedSelect || ''}`;
+                        }
+
+                        populateForm(latest.data);
+                        showToast(`Data hämtad från ${pName}`);
+                    }
+                }
+            }
+
+            function checkIfExternalIsNewer() {
+                const storedJSON = localStorage.getItem('iva_skovde_vatskebalans_saves');
+                if (!storedJSON) return;
+                
+                const allSaves = JSON.parse(storedJSON);
+                const sortedKeys = Object.keys(allSaves).sort((a, b) => b - a);
+                
+                if (sortedKeys.length > 0) {
+                    const latest = allSaves[sortedKeys[0]];
+                    // Visa toast med fråga
+                    let pName = latest.name || "Senaste patienten";
+                    // Korta ner namnet om det är långt
+                    if(pName.length > 20) pName = pName.substring(0, 20) + "...";
+                    
+                    showToast(`Hittade nyare data (${pName}). <u onclick="forceLoadLatest()">Ladda in?</u>`, 8000);
+                }
+            }
+
 
             // === DEV TOOLS LOGIK ===
             function refreshDevOutput() {
@@ -1228,8 +1387,6 @@
                     }
                 };
                 
-                // Vi måste läsa in befintlig data först för att inte skriva över om man klickar flera gånger
-                // (Men för testknappen kör vi overwrite eller merge)
                 const existing = localStorage.getItem('iva_skovde_vatskebalans_saves');
                 let merged = testData;
                 if(existing) {
@@ -1241,7 +1398,7 @@
 
                 localStorage.setItem('iva_skovde_vatskebalans_saves', JSON.stringify(merged));
                 refreshDevOutput();
-                alert("Testpatient skapad enligt specifikationen!");
+                showToast("Testdata skapad!");
             });
 
 
@@ -1251,7 +1408,6 @@
             setupModal('proteinGuidanceBtn', 'proteinModal', 'proteinNeed');
             setupModal('fluidGuidanceBtn', 'fluidModal', 'fluidNeed');
 
-            // Generell stängning för alla modaler vid klick utanför
             window.addEventListener('click', (event) => {
                 allModals.forEach(modal => {
                     if (event.target == modal) {
@@ -1332,11 +1488,8 @@
             // Init
             meanTempInput.disabled = !feverAdjustmentCheckbox.checked;
             
-            // Läs in senaste sessionen om den finns (för att återuppta arbete)
-            const lastSession = localStorage.getItem('iva_nutrition_session');
-            if(lastSession) {
-                try { populateForm(JSON.parse(lastSession)); } catch(e){}
-            }
+            // Ersätt loadSharedData med den nya autoLoadLatest som hanterar båda
+            autoLoadLatest();
             
             if (!lengthInput.value && !currentWeightInput.value) {
                 updateCalculationWeight(); 
